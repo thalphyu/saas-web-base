@@ -1,0 +1,35 @@
+<div class="table-responsive mb-3">
+	<table class="ui table unstackable fs-5" dnd-sortable-container [sortableData]="dashboardList">
+		<thead>
+			<tr>
+				<th class="border-0" width="45">#</th>
+				<th colspan="2" class="border-0 fs-6">Name</th>
+			</tr>
+		</thead>
+		<tr class="ui basic segment sortable" *ngFor="let board of dashboardList; let i = index" dnd-sortable
+			[sortableIndex]="i">
+			<td>{{i + 1}}</td>
+			<td>{{board}}</td>
+			<td width="160">
+				<a href="javascript:;" routerLink="." (click)="Isedit(board)" class="link-success text-decoration-none fs-7">
+					EDIT
+				</a>
+				<a href="javascript:;" routerLink="." (click)="deleteBoard(board)" class="link-danger text-decoration-none fs-7">
+					DELETE
+				</a>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div class="d-flex align-items-end gap-3">
+	<kendo-floatinglabel text="Enter Dashboard Name">
+		<input type="text" class="form-control" [(ngModel)]="newDashboardItem" placeholder="" kendoTextBox autofocus>
+	</kendo-floatinglabel>
+	<a *ngIf="!edit" routerLink="." (click)="createBoard(newDashboardItem)" class="btn btn-primary px-3">
+		ADD
+	</a>
+	<a *ngIf="edit" routerLink="." (click)="editBoard(newDashboardItem)" class="btn btn-success px-3">
+		UPDATE
+	</a>
+</div>

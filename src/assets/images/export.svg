@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="19.638" height="24" viewBox="0 0 19.638 24">
+  <g id="export" transform="translate(-1118 -97)">
+    <g id="Group_384" data-name="Group 384">
+      <path id="export-2" data-name="export" d="M19.636,33.336V27.62c0-.01,0-.019,0-.029a1.085,1.085,0,0,0-.248-.69l0-.006c-.02-.024-.041-.047-.063-.07l-.01-.01c-.01-.01-.019-.02-.029-.029L11.317,18.82h0c-.022-.022-.046-.043-.069-.063l-.023-.018-.053-.04-.028-.019-.058-.035-.024-.014q-.04-.021-.081-.039l-.034-.014-.055-.02-.038-.012-.064-.016-.029-.007c-.031-.006-.061-.011-.092-.014l-.029,0-.077,0H1.091A1.091,1.091,0,0,0,0,19.591V41.409A1.091,1.091,0,0,0,1.091,42.5H18.545a1.091,1.091,0,0,0,1.091-1.091V33.336Zm-8-11.112L15.912,26.5H11.636Zm5.818,18.094H2.182V20.682H9.455v6.909a1.091,1.091,0,0,0,1.091,1.091h6.909V40.318Z" transform="translate(1118 78.5)" fill="#fff"/>
+      <g id="Group_274" data-name="Group 274" transform="translate(1122.808 109.958)">
+        <rect id="Rectangle_343" data-name="Rectangle 343" width="10" height="2.3" rx="1.15" transform="matrix(-0.017, -1, 1, -0.017, 3.479, 10.541)" fill="#fff"/>
+        <rect id="Rectangle_344" data-name="Rectangle 344" width="6" height="2.3" rx="1.15" transform="matrix(-0.719, -0.695, 0.695, -0.719, 7.27, 5.822)" fill="#fff"/>
+        <rect id="Rectangle_345" data-name="Rectangle 345" width="6" height="2.3" rx="1.15" transform="matrix(-0.695, 0.719, -0.719, -0.695, 5.822, 1.605)" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>

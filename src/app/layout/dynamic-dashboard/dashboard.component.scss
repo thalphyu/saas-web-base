@@ -1,0 +1,36 @@
+@charset "utf-8";
+@import "custom-variables";
+
+.ui.modal {
+	>.header {
+		padding: 24px !important;
+
+		&:before {
+			content: "";
+			height: 38px;
+			width: 5px;
+			margin-right: 30px;
+			background: #3F6BE6;
+			position: absolute;
+			left: 0;
+			top: 22px;
+		}
+	}
+	>.actions {
+		padding: 24px !important;
+	}
+}
+.ui.list {
+	.list {
+		>.item {
+			.header {
+				font-family: $font-family-sans-serif
+			}
+		}
+	}
+	>.item {
+		.header {
+			font-family: $font-family-sans-serif
+		}
+	}
+}

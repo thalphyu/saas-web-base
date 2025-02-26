@@ -1,0 +1,52 @@
+@import "c-variable";
+
+:host {
+	display: block;
+}
+
+.head, .btn-icon {
+	top: 0;
+	z-index: 1
+}
+
+.list-number {
+	list-style-type: none;
+
+	li {
+		display: block;
+		position: relative;
+		margin-bottom: .35rem;
+	}
+}
+
+.policy-list {
+	> li {
+		
+		&:before {
+			font-size: $font-size-base * 1.25;
+			font-weight: $font-weight-medium;
+			top: -2px;
+		}
+	}
+
+	&.mm {
+		li {
+			display: block;
+			position: relative;
+			margin-bottom: .35rem;
+
+			&:before {
+				content: attr(data-item);
+				position: absolute;
+				margin-right: 100%;
+				right: 6px;
+			}
+		}
+
+		> li {
+			&:before {
+				font-weight: $font-weight-semibold;
+			}
+		}
+	}
+}

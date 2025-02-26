@@ -1,0 +1,253 @@
+<div class="d-sm-flex align-items-end header-panel">
+	<app-page-header [mainHeading]="'Announcement'"
+		[heading]="this.isShowUpload ? (this.isDetails === true ? 'Announcement Details' : (this.isEdit ? 'Edit Announcement' : 'Create Announcement')) : (this.compbutton === true ? 'Draft Announcements' : 'Announcements')" [subheading]="'Setup'" [icon]="''"></app-page-header>
+
+	<div class="title-action-panel ms-auto float-end d-inline-flex gap-2 align-items-center">
+		<action-btn textTooltip="Add New" btnSvgicon="icon-plus" (byClick)="openCreateAnnouncemantPopUp()" disableFlag="{{isShowUpload}}"></action-btn>
+		<action-btn textTooltip="Announcement List" btnSvgicon="icon-list" (byClick)="ngOnInit()" [hidden]="goBackBtn"></action-btn>
+		<button (click)="openDraftGrid()" class="btn btn-light-primary btn-icon btn-sm w-auto px-2" [hidden]="draftGridBtn">
+			Draft <span class="badge bg-danger ms-1">{{totalDraftCount}}</span>
+		</button>
+	</div>
+</div>
+
+<div class="card rounded-3" *ngIf="!isShowUpload">
+	<div class="card-header">
+		<div class="row g-3">
+			<div class="col-xxl-3 col-xl-4 col-sm-6">
+				<form name="announcemantForm" [formGroup]="announcemantForm">
+					<kendo-floatinglabel text="" class="pt-0 input-icon position-relative">
+						<input type="text" kendoTextBox name="Search" class="form-control" formControlName="search" placeholder="Search Announcements" (input)="search($event.target.value)" tabindex="0" aria-invalid="false">
+						<svg-icon iClass="i-def text-muted" svgicon="icon-search"></svg-icon>
+					</kendo-floatinglabel>
+				</form>
+			</div>
+			<div class="col-xxl-2 col-xl-3 col-sm-4">
+				<kendo-floatinglabel text="" class="pt-0">
+					<kendo-combobox [data]="dateList" [textField]="'text'" [valueField]="'value'" [(ngModel)]="selectedItem" class="form-control" (valueChange)="handleCategoryChange($event)" [popupSettings]="{ width: 'auto' }">
+					</kendo-combobox>
+				</kendo-floatinglabel>
+			</div>
+		</div>
+	</div>
+	<div class="px-1 pb-2">
+		<kendo-grid *ngIf="normalGrid" gridHeight #height="heightDirective" [data]="NormalView|async" [pageSize]="gridState.take" [style.height.px]="[height.kGridHeight]" [style.minHeight.px]="300"
+			[skip]="gridState.skip" [pageable]="{
+			buttonCount: 5,
+			info: true,
+			type: 'input',
+			pageSizes: true,
+			previousNext: true,
+			responsive: true
+			}" [sort]="gridState.sort" [filter]="gridState.filter" [sortable]="true" [scrollable]="true"
+			[selectable]="false" [loading]="NormalView.load" [resizable]="true"
+			(dataStateChange)="dataStateChangeNormalGrid($event)">
+			<kendo-grid-column field="Title" title="Title" width="300" [minResizableWidth]="30">
+				<ng-template kendoGridCellTemplate let-dataItem>
+					<a (click)="viewdetail(dataItem)" role="button" class="link-info fw-semibold cursor">{{dataItem.Title}}</a>
+				</ng-template>
+			</kendo-grid-column>
+			<kendo-grid-column field="AnnouncementDate" title="Date" width="100" [minResizableWidth]="30">
+			</kendo-grid-column>
+			<kendo-grid-column field="CreatedBy" title="Created By" width="120" [minResizableWidth]="30">
+			</kendo-grid-column>
+			<kendo-grid-column field="IsSeen" title="Seen By" width="80" [minResizableWidth]="30">
+			</kendo-grid-column>
+			<kendo-grid-column field="IsPublish" title="Public Status" width="120" [minResizableWidth]="30" [sortable]="false">
+				<ng-template kendoGridCellTemplate let-dataItem>
+					<!-- <kendo-switch [checked]="dataItem.IsPublish" (click)="changeNormalCheck(dataItem)"
+						[disabled]="dataItem.IsPublish == true"></kendo-switch> -->
+					<div class="text-nowrap">
+						<input type="checkbox" kendoCheckBox (click)="changeNormalCheck(dataItem)" [checked]="dataItem.IsPublish" />
+						<label [hidden]="dataItem.IsPublish !== true" class="ms-2 text-success fs-6">Published</label>
+					</div>
+				</ng-template>
+			</kendo-grid-column>
+			<kendo-grid-column field="Action" title="Action" width="100" [minResizableWidth]="100" [sortable]="false" [sticky]="true">
+				<ng-template kendoGridCellTemplate let-dataItem>
+					<span (click)="onItemFocus(dataItem)">
+						<button class="btn btn-icon btn-clean btn-sm" (click)="onItemClick('Edit',dataItem)" title="Edit"><!--  [disabled]="dataItem.IsPublish" -->
+							<svg-icon iClass="i-sm" svgicon="icon-pencil"></svg-icon>
+						</button>
+						<button class="btn btn-icon btn-clean btn-sm" [disabled]="this.syncflag" (click)="onItemClick('Delete',dataItem)" title="Delete">
+							<svg-icon iClass="i-sm" svgicon="icon-trash"></svg-icon>
+						</button>
+					</span>
+				</ng-template>
+			</kendo-grid-column>
+		</kendo-grid>
+
+		<kendo-grid *ngIf="draftGrid" gridHeight #height="heightDirective" id="grid" [data]="DraftView|async" [pageSize]="gridState.take" [style.height.px]="[height.kGridHeight]" [style.minHeight.px]="300"
+			[skip]="gridState.skip" [pageable]="{
+			buttonCount: 5,
+			info: true,
+			type: 'input',
+			pageSizes: true,
+			previousNext: true,
+			responsive: true
+			}" [sort]="gridState.sort" [filter]="gridState.filter" [kendoGridBinding]="DraftGridData" [sortable]="true"
+			[scrollable]="true" [selectable]="false" [loading]="DraftView.load" [resizable]="true"
+			(dataStateChange)="dataStateChangeDraftGrid($event)">
+			<kendo-grid-column field="Title" title="Title" width="300" [minResizableWidth]="30">
+			</kendo-grid-column>
+			<kendo-grid-column field="AnnouncementDate" title="Date" width="100" [minResizableWidth]="30">
+			</kendo-grid-column>
+			<kendo-grid-column field="CreatedBy" title="Created By" width="120" [minResizableWidth]="30">
+			</kendo-grid-column>
+			<kendo-grid-column field="Action" title="Action" width="140" [minResizableWidth]="140" [sortable]="false">
+				<ng-template kendoGridCellTemplate let-dataItem>
+					<button class="btn btn-icon btn-clean btn-sm" (click)="onItemDraftClick('Create Post',dataItem)" title="Create Post">
+						<svg-icon iClass="i-sm" svgicon="icon-file-check"></svg-icon>
+					</button>
+					<button class="btn btn-icon btn-clean btn-sm" (click)="onItemDraftClick('Edit',dataItem)" title="Edit">
+						<svg-icon iClass="i-sm" svgicon="icon-pencil"></svg-icon>
+					</button>
+					<button class="btn btn-icon btn-clean btn-sm" [disabled]="this.syncflag" (click)="onItemDraftClick('Delete',dataItem)" title="Delete">
+						<svg-icon iClass="i-sm" svgicon="icon-trash"></svg-icon>
+					</button>
+					<!-- <kendo-dropdownbutton [data]="['Create Post','Edit','Delete']"
+						(itemClick)="onItemDraftClick($event,dataItem)" class="bg-transparent d-inline-block">
+						<svg class="icon i-xs text-secondary">
+							<use xlink:href="assets/icons/symbol-defs.svg#icon-more-v"></use>
+						</svg>
+					</kendo-dropdownbutton> -->
+				</ng-template>
+			</kendo-grid-column>
+		</kendo-grid>
+	</div>
+</div>
+
+<app-create-announcemant *ngIf="isShowUpload"></app-create-announcemant>
+<div kendoDialogContainer></div>
+
+
+<!-- <div class="d-sm-flex align-items-center header-panel mb-4 overflow-hidden">
+
+	<div class="title-action-panel ml-auto float-right mt-1 mt-sm-0 d-inline-flex">
+		<button (click)="ngOnInit()" class="btn btn-primary mr-2 ml-0" placement="bottom" ngbTooltip="List"
+			[hidden]="goBackBtn">
+
+			<img src="assets/images/backward.svg">
+		</button>
+
+		<button (click)="openDraftGrid()" class="btn btn-primary mr-2 ml-0" placement="bottom" [hidden]="draftGridBtn"
+			ngbTooltip="Draft">
+
+			<img src="assets/images/draftlist.svg">
+			<span class="badge badge-danger badge-danger"> {{totalDraftCount}}</span></button>
+		<button (click)="openCreateAnnouncemantPopUp()" class="btn btn-primary mr-2 ml-0" placement="bottom"><svg
+				class="icon i-sm">
+				<use xlink:href="assets/icons/symbol-defs.svg#icon-plus"></use>
+
+			</svg></button>
+	</div>
+</div> -->
+
+<!-- <div class="card rounded-3x border-0 mb-4"> -->
+<!-- <div class="card-header border-0 bg-transparent pt-4 card-title position-relative">
+		<div class="row">
+			<div class="col-sm-7">
+				<div *ngIf="announcementLabel">
+					<h3 class="h6 my-2"><strong>Announcemant</strong> list</h3>
+				</div>
+				<div *ngIf="draftannouncement">
+					<h3 class="h6 my-2"><strong>Draft Announcemant</strong> list</h3>
+				</div>
+
+			</div>
+			<div class="col-sm-5">
+				<div class="dropdownlist-addon float-right">
+					<kendo-combobox [data]="dateList" [textField]="'text'" [valueField]="'value'" [(ngModel)]="selectedItem"
+						style="width: 200px" class="border-0" (valueChange)="handleCategoryChange($event)">
+					</kendo-combobox>
+				</div>
+			</div>
+		</div>
+		<form name="announcemantForm" [formGroup]="announcemantForm">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="dropdownlist-addon float-right">
+						<kendo-floatinglabel text="Search">
+							<input type="text" kendoTextBox name="Search" class="form-control" formControlName="search"
+								(input)="search($event.target.value)">
+						</kendo-floatinglabel>
+					</div>
+				</div>
+
+			</div>
+		</form>
+	</div> -->
+
+<!-- <div *ngIf="loading" class="k-i-loading" style="position: absolute;z-index: 10"></div> -->
+
+<!-- <div class="card-body" *ngIf="normalGrid">
+		<kendo-grid [data]="NormalView|async" [pageSize]="gridState.take" [skip]="gridState.skip" [pageable]="{
+			buttonCount: 5,
+			info: true,
+			type: 'input',
+			pageSizes: true,
+			previousNext: true
+			}"
+			[sort]="gridState.sort" [filter]="gridState.filter" [sortable]="true" [scrollable]="true"
+			[selectable]="true" [loading]="NormalView.load" [resizable]="true" (dataStateChange)="dataStateChangeNormalGrid($event)" >
+			<kendo-grid-column field="Title" title="Title" width="140">
+					<ng-template kendoGridCellTemplate let-dataItem >
+							<strong (click)="viewdetail(dataItem)" style="cursor: pointer;">{{dataItem.Title}}</strong>
+						</ng-template>
+			</kendo-grid-column>
+			<kendo-grid-column field="AnnouncementDate" title="Date" width="70">
+			</kendo-grid-column>
+			<kendo-grid-column field="CreatedBy" title="Created By" width="80">
+			</kendo-grid-column>
+			<kendo-grid-column field="IsSeen" title="Seen By" width="50">
+			</kendo-grid-column>
+			<kendo-grid-column field="IsPublish" title="Is Public" width="80" [sortable]="false">
+				<ng-template kendoGridCellTemplate let-dataItem >
+					<kendo-switch [checked]="dataItem.IsPublish" (click)="changeNormalCheck(dataItem)" [disabled]="dataItem.IsPublish == true"  ></kendo-switch>
+				</ng-template>
+			</kendo-grid-column>
+			<kendo-grid-column field="Action" title="Action" width="50" [sortable]="false">
+				<ng-template kendoGridCellTemplate let-dataItem>
+						<span (click)="onItemFocus(dataItem)">
+								<kendo-dropdownbutton  [data]="dataArray"  (itemClick)="onItemClick($event,dataItem)" class="bg-transparent d-inline-block">
+										<svg class="icon i-xs text-secondary">
+											<use xlink:href="assets/icons/symbol-defs.svg#icon-more-v"></use>
+										</svg>
+									</kendo-dropdownbutton>
+						</span>
+				</ng-template>
+			</kendo-grid-column>
+		</kendo-grid>
+	</div> -->
+
+<!-- ****  GRIDSTATE FOR DRAFT ANNOUNCEMANT **** -->
+<!-- <div class="card-body" *ngIf="draftGrid">
+		<kendo-grid id="grid" [data]="DraftView|async" [pageSize]="gridState.take" [skip]="gridState.skip" [pageable]="{
+			buttonCount: 5,
+			info: true,
+			type: 'input',
+			pageSizes: true,
+			previousNext: true
+			}"
+			[sort]="gridState.sort" [filter]="gridState.filter" [kendoGridBinding]="DraftGridData" [sortable]="true"
+			[scrollable]="true" [selectable]="true" [loading]="DraftView.load" [resizable]="true"  (dataStateChange)="dataStateChangeDraftGrid($event)">
+			<kendo-grid-column field="Title" title="Title" width="140">
+			</kendo-grid-column>
+			<kendo-grid-column field="AnnouncementDate" title="Date" width="70">
+			</kendo-grid-column>
+			<kendo-grid-column field="CreatedBy" title="Created By" width="80">
+			</kendo-grid-column>
+			<kendo-grid-column field="Action" title="Action" width="50" [sortable]="false">
+				<ng-template kendoGridCellTemplate let-dataItem>
+					<kendo-dropdownbutton [data]="['Create Post','Edit','Delete']" (itemClick)="onItemDraftClick($event,dataItem)"
+						class="bg-transparent d-inline-block">
+						<svg class="icon i-xs text-secondary">
+							<use xlink:href="assets/icons/symbol-defs.svg#icon-more-v"></use>
+						</svg>
+					</kendo-dropdownbutton>
+				</ng-template>
+			</kendo-grid-column>
+		</kendo-grid>
+	</div> -->
+
+<!-- </div> -->

@@ -1,0 +1,15 @@
+@import "c-variable";
+
+.page-title {
+	letter-spacing: -.0114923em;
+
+	&.border-right {
+		@include media-breakpoint-down(sm) {
+			border-right: 0px !important;
+		}
+	}
+}
+.i-sm {
+	width: 18px;
+	height: 18px;
+}

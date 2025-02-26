@@ -1,0 +1,39 @@
+@import "c-variable";
+
+.login-page {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow: auto;
+	background: url('/assets/images/login-bg.png') no-repeat  left 18% / 110%, linear-gradient(to bottom right, $primary , darken($purple, 20%));/* lighten($primary, 35%) */
+	background-attachment: fixed;
+
+	.cus-logo {
+		max-height: 45px;
+		min-height: 45px
+	}
+	.card {
+		max-width: 410px;
+		margin: auto;
+		transition: all ease-in .6s;
+	}
+	.btn-gradient {
+		color: $white;
+		background: linear-gradient(40deg,desaturate($purple, 5%),$primary) !important;
+		border: 0;
+		box-shadow: 0 2px 5px 0 rgba($primary, 0.26), 0 4px 12px 0 rgba(darken($purple, 5%), 0.25);
+	}
+}
+
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 375px) 
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: portrait) {
+	.card.p-5 {
+		padding: 2rem !important;
+	}
+}
+			

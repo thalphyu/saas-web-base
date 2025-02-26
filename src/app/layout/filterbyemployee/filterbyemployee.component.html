@@ -1,0 +1,39 @@
+<!-- <div class="row">
+ <div class="col-sm-12">
+	 <div class="dropdownlist-addon float-right">
+		 <kendo-floatinglabel text="Search">
+			 <input type="text" kendoTextBox name="Search" class="form-control" (input)="search($event.target.value)">
+		 </kendo-floatinglabel>
+	 </div>
+ </div> 
+</div> -->
+<div class="mx-n3">
+	<kendo-grid [data]="view|async" [pageSize]="gridState.take" [filterable]="true"  [skip]="gridState.skip" [loading]="view.loading" [sort]="gridState.sort" [scrollable]="true" [filter]="gridState.filter" [sortable]="false" [style.height.vh]="62" [style.minHeight.px]="300" [resizable]="true"
+	[pageable]="{
+		buttonCount: 5,
+		info: true,
+		type: false,
+		previousNext: true,
+		pageSizes: [5,40,60,80,100],
+		responsive: true
+		}" (dataStateChange)="dataStateChange($event)" [selectable]="selectableSettings" [selectedKeys]="mySelection" [kendoGridSelectBy]="'val'" (selectedKeysChange)="onSelectedEmployee($event)">
+		<kendo-grid-column field="EnrollNumber" title="Enroll Number" [filterable]="true" width="140" [resizable]="false">
+		</kendo-grid-column>
+		<kendo-grid-column field="EmployeeCode" title="Employee Code" [filterable]="true" width="140" [resizable]="false">
+		</kendo-grid-column>
+		<kendo-grid-column field="EmployeeName" title="Employee Name" [filterable]="true" width="200">
+		</kendo-grid-column>
+		<kendo-grid-column field="CName" title="Company" [filterable]="true" width="200">
+		</kendo-grid-column>
+		<!-- <ng-template kendoPagerTemplate  let-totalPages="totalPages" let-currentPage="currentPage">
+			<kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+			<kendo-pager-page-sizes [pageSizes]="[5,40,60,80,100]"></kendo-pager-page-sizes>  
+			<kendo-pager-info></kendo-pager-info>
+			<kendo-pager-next-buttons></kendo-pager-next-buttons>
+		</ng-template>  -->
+	</kendo-grid>
+</div>
+
+<div class="bg-light py-2 px-3 fs-6 mt-3 text-secondary">
+	Total Employee Count <b class="fs-4 text-dark ms-2">{{view.total}}</b>
+</div>

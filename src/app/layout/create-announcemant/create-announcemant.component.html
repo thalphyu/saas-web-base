@@ -1,0 +1,140 @@
+<div class="card rounded-3 h-100 justify-content-center">
+	<span *ngIf="loading" class="k-icon k-i-loading k-icon-md text-lightgray position-absolute bottom-50 end-50"></span>
+
+	<div class="card-body">
+		<form name="createAnnouncementForm" [formGroup]="createAnnouncementForm">
+			<div class="row">
+				<div class="col-lg-9 col-md-8">
+					<div class="mb-3">
+						<kendo-floatinglabel text="Title" class="required">
+							<input type="text" kendoTextBox name="Title" class="form-control" formControlName="Title"
+								required>
+						</kendo-floatinglabel>
+						<kendo-formerror
+							[hidden]="createAnnouncementForm.controls.Title.valid || createAnnouncementForm.controls.Title.pristine">
+							Title is required !
+						</kendo-formerror>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-4">
+					<div class="mb-3">
+						<kendo-floatinglabel text="Reference No" class="required">
+							<input type="text" kendoTextBox name="ReferenceNo" class="form-control"
+								formControlName="ReferenceNo" required>
+						</kendo-floatinglabel>
+						<kendo-formerror
+							[hidden]="createAnnouncementForm.controls.ReferenceNo.valid || createAnnouncementForm.controls.ReferenceNo.pristine">
+							Reference No is required !
+						</kendo-formerror>
+					</div>
+				</div>
+			</div>
+		</form>
+
+		<!-- apiKey="5g5faf78gvk6yfq9bd3bbfjo858kjx1q8o0nbiwtygo2e4er" -->
+		<editor [(ngModel)]="dataModel" [init]="tinymceInit" class="mb-3"></editor>
+
+		<div class="row">
+			<div class="col-lg-3 col-md-4">
+				<div class="mb-3">
+					<kendo-floatinglabel text="Choose Audience" class="required">
+						<kendo-combobox [data]="audienceList" [textField]="'text'" [valueField]="'value'"
+							[(ngModel)]="choosedAudience" class="form-control"
+							(valueChange)="handleAudienceChange($event)" [popupSettings]="{ width: 'auto' }"
+							[disabled]="this.btnViewDetail === true" required>
+						</kendo-combobox>
+					</kendo-floatinglabel>
+				</div>
+			</div>
+
+			<div class="col">
+				<div class="mb-3">
+					<kendo-floatinglabel text="Employees" class="required d-flex flex-row" *ngIf="byEmployee">
+						<kendo-multiselect [filterable]="true" [data]="selectedByEmpAudienceList" textField="Name"
+							valueField="ID" [valuePrimitive]="true" required [(ngModel)]="selectedAudience"
+							(filterChange)="handleFilter($event,choosedAudience)" class="form-control"
+							[disabled]="this.btnViewDetail === true">
+						</kendo-multiselect>
+						<button class="btn btn-sm btn-white btn-hover-light border-bottom"
+							(click)="openFilterByEmployeeMultiPopUp()" title="Filter by Employee">
+							<svg-icon iClass="i-def" svgicon="icon-user-search"></svg-icon>
+						</button>
+					</kendo-floatinglabel>
+					<kendo-floatinglabel text="{{selectedAudienceTitle}}" class="required" [hidden]="audienceNullHide">
+						<kendo-multiselect [data]="selectedByAudienceList" textField="Name" valueField="ID"
+							[valuePrimitive]="true" required [(ngModel)]="selectedAudience"
+							(valueChange)="audienceValueChange($event)" class="form-control"
+							[disabled]="this.btnViewDetail === true">
+						</kendo-multiselect>
+					</kendo-floatinglabel>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="card-footer bg-transparent border-0">
+		<!-- <button type="button" class="btn btn-light" (click)="isDetails ? exitFromCreateAnnouncemant() : open()" [disabled]="this.btnCancle == true">Cancel</button> -->
+		<button type="button" class="btn btn-light" [disabled]="this.btnCancle === true" (click)="open()"
+			*ngIf="!isDetails">Cancel</button>
+		<button type="button" class="btn btn-light" (click)="exitFromCreateAnnouncemant()"
+			[disabled]="this.btnCancle === true" *ngIf="isDetails">Cancel</button>
+		<button type="submit" class="btn btn-primary" (click)="post()"
+			[disabled]="this.unSelectedAudience === true || !this.createAnnouncementForm.valid || this.btnViewDetail === true">Post</button>
+	</div>
+</div>
+
+<kendo-dialog *ngIf="opened" title="" (close)="close('cancel')" [minWidth]="250" [width]="450">
+	<div class="text-center pb-2">
+		<svg-icon iClass="i-xl text-lightgray" svgicon="icon-help"></svg-icon>
+		<h4 class="my-3">Save as Draft?</h4>
+		Save your changes and come back to finish your post later.
+	</div>
+	<kendo-dialog-actions [layout]="actionsLayout" class="justify-content-center">
+		<button type="button" class="btn btn-light" (click)="exitFromCreateAnnouncemant()">
+			Discard
+		</button>
+		<button type="button" class="btn btn-primary" (click)="saveAsDraft()"
+			[disabled]="this.btnSaveAsDraft === true || this.btnViewDetail === true">
+			Save
+		</button>
+	</kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog *ngIf="openedCalendar" title="" (close)="closeCalendar('cancel')" [minWidth]="250" [width]="450">
+	<kendo-dialog-titlebar>
+		<h5 class="modal-title">Schedule Post</h5>
+	</kendo-dialog-titlebar>
+	<div class="pb-2">
+		Select when you want to post.
+		<form name="createAnnouncementForm" [formGroup]="createAnnouncementForm">
+			<kendo-floatinglabel text="Schedule Date">
+				<kendo-datepicker formControlName="Schedule" class="form-control" [format]="'dd MMM yyyy'"
+					calendarType="classic" formatPlaceholder="formatPattern" placeholder="">
+				</kendo-datepicker>
+			</kendo-floatinglabel>
+		</form>
+	</div>
+	<kendo-dialog-actions [layout]="actionsLayout">
+		<button type="button" class="btn btn-light" (click)="exitFromCreateAnnouncemant()">
+			Discard
+		</button>
+		<button type="button" class="btn btn-primary" (click)="post()">
+			Create Post
+		</button>
+	</kendo-dialog-actions>
+</kendo-dialog>
+
+<!--for FilterByEmployeePopUp  *ngIf="isShowUploadFilter"  -->
+<kendo-dialog *ngIf="isShowUploadFilter" (close)="closeFilterByEmployeeMultiPopUp()" [minWidth]="250" [width]="850"
+	class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h5 class="modal-title">Searching Employee</h5>
+	</kendo-dialog-titlebar>
+	<app-filterbyemployeemulti [viewMenu]="this.viewMenuForm.value">
+	</app-filterbyemployeemulti>
+	<kendo-dialog-actions [layout]="actionsLayout">
+		<button type="submit" class="btn btn-light" (click)="closeFilterByEmployeeMultiPopUp()">Cancel</button>
+		<button type="submit" class="btn btn-primary"
+			(click)="selectEmployee(choosedAudience,selectedAudience)">Select</button>
+		<!-- <button type="submit" class="btn btn-info" (click)="selectall()">Select All</button> -->
+	</kendo-dialog-actions>
+</kendo-dialog>

@@ -1,0 +1,66 @@
+<div class="mx-n3">
+	<kendo-grid *ngIf="isUserlevelControl===false" [data]="view|async" [pageSize]="gridState.take"[skip]="gridState.skip" [loading]="view.loading" [sort]="gridState.sort" [scrollable]="true" [resizable]="true" [filter]="gridState.filter" [sortable]="false" [filterable]="true"
+	[pageable]="{
+		buttonCount: 5,
+		info: true,
+		type: false,
+		previousNext: true,
+		pageSizes: [5,40,60,80,100],
+		responsive: true
+		}"
+		(dataStateChange)="dataStateChange($event)" [selectable]="selectableSettings" [selectedKeys]="mySelection"
+		[kendoGridSelectBy]="'val'" (selectedKeysChange)="onSelectedEmployee($event)" [style.height.vh]="62" [style.minHeight.px]="300"> <!--(filterChange)="filterChange($event)" [filter]="filter"-->
+		<kendo-grid-checkbox-column showSelectAll="true" [width]="50" [resizable]="false"></kendo-grid-checkbox-column>
+		<kendo-grid-column field="EnrollNumber" title="Enroll Number" [filterable]="true" width="140" [resizable]="false">
+		</kendo-grid-column>
+		<kendo-grid-column field="EmployeeCode" title="Employee Code" [filterable]="true" width="140" [resizable]="false">
+		</kendo-grid-column>
+		<kendo-grid-column field="EmployeeName" title="Employee Name" [filterable]="true" width="200">
+		</kendo-grid-column>
+		<kendo-grid-column field="DOB" title="DOB" [filterable]="true" filter="date" format="{0:d}" width="150">
+			<ng-template kendoGridCellTemplate let-dataItem>
+				{{dataItem.DOB | date:"MM/dd/yyyy"}}
+			</ng-template>			 
+		</kendo-grid-column>
+		<kendo-grid-column field="CName" title="Company" [filterable]="true" width="200">
+		</kendo-grid-column>
+		
+		<ng-template kendoPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+			<kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+			<kendo-pager-page-sizes [pageSizes]="[5,40,60,80,100]"></kendo-pager-page-sizes>  
+			<kendo-pager-info></kendo-pager-info>
+			<kendo-pager-next-buttons></kendo-pager-next-buttons>
+		</ng-template> 
+	</kendo-grid>
+
+	<!-- forUserlevelcontrolandUserlevelassign -->
+	<kendo-grid *ngIf="isUserlevelControl===true" [data]="view|async" [pageSize]="gridState.take" [skip]="gridState.skip" [loading]="view.loading" [sort]="gridState.sort" [scrollable]="true" [sortable]="false"
+		[filter]="gridState.filter" [filterable]="true" [pageable]="true" [resizable]="true"
+		(dataStateChange)="dataStateChange($event)" [selectable]="selectableSettings" 
+		[rowSelected]="rowSelected" (selectionChange)="SelectDeselect($event)" [style.height.vh]="65" [style.minHeight.px]="300">
+		<kendo-grid-checkbox-column showSelectAll="true" [width]="50" [resizable]="false"></kendo-grid-checkbox-column>
+		<kendo-grid-column field="EnrollNumber" title="Enroll Number" width="140" [resizable]="false">
+		</kendo-grid-column>
+		<kendo-grid-column field="EmployeeCode" title="Employee Code" width="140" [resizable]="false">
+		</kendo-grid-column>
+		<kendo-grid-column field="EmployeeName" title="Employee Name" width="200">
+		</kendo-grid-column>
+		<kendo-grid-column field="DOB" title="DOB" filter="date" format="{0:d}" width="150">
+			<ng-template kendoGridCellTemplate let-dataItem>
+				{{dataItem.DOB | date:"MM/dd/yyyy"}}
+			</ng-template>
+		</kendo-grid-column>
+		<kendo-grid-column field="CName" title="Company" width="200">
+		</kendo-grid-column>
+		
+		<!-- <ng-template kendoPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+			<kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+			<kendo-pager-page-sizes [pageSizes]="[5,40,60,80,100]"></kendo-pager-page-sizes>  
+			<kendo-pager-info></kendo-pager-info>
+			<kendo-pager-next-buttons></kendo-pager-next-buttons>
+		</ng-template> -->
+	</kendo-grid>
+</div>
+<div class="bg-light py-2 px-3 fs-6 mt-3 text-muted">
+	Total Employee Count <b class="fs-4 text-dark">{{view.total}}</b>
+</div>

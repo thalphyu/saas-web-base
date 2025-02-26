@@ -1,0 +1,177 @@
+<kendo-dialog title="File Upload" *ngIf="isShowUpload" (close)="closeFileUploadPopUp()" [minWidth]="250" [width]="450">
+  <app-fileupload></app-fileupload>
+</kendo-dialog>
+ 
+
+<div class="hbox hbox-auto-xs hbox-auto-sm">
+  <div class="col w-lg bg-light dk b-r b-b bg-auto">
+    <div>
+      <div class="row-row">
+        <div class="cell scrollable hover">
+          <div class="cell">
+            <div class="cell-inner">
+              <div class="wrapper-md ng-scope b-b bg-white-only">
+                <h1 class="m-n h4"> List Sample </h1>
+                <div>
+                  <button (click)="openFileUploadPopUp()">Show Popup</button>
+
+                </div>
+              </div>
+              <div class="padder">
+                <form name="adminForm" novalidate>
+                  <!--   <div class="wrapper-xs b-b b-bluegray"> -->
+                  <div class="list-group m-t">
+                    <input type="text" class="form-control input-sm no-border no-bg text-md" placeholder="search"
+                      [(ngModel)]="queryString" [ngModelOptions]="{standalone: true}" tabindex="0" aria-invalid="false">
+                  </div>
+                  <div class="list-group m-t">
+                    <a *ngFor="let adminSet of adminSets | filterdata: queryString : 'AdminName' ; let i = index "
+                      class="list-group-item hover-anchor" (click)="selectedAdmin(adminSet.AdminID)">
+                      <span class="block text-ellipsis">
+                        <strong> {{ adminSet.AdminName }} </strong>
+                      </span>
+                    </a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col w-lg  dk b-r b-b bg-auto">
+    <div class="">
+      <div class="row-row">
+        <div class="cell">
+          <div class="cell-inner">
+            <div class="wrapper-md ng-scope b-b bg-white-only">
+              <h1 class="m-n h4"> Tree View sample </h1>
+            </div>
+            <div class="wrapper-md lter">
+              <div class="hbox hbox-auto">
+                <div>
+                  <button (click)="open_popup()">View Menu</button>
+                </div>
+
+                <kendo-treeview id='empTree' #empTree [nodes]="test" textField="label" kendoTreeViewExpandable (expand)="handleSelection($event)"
+                  kendoTreeViewSelectable (selectionChange)="handleSelection($event)" kendoTreeViewHierarchyBinding
+                  childrenField="children">
+
+                  <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                    <span [ngClass]="iconClass(dataItem)"></span>
+                    {{dataItem.label}}
+
+                  </ng-template>
+
+                </kendo-treeview>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="">
+      <div class="row-row">
+        <div class="cell">
+          <div class="cell-inner">
+            <div class="wrapper-md ng-scope b-b bg-white-only">
+              <h1 class="m-n h4"> Treeview with checkbox Sample</h1>
+              <div>
+                Checked keys: {{checkedKeys.join(",")}}
+              </div>
+            </div>
+            <div class="wrapper-md lter">
+              <div class="hbox hbox-auto">
+                <div>
+                  <button (click)="open_popup()">View Menu</button>
+                </div>
+
+                <kendo-treeview id='empTree' #empTree [nodes]="test" textField="label" kendoTreeViewExpandable (expand)="handleSelection($event)"
+                  kendoTreeViewCheckable [(checkedKeys)]="checkedKeys" [checkBy]="key" kendoTreeViewHierarchyBinding
+                  childrenField="children">
+
+                  <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                    <span [ngClass]="iconClass(dataItem)"></span>
+                    {{dataItem.label}}
+                  </ng-template>
+
+                </kendo-treeview>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <kendo-dialog title="Cloud Time Attendance System - Tree Menu Setup" *ngIf="opened" (close)="close_popup('cancel')"
+      [minWidth]="250" [width]="450">
+
+
+      <!-- View Menu -->
+      <div>
+
+        <div class="form-group m-b-sm">
+          <p>
+            <label class="md-check">
+
+              <input type="radio" name="viwType" (click)="chkChange(1)" checked /> <!-- [(ngModel)]="OrderbyDept" -->
+              <i class="indigo-400"></i>
+              View By Department
+            </label>
+          </p>
+          <p>
+            <label class="md-check">
+              <input type="radio" name="viwType" (click)="chkChange(0)" /> <!-- [(ngModel)]="OrderByDesign" -->
+              <i class="indigo-400"></i>
+              View By Designation
+            </label>
+          </p>
+        </div>
+
+        <div class="line line-dashed b-b line-lg"></div>
+
+        <div class="form-group m-b-md">
+          <p>
+            <label class="md-check">
+              <input type="checkbox" name="resign" data-ng-model="selected.view_arr.resign" />
+              <i class="teal"></i>
+              Included All Resign
+            </label>
+          </p>
+          <p>
+            <label class="md-check">
+              <input type="checkbox" name="active" data-ng-checked="true" data-ng-model="selected.view_arr.active"
+                checked />
+              <i class="teal"></i>
+              Included Active
+            </label>
+          </p>
+          <p>
+            <label class="md-check">
+              <input type="checkbox" name="inactive" data-ng-model="selected.view_arr.inactive" />
+              <i class="teal"></i>
+              Included Inactive
+            </label>
+          </p>
+
+          <p>
+            <label class="md-check">
+              <input type="checkbox" name="resignmonth" data-ng-model="selected.view_arr.resign_monthonly" />
+              <i class="teal"></i>
+              Included Resign This Month
+            </label>
+          </p>
+        </div>
+      </div>
+
+      <div class="text-right">
+        &nbsp;
+        <button type="button" class="k-button k-primary" (click)="close_popup('yes')">Ok</button>
+      </div>
+    </kendo-dialog>
+  </div>

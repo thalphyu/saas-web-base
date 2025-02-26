@@ -1,0 +1,66 @@
+{
+  "root": true,
+  "ignorePatterns": ["projects/**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parserOptions": {
+        "project": ["tsconfig.json", "e2e/tsconfig.json"],
+        "createDefaultProgram": true
+      },
+      "extends": [
+        "plugin:@angular-eslint/ng-cli-compat",
+        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
+        "plugin:@angular-eslint/template/process-inline-templates"
+      ],
+      "rules": {
+        "no-underscore-dangle":  "off",
+        "@typescript-eslint/member-ordering": "off",
+        "@typescript-eslint/dot-notation": "off",
+        "@angular-eslint/component-class-suffix": [
+          "error",
+          {
+            "suffixes": ["Page", "Component"]
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": ["app", "svg", "action"],
+            "style": "kebab-case"
+          }
+        ],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "style": "camelCase"
+          }
+        ],
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "variable",
+            "format": ["camelCase", "snake_case", "PascalCase"]
+          }
+        ],
+        "@typescript-eslint/no-unused-expressions": [
+          "off"
+        ],
+        "max-len": [
+          "warn",
+          {
+            "code": 200,
+            "ignoreComments": true
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.html"],
+      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "rules": {}
+    }
+  ]
+}

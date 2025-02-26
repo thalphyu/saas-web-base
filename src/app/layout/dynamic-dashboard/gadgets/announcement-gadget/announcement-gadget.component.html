@@ -1,0 +1,76 @@
+<div  class="ui left aligned segment gadget rounded-3 pt-0 shadow-none" dnd-draggable
+	[dragEnabled]="true" [dragData]="instanceId" [dropZones]="['c0','c1','c2','c3','r0','r1']">
+
+	<app-gadget-header
+		(mouseover)="showGadgetControls(true)"
+		(mouseleave)="showGadgetControls(false)"
+		[globalOptions]="globalOptions"
+		[title]="title"
+		[inRun]="inRun"
+		[inConfig]="inConfig"
+		[actionInitiated]="actionInitiated"
+		[showOperationControls]="showOperationControls"
+		[gadgetHasOperationControls]="gadgetHasOperationControls"
+		[showConfigurationControl]="showConfigurationControl"
+		[showControls]="showControls"
+		(toggleConfigModeEvent)="toggleConfigMode()"
+		(removeEvent)="remove()"
+		(runEvent)="run()"
+		(stopEvent)="stop()">
+	</app-gadget-header>
+
+	<ng-container *ngIf="!inConfig">
+		<div class="text-muted fs-6 mt-n2" *ngIf="totalannouncements === 0">{{summary}}</div>
+
+		<ngx-simplebar class="pe-3 me-n2 mb-2 mt-2" style="max-height: 450px">
+			<div class="timeline pb-2">
+				<div class="timeline-item pb-4" *ngFor="let article of announcements">
+					<span class="position-absolute text-secondary fs-6">
+						{{article.AnnouncementDay | date:this.CustomFormat}}<br>
+						{{article.AnnouncementDay | date:this.DateFormat}}
+					</span>
+					<div class="timeline-content">
+						<h4 class="h6"><a href="javascript:;" class="text-decoration-none" [ngClass]="this.globals.storedSkin === 'dark' ? 'link-light' : 'link-darkgray'" (click)="Detail(article)">{{article.Title}}</a></h4>
+						<div class="text-muted fs-6 d-flex flex-wrap">
+							<span class="me-2">Post by {{article.CreatedBy}}</span>
+							<span class="text-info">{{article.AnnouncementDate | dateAgo}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</ngx-simplebar>
+
+		<!-- <div class="mt-3 pb-3 border-bottom border-light" *ngFor="let article of announcements">
+			<div class="d-flex justify-content-between mb-2 pb-1">
+				<span class="badge badge-light rounded-pill px-3 text-muted">
+					{{article.AnnouncementDay | date:this.CustomFormat}}
+				</span>
+				<span class="fs-7 text-secondary">{{article.AnnouncementDate | dateAgo}}</span>
+			</div>
+			<h4 class="fs-5 mb-1"><a href="javascript:;" class="text-decoration-none text-darkgrey" (click)="Detail(dataItem)">{{article.Title}}</a></h4> -->
+
+			<!-- <div [innerHtml]="article.Body"></div>
+			<a href="javascript:;" class="text-uppercase font-weight-semibold" (click)="Detail(dataItem)"><small>view detail</small></a>
+		</div> -->
+
+		<!-- <button class="btn btn-success btn-block mt-3 mb-2" *ngIf="totalannouncements > 0 " (click)="ViewAllAnnouncements()">View All Announcements</button> -->
+	</ng-container>
+
+	<app-error-handler
+		[errorObject]="errorObject"
+		[errorExists]="errorExists">
+	</app-error-handler>
+</div>
+
+<kendo-dialog title="" *ngIf="showAnnouncementDetail" (close)="close()" [minWidth]="250" [maxWidth]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h5 class="modal-title">{{detailarticle.Title}}</h5>
+	</kendo-dialog-titlebar>
+	
+	<ngx-simplebar [options]="options" class="me-n3 pe-4 text-break" style="max-height: 70vh;">
+		<div class="announcement" [innerHtml]="detailarticle.Body"></div>
+	</ngx-simplebar>
+
+	<kendo-dialog-actions [layout]="actionsLayout">
+	</kendo-dialog-actions>
+</kendo-dialog>

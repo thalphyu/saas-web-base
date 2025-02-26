@@ -1,0 +1,131 @@
+@import "c-variable";
+
+:host {
+	display: block;
+}
+
+.head, .btn-icon {
+	top: 0;
+	z-index: 1;
+	transition: all .3s;
+}
+
+.list-number {
+	counter-reset: list;
+
+	li {
+		display: block;
+		position: relative;
+		margin-bottom: .35rem;
+
+		&:before {
+			content: counters(list, ".")".";
+			counter-increment: list;
+			position: absolute;
+			margin-right: 100%;
+			right: 6px;
+		}
+	}
+}
+
+.terms-list {
+	> li {
+		&:before {
+			font-size: $font-size-base * 1.25;
+			font-weight: $font-weight-medium;
+			top: -2px;
+		}
+	}
+
+	&.mm {
+		li {
+			display: block;
+			position: relative;
+			margin-bottom: .35rem;
+
+			&:before {
+				content: attr(data-item);
+				position: absolute;
+				margin-right: 100%;
+				right: 6px;
+			}
+		}
+
+		> li {
+			&:before {
+				font-weight: $font-weight-semibold;
+			}
+		}
+	}
+}
+
+.inner-tbl { 
+	td {
+		border-width: 0 1px 1px 0;
+		&:last-child {
+			border-right: 0;
+		}
+	}
+
+	tr:last-child {
+		td {
+			border-bottom: 0;
+		}
+	}
+}
+
+li, p {
+	margin-bottom: .75rem;
+}
+
+.custom-number {
+	margin-left: 2rem;
+	>li {
+		position: relative;
+
+		&:before {
+			display: inline-block;
+			content: counter(item) ". ";
+			counter-increment: item;
+			width: 2.5rem;
+			margin-left: -2rem;
+			position: absolute;
+		}
+		span {
+			display: block;
+			padding-left: .75rem;
+		}
+	}	
+}
+
+.list-alpha {
+	list-style-type: upper-alpha;
+
+	ol {
+		counter-reset: list;
+
+		>li {
+			list-style: none;
+			position: relative;
+			counter-increment: list;
+			padding-left: .25rem;
+
+			&:before {
+				content: "(" counter(list, lower-alpha) ")\a0\a0";
+				position: absolute;
+				left: -1.5rem;
+			}
+		}
+
+		&.sub-list {
+			padding-left: 2.25rem;
+			>li {
+				&:before {
+					content: attr(data-item);
+					position: absolute;
+					left: -2.25rem;
+				}
+			}
+		}
+	}
+}

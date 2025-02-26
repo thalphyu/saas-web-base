@@ -1,0 +1,105 @@
+<div class="d-sm-flex align-items-end header-panel">
+	<app-page-header [heading]="'Personal Information'" [subheading]="'Profile'" [icon]="''"></app-page-header>
+</div>
+
+<div class="card rounded-3">
+	<div class="card-body">
+		<form name="ProfileInfoForm" [formGroup]="ProfileInfoForm">
+			<div class="row">
+				<div class="col-sm-6 col-md-4 col-xl-3">
+					<div class="mb-3">
+						<kendo-floatinglabel text="Date of Birth" class="required">
+							<kendo-datepicker class="form-control" [(value)]="EmpDOB"
+								[format]="this.CustomDate" formControlName="DOB" calendarType="classic" required>
+							</kendo-datepicker>
+						</kendo-floatinglabel>
+						<kendo-formerror
+							[hidden]="ProfileInfoForm.controls.DOB.valid || ProfileInfoForm.controls.DOB.pristine">
+							DOB is required!
+						</kendo-formerror>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-4 col-xl-3">
+					<div class="mb-3">
+						<kendo-floatinglabel text="Nationality">
+							<input type="text" kendoTextBox name="Nationality" class="form-control"
+								formControlName="Nationality" maxlength="200">
+						</kendo-floatinglabel>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xl-6 col-md-8">
+					<div class="mb-3">
+						<kendo-floatinglabel text="N.R.C" class="required">
+							<input type="text" kendoTextBox name="NRC" class="form-control"
+								formControlName="NRC" maxlength="20"
+								placeholder="- - / - - - (N) - - - - - -" required>
+						</kendo-floatinglabel>
+						<kendo-formerror
+							[hidden]="!ProfileInfoForm.controls.NRC.errors?.required || ProfileInfoForm.controls.NRC.pristine">
+							NRC is required!
+						</kendo-formerror>
+						<kendo-formerror
+							[hidden]="!ProfileInfoForm.controls.NRC.hasError('nrcValidate')">
+							Wrong NRC format!
+						</kendo-formerror>
+					</div>
+
+					<div class="mb-3">
+						<kendo-floatinglabel text="Email" class="required">
+							<input type="email" kendoTextBox name="Email" class="form-control"
+								formControlName="Email" maxlength="200"
+								pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" required>
+						</kendo-floatinglabel>
+						<kendo-formerror
+							*ngIf="ProfileInfoForm.controls.Email.touched &&  ProfileInfoForm.controls.Email.errors?.required">
+							Email is required!
+						</kendo-formerror>
+						<kendo-formerror
+							*ngIf="ProfileInfoForm.controls.Email.touched && ProfileInfoForm.controls.Email.errors?.pattern">
+							Wrong Email Format!
+						</kendo-formerror>
+					</div>
+
+					<div class="mb-3">
+						<kendo-floatinglabel text="Phone" class="required">
+							<input type="tel" kendoTextBox name="Phone" class="form-control"
+								formControlName="Phone" maxlength="200" required>
+						</kendo-floatinglabel>
+						<kendo-formerror
+							[hidden]="ProfileInfoForm.controls.Phone.valid || ProfileInfoForm.controls.Phone.pristine">Phone
+							no is required!
+						</kendo-formerror>
+						<kendo-formerror
+							*ngIf="ProfileInfoForm.controls.Phone.hasError('invalidNumber')">
+							Numbers acceptedonly!
+						</kendo-formerror>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-xl-8">
+					<div class="mb-3">
+						<kendo-floatinglabel text="Address">
+							<kendo-textarea resizable="auto" name="Address" class="form-control" formControlName="Address"></kendo-textarea>
+						</kendo-floatinglabel>
+					</div>
+					<div class="mb-3">
+						<kendo-floatinglabel text="Contact Address">
+							<kendo-textarea resizable="auto" name="ContactAddress" class="form-control" formControlName="ContactAddress"></kendo-textarea>
+						</kendo-floatinglabel>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="card-footer bg-transparent border-0">
+		<button class="btn btn-primary" (click)="SaveInfo(this.ProfileInfoForm.value)" [disabled]="!ProfileInfoForm.valid">
+			Information Save
+		</button>
+	</div>
+</div>
+<div kendoDialogContainer></div>

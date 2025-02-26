@@ -1,0 +1,16 @@
+<h2 class="page-title mb-0 h4 fw-semibold pe-3 d-md-inline-flex align-middle">{{heading}}</h2>
+<ul class="breadcrumb d-md-inline-flex fs-6 mt-2 mb-0 align-items-center">
+   <li class="breadcrumb-item">
+      <a href="Javascript:void(0)" [routerLink]="['/dashboard']">
+         <svg-icon iClass="i-def align-text-bottom" svgicon="icon-home"></svg-icon>
+      </a>
+   </li>
+   <li class="breadcrumb-item" *ngIf="subheading!==''"><a href="javascript:void(0);">{{subheading}}</a></li>
+   <!-- <li class="breadcrumb-item">
+      <a href="Javascript:void(0)" [routerLink]="['/dashboard']"> Dashboard
+      </a>
+   </li>
+   <li class="breadcrumb-item" *ngIf="subheading!=''"><a href="javascript:history.back()">{{subheading}}</a></li> -->
+   <li *ngIf="mainHeading === undefined" class="breadcrumb-item active" [ngClass]="{'d-none': mainHeading === 'Welcome'}">{{heading}}</li>
+   <li *ngIf="mainHeading !== '' && mainHeading !== undefined" class="breadcrumb-item active" [ngClass]="{'d-none': mainHeading === 'Welcome'}">{{mainHeading}}</li>
+</ul>

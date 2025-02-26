@@ -1,0 +1,174 @@
+$doc-theme-color:   #F6F7F9,#FF7588 ,#00bcd4,#16D39A ,#2196F3,#404E67;
+$logo-theme: #FF7588,#00bcd4,#F76D47,#16D39A ,#2196F3,#404E67;
+
+[theme-type="dark"] {
+
+    $primary: #F76D47;
+    $secondary: #111111;
+    $success: #222222;
+    $dark: #000;
+    
+    $theme-colors: (
+        "primary": $primary,
+        "secondary": $secondary,
+        "success": $success,
+        "danger": $danger,
+        "info": $indigo,
+        "dark": $dark,
+        "light": $light,
+    );
+
+    /* redefine theme color variables */
+    @each $color, $value in $theme-colors {
+        --#{$variable-prefix}#{$color}: #{$value};
+    }
+
+    /* redefine theme color rgb vars (used for bg- colors) */
+    $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+    @each $color, $value in $theme-colors-rgb {
+        --#{$variable-prefix}#{$color}-rgb: #{$value};
+    }
+
+    $body-color: #eeeeee;
+    $body-bg: #263C5C;
+    
+    --#{$variable-prefix}body-color: #{$body-color};
+    --#{$variable-prefix}body-bg: #{$body-bg};
+      
+    @import "~bootstrap/scss/bootstrap";
+}
+
+
+[theme-type="dark"] {
+
+    $primary: #F76D47;
+    $secondary: #111111;
+    $success: #222222;
+    $dark: #000;
+    $dark-gray: #012345;
+    $smokewhite:    $dark-gray;
+    
+    $theme-colors: (
+        "primary": $primary,
+        "secondary": $secondary,
+        "success": $success,
+        "danger": $danger,
+        "info": $indigo,
+        "dark": $dark,
+        "darkgray": $dark-gray,
+                "light": $smokewhite,
+                "white": $white
+    );
+
+    @each $color, $value in $theme-colors {
+        --#{$variable-prefix}#{$color}: #{$value};
+    }
+
+    $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+    @each $color, $value in $theme-colors-rgb {
+        --#{$variable-prefix}#{$color}-rgb: #{$value};
+    }
+
+    $body-color: #eeeeee;
+    $body-bg: #263C5C;
+    
+    --#{$variable-prefix}body-color: #{$body-color};
+    --#{$variable-prefix}body-bg: #{$body-bg};
+      
+    @import "~bootstrap/scss/bootstrap";
+}
+
+/*[data-theme="dark"] {
+    $body-bg: $dark-gray;
+    $header-bg: darken($dark-gray, .5);
+    $sidebar-bg: darken($dark-gray, .5);
+
+    --#{$variable-prefix}body-bg: #{$body-bg};
+}
+
+[data-theme="light"] {
+    $body-bg: $smokewhite;
+    $header-bg: $smokewhite;
+    $sidebar-bg: $white;
+
+    --#{$variable-prefix}body-bg: #{$body-bg};
+}*/
+
+/* //&[navbar-theme="theme-#{$color}"]
+    &[header-theme="theme-#{$color}"] {
+        background: $value !important;
+
+        @if ($theme-bg==light) {
+            color: $dark;
+            a,
+            &.navbar-light .navbar-nav .nav-link {
+                color: $dark;
+                &:hover {
+                    color: rgba($dark, .85);
+                }
+            }
+
+            $theme-bg: 0;
+
+        } @else {
+            color: $white;
+            
+            &.navbar-light .navbar-nav .nav-link {
+                color: $white;
+                &:hover {
+                    color: rgba($white, .85);
+                }
+            }
+
+            .hambuger span {
+                background: $white;
+                &:before,
+                &:after {
+                    background: $white;
+                }
+            }
+        }
+    } */
+
+
+<div class="d-flex flex-wrap flex-column gap-xl-4 gap-3 align-items-xl-center align-items-center align-items-sm-start px-xl-3 mb-4 pb-3">
+                        
+                        <div class="d-flex flex-xl-column flex-column flex-sm-row align-items-xl-center align-items-sm-end align-items-center">
+                            <img [src]="previewimage" alt="Profile Image" width="160px" data-max-size="10kb" class="img-fluid avatar-xl img-fit rounded-circle border-white border border-5 shadow" *ngIf="previewimage" />
+
+                            <div class="img-fluid avatar-xl img-fit rounded-circle border-white border border-5 shadow bg-default text-lightgray fs-3" *ngIf="!previewimage">IMAGE</div>
+                            
+                            <kendo-upload class="custom-upload" name="image" formControlName="CompanyPhoto" 
+                                [multiple]="false" 
+                                [restrictions]="uploadRestrictions" 
+                                [autoUpload]="true" 
+                                [saveUrl]="uploadSaveUrl"
+                                [removeUrl]="uploadRemoveUrl"
+                                (upload)="uploadEventHandler($event)"
+                                (success)="successEventHandler($event)"
+                                (remove)="removeEventHandler($event)" 
+                                (complete)="completeEventHandler($event)">
+                            </kendo-upload>
+                        </div>
+
+                        <label class="text-danger fs-6" [hidden]="!isUploadPending">
+                            File upload pending. Please wait to complete upload before save.
+                        </label>
+
+                        <button class="btn btn-light-danger btn-hover-danger btn-xs mx-4" (click)="deleteImageHandler($event)" *ngIf="previewimage">
+                            <svg-icon iClass="i-sm" svgicon="icon-trash"></svg-icon> Remove Image
+                        </button>
+                            
+                        <!-- [batch]="true" -->
+                        <!-- <kendo-upload class="selector" name="image" formControlName="CompanyPhoto" 
+                            [multiple]="false" 
+                            [restrictions]="uploadRestrictions" 
+                            [autoUpload]="true" 
+                            [saveUrl]="uploadSaveUrl"
+                            [removeUrl]="uploadRemoveUrl"
+                            (upload)="uploadEventHandler($event)"
+                            (success)="successEventHandler($event)"
+                            (remove)="removeEventHandler($event)" 
+                            (complete)="completeEventHandler($event)">
+                        </kendo-upload> -->
+                    </div>

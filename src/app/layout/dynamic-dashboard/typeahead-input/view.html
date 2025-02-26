@@ -1,0 +1,14 @@
+<div class="d-flex align-items-center" [ngClass]="{inverted:typeAheadIsInMenu === true}">
+	<input type="text" placeholder="{{placeHolderText}}" [(ngModel)]="query" (keyup)="filter()" class="bg-transparent border-0 p-1 fs-5 flex-fill" autofocus>
+	
+	<svg class="icon i-def text-muted" *ngIf="!query">
+		<use xlink:href="assets/icons/symbol-defs.svg#icon-search"></use>
+	</svg>
+	<svg class="icon i-def text-muted" *ngIf="query" (click)="clearSearchandFilter()">
+		<use xlink:href="assets/icons/symbol-defs.svg#icon-remove"></use>
+	</svg>
+</div>
+
+<div class="p-2 shadow-sm border border-light bg-white" *ngIf="filteredList.length > 0">
+	<a href="javascript:;" (click)="select(item)" *ngFor='let item of filteredList' class="p-1 d-block fs-6 text-decoration-none text-darkgray">{{item}}</a>
+</div>

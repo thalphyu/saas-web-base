@@ -1,0 +1,401 @@
+@import "c-variable";
+
+/* html[body-theme="dark"]  {
+
+	$custom-colors: (
+		"primary": #F76D47,
+		"success": #00BCD4
+	);
+
+	$theme-colors: map-merge($theme-colors, $custom-colors);
+
+	@import "~bootstrap/scss/bootstrap";
+
+
+	.k-grid td {
+		border-width: 0 0 1px 0;
+		border-color: $grid-header-border;
+	}
+
+} */
+
+$black-15: rgba($black, 0.15);
+$black-25: rgba($black, 0.25);
+$black-025: rgba($black, 0.025);
+$black-075: rgba($black, 0.075);
+$black-085: rgba($black, 0.085);
+
+html[body-theme="dark"] {
+
+	@include fill( $bg: lighten($dark, 1.25%));
+
+	body,
+	.breadcrumb-item a,
+	.dropdown-item,
+	.card,
+	.k-grid,
+	.k-grid-header,
+	.k-grid-header th.k-grid-header-sticky,
+	.k-grid-content,
+	.k-grid td,
+	.k-treeview,
+	a[name="itemName"]:not(.active),
+	.k-content,
+	.k-window,
+	.k-calendar,
+	.k-list-filter > .k-textbox,
+	.table,
+	input[type="text"] {
+		color: $light;
+	}
+
+	.k-popup {
+		color: $light-gray;
+	}
+
+	body,
+	.btn-light,
+	.k-popup,
+	.k-calendar,
+	.k-calendar-content,
+	.head,
+	.pushable > .pusher,
+	.modal-content {
+		@include fill( $bg: lighten($dark, 1.25%));
+	}
+
+	.navbar .navbar-collapse {
+		&.sticky {
+			box-shadow: 0px 5px 30px 5px $black-25 !important
+		}
+	}
+
+	.ui {
+		&.bg-default {
+			@include fill( $bg: $dark !important );
+			
+			&.opacity-25 {
+				opacity: .75 !important;
+			}
+		}
+
+		&.segment,
+		&.table {
+			border-color: darken($dark, 1%);
+			@include fill( $bg: $dark );
+
+			>thead>tr>th {
+				@include fill( $bg: $black-075 );
+				color: $light;
+			}
+		}
+
+		&.menu.secondary.pointing a.item:not(.active) {
+			color: rgba($light, .5);
+		}
+	}
+
+	.bg-light {
+		@include fill( $bg: lighten($dark, 1.25%) !important) ;
+	}
+	.btn-light {
+		border-color: lighten($dark, 1.25%);
+		color: $default;
+
+		@include hover-focus-active {
+			background-color: lighten($dark, 3%);
+			border-color: lighten($dark, 3.5%);
+		}
+	}
+
+	.text-dark,
+	.noti-info .text-darkgray {
+		color: $light !important;
+	}
+
+	.breadcrumb-item {
+		a:hover {
+			color: $default;
+		}
+		&.active {
+			color: $light-gray;
+		}
+	}
+
+	/* .dropdown-item {
+		@include hover-focus-active {
+			@include fill( $bg: $black-075 );
+		}
+	} */
+
+	.modal-content,
+	.k-calendar,
+	.k-popup,
+	.card {
+		border-color: darken($dark, 1%)
+	}
+	.card,
+	.k-grid,
+	.k-grid-content,
+	.k-window,
+	.k-content:not(.k-calendar-content),
+	.k-loading-color,
+	.k-state-default {
+		@include fill( $bg: $dark );
+	}
+	.k-grid-header,
+	.k-grouping-header,
+	.k-pager-wrap {
+		@include fill( $bg: $black-075 );
+	}
+	.k-grid {
+		.k-grid-header,
+		.k-grid-content-sticky,
+		.k-grouping-header,
+		th,td {
+			border-color: rgba($dark-gray, .5);
+		}
+		/* .k-grid-header {
+			th.k-grid-header-sticky {
+				@include fill( $bg: $black-075 );
+			}
+		} */
+		.k-pager-wrap {
+			color: rgba($light-gray, .5);
+			.k-numeric-wrap,
+			.k-dropdown-wrap {
+				border-color: rgba($dark-gray, .75) !important;
+				color: $light-gray;
+			}
+		}
+		table tr {
+			&:not(.k-detail-row):hover {
+				@include fill( $bg: $black-085 );
+			}
+		}
+	}
+	.k-grid-content {
+		overflow-x: auto;
+	}
+	.k-combobox,
+	.k-datepicker,
+	.k-timepicker,
+	.k-datetimepicker,
+	.k-dateinput,
+	.k-dropdown .k-dropdown-wrap,
+	.k-dropdowntree .k-dropdown-wrap {
+		.k-select {
+			color: rgba($white, .5);
+		}
+	}
+	.k-tabstrip-items-wrapper,
+	.border-bottom,
+	.border {
+		border-color: rgba($light, .1) !important;
+	}
+
+	.k-upload .k-dropzone .k-dropzone-hint,
+	.k-floating-label-container > .k-label,
+	.k-grid .k-grid-filter,
+	.k-grid-header .k-link:hover,
+	.k-grid-header .k-storted,
+	.k-column-list-item:hover,
+	.k-columnmenu-item:hover {
+		color: $light-gray;
+	}
+
+	.k-calendar {
+		.k-calendar-th,
+		.k-calendar-caption,
+		.k-meta-header,
+		.k-month-header,
+		.k-other-month {
+			color: rgba($light, .35);
+		}
+
+		.k-calendar-td {
+			&.k-state-hover,
+			&:hover {
+				.k-link {
+					color: $light;
+					@include fill( $bg: rgba($light, .05));
+				}
+			}
+		}
+
+		.k-state-focused {
+			.k-link {
+				color: $light;
+			}
+		}
+	}
+
+	.k-datepicker .k-picker-wrap,
+	.k-timepicker .k-picker-wrap,
+	.k-datetimepicker .k-picker-wrap,
+	.k-dateinput .k-dateinput-wrap,
+	.k-combobox .k-dropdown-wrap,
+	.k-dropdown .k-dropdown-wrap,
+	.form-select,
+	.k-input,
+	.k-picker,
+	.k-textbox,
+	/* .k-textbox:not(:focus):not(:hover), */
+	.k-radio:not(:checked):not(:indeterminate),
+	.k-checkbox:not(:checked):not(:indeterminate),
+	.k-numerictextbox .k-numeric-wrap {
+		border-color: lighten($dark-gray, 5%);
+		color: $light !important;
+	}
+	input,
+	select,
+	textarea,
+	.form-control {
+		&:focus {
+			&::placeholder {
+				color: rgba($light, .5);
+			}
+		}
+		&:-webkit-autofill {
+			-webkit-text-fill-color: $light;
+			&:focus {
+				-webkit-text-fill-color: $light;
+			}
+		}
+	}
+
+	select,
+	.form-select {
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23CECECE' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+
+		option {
+			@include fill( $bg: lighten($dark, 1.25%) !important);
+			color: $light !important;
+			&:checked {
+				background: $dark !important;
+			}
+		}
+	}
+
+	/* .modal-header,
+	.k-dialog-titlebar {
+		&:before {
+			@include fill( $bg: $black-25 );
+		}
+	} */
+	.page-title,
+	.modal-title {
+		color: $smokewhite;
+	}
+
+	.k-tabstrip-items-wrapper .k-item {
+		color: rgba($light, .5);
+	}
+
+	.k-list-optionlabel,
+	.k-list .k-item {
+		&:hover,
+		&.k-state-hover {
+			color: $light;
+			@include fill( $bg: rgba($light, .05));
+		}
+		&.k-state-selected {
+			color: $light;
+			@include fill( $bg: rgba($black, .1));
+		}
+	}
+
+	.sticky-profile-img {
+		[class*='avatar-'] {
+			background-color: $dark-gray !important;
+			border-color: $default !important;
+			color: $smoke !important;
+		}
+		.custom-upload .k-upload-button {
+			background-color: $default !important;
+		}
+	}
+
+	.btn-close {
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e")
+	}
+
+	/**** Editor ****/
+	.tox {
+		color: $light;
+		&.tox-tinymce {
+			border-color: lighten($dark-gray, 5%);
+		}
+		.tox-toolbar-overlord,
+		.tox-toolbar,
+		.tox-toolbar__overflow,
+		.tox-toolbar__primary {
+			background-image: none;
+			@include fill( $bg: $black-025 );
+			border-bottom: 1px solid rgba($dark-gray, .5);
+		}
+		&:not([dir=rtl]) {
+			.tox-toolbar__group:not(:last-of-type) {
+				border-color: rgba($dark-gray, .5)
+			}
+		}
+		.tox-edit-area__iframe {
+			@include fill( $bg: rgba($light, .35) );
+		}
+		/* .mce-content-body {
+			color: $light;
+		} */
+		.tox-tbtn--disabled,
+		.tox-tbtn--disabled:hover,
+		.tox-tbtn:disabled,
+		.tox-tbtn:disabled:hover {
+			svg {
+				fill: rgba($light, .5)
+			}
+		}
+		.tox-tbtn {
+			color: $light-gray;
+			@include hover-focus {
+				@include fill( $bg: $dark);
+				color: $light;
+			}
+			svg {
+				fill: rgba($light, .5)
+			}
+		}
+		.tox-split-button {
+			&:hover {
+				box-shadow: 0 0 0 1px $dark inset;
+			}
+		}
+		.tox-split-button:focus,
+		.tox-tbtn--enabled,
+		.tox-tbtn--enabled:hover,
+		.tox-menu {
+			@include fill( $bg: $black-15 );
+		}
+		.tox-menu {
+			border-color: darken($dark, 1%)
+		}
+
+		.tox-collection--toolbar {
+			.tox-collection__item {
+				color: rgba($light, .5);
+			}
+			.tox-collection__item--enabled {
+				@include fill( $bg: $black-15 );
+			}
+			.tox-collection__item--active:not(.tox-collection__item--state-disabled) {
+				color: $light;
+				@include fill( $bg: lighten($dark, 1.25%));
+			}
+		}
+		.tox-collection__item {
+			color: rgba($light, .5);
+			&.tox-collection__item--enabled {
+				color: $dark
+			}
+		}
+	}
+
+}

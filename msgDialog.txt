@@ -1,0 +1,22 @@
+showConfirmation(dataItem) {
+	const Name = dataItem.Division;
+	const DivisionID = dataItem.DivisionID;
+	this.modalDialogService.confirm('', Name + ' will be permanently deleted.', 'Yes, delete it.', 'Cancel', 'text-danger', 'icon-trash', 'Delete Division?')
+	.then((confirmed) => {
+		if (confirmed == true) {
+			this.deleteDivision(DivisionID);            
+		}
+	})
+	.catch(() => { });
+}
+
+showMessage(message) {
+	if(message.indexOf('Successfully') >= 0){
+		this.modalDialogService.confirm('', 'Your division has been ' + message, 'Ok', '', 'text-success', 'icon-check', 'Well Done!');
+		this.showNew = false;
+		this.getAllDivision();
+	}
+	else {
+		this.modalDialogService.confirm('', message, 'Ok', '', 'text-warning', 'icon-warning', 'Sorry!');
+	}
+}

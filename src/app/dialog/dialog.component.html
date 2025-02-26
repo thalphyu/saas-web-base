@@ -1,0 +1,23 @@
+<div class="modal-header" *ngIf="title !== ''" kendoRippleContainer>
+	<h5 class="modal-title">{{ title }}</h5>
+	<button type="button" class="btn-close" *ngIf="!Isroutebtnclick" class="btn-close" data-bs-dismiss="modal" (click)="dismiss()" aria-label="Close"></button>
+	<button type="button" class="btn-close" *ngIf="Isroutebtnclick" (click)="dismissRoute()" aria-label="Close"></button>
+	<!-- <div class="k-window-actions k-dialog-actions">
+		<a aria-label="Close" kendoButton class="k-button k-bare k-button-icon k-window-action k-dialog-action k-dialog-close" href="javascript:void(0)" role="button" (click)="dismiss()"><span class="k-icon k-i-x"></span></a>
+	</div> -->
+</div>
+<div class="modal-body" [ngClass]="{'pt-4 pb-2 text-center': title === ''}">
+	<svg class="icon i-xl {{iColor}}" *ngIf="svgIcon !== ''">
+		<use attr.xlink:href="assets/icons/symbol-defs.svg#{{svgIcon}}"></use>
+	</svg>
+	<h4 class="my-3" *ngIf="bodyTitle !== '' || title === ''">{{ bodyTitle }}</h4>
+	<div [innerHtml]="message"></div>
+	<!-- {{message}} -->
+</div>
+<div class="modal-footer" [ngClass]="{'justify-content-center': title === ''}" kendoRippleContainer>
+	<button type="button" class="btn btn-light" (click)="decline()" *ngIf="btnCancelText !== ''">{{ btnCancelText }}</button>
+	<!-- <button type="button" class="btn btn-primary" (click)="accept()" *ngIf="btnOkText != '' || !Isroutebtnclick">{{ btnOkText }}</button>
+	<button type="button" class="btn btn-primary" (click)="acceptRoute()" *ngIf="btnOkText != '' || Isroutebtnclick">{{ btnOkText }}</button> -->
+
+	<button type="button" class="btn btn-primary" (click)="!Isroutebtnclick ? accept() : acceptRoute()" *ngIf="btnOkText !== ''">{{ btnOkText }}</button>
+</div>

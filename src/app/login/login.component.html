@@ -1,0 +1,259 @@
+<div class="login-page d-flex flex-column justify-content-between vw-100" kendoRippleContainer>
+	<div class="bg-white text-center shadow-sm" *ngIf="logo_default">
+		<img src="{{customerlogo}}" class="my-3 cus-logo" />
+	</div>
+	
+	<div class="row g-0 mx-3 my-auto justify-content-center">
+		<div class="col-sm-8 col-md-6 col-lg-5 col-xl-4">
+			<div class="card p-5 rounded-3 shadow mb-2 mt-4">
+				<h1 class="d-none">Global TA <small>Cloud Time Attendance System</small></h1>
+				<form role="form" name="loginform" class="form-validation text-center px-lg-3 px-md-2"
+					*ngIf="isValid && !forgotpassword">
+					<img [src]="globals.storedSkin === 'dark' ? 'assets/images/global-ta-hr-cloud-light.svg' : 'assets/images/global-ta-hr-cloud.svg'" width="215px" class="mb-4 pb-2 img-fluid" />
+					<div class="mb-3" *ngIf="signInType === 1 || signInType === 3 ">
+						<kendo-floatinglabel text="ID NUMBER">
+							<input type="text" kendoTextBox [(ngModel)]="loginData.idnumber" name="idnumber"
+								id="idnumber" class="form-control" required />
+						</kendo-floatinglabel>
+						<kendo-formerror *ngIf="loginData.idnumber!==undefined && loginData.idnumber===''">
+							ID Number is required
+						</kendo-formerror>
+					</div>
+					<div class="mb-3" *ngIf="(signInType === 0 || signInType === 1) && signInType !== 3 && signInType !== 2">
+						<kendo-floatinglabel text="USER NAME">
+							<input type="text" kendoTextBox [(ngModel)]="loginData.username" name="username"
+								id="username" class="form-control" required />
+						</kendo-floatinglabel>
+						<kendo-formerror *ngIf="loginData.username!==undefined && loginData.username===''">
+							User Name is required
+						</kendo-formerror>
+					</div>
+					<div class="mb-3" *ngIf="signInType === 2 ">
+						<kendo-floatinglabel text="Email">
+							<input type="email" kendoTextBox [(ngModel)]="loginData.loginemail" name="loginemail"
+								id="loginemail" class="form-control" required />
+						</kendo-floatinglabel>
+						<kendo-formerror *ngIf="loginData.loginemail!==undefined && loginData.loginemail==='' ">
+							Email is required
+						</kendo-formerror>
+					</div>
+					<div class="mb-3 position-relative">
+						<kendo-floatinglabel text="PASSWORD">
+							<input type="{{pwdShow ? 'text':'password'}}" kendoTextBox [(ngModel)]="loginData.password" name="password" id="password" class="form-control" required />
+						</kendo-floatinglabel>
+						<svg toggle="#password-field" (click)="showPassword()" class="icon align-middle text-secondary toggle-pwd">
+							<use attr.xlink:href="assets/icons/symbol-defs.svg#{{pwdShow ? 'icon-eye':'icon-eye-close'}}">
+							</use>
+						</svg>
+						<kendo-formerror *ngIf="loginData.password!==undefined && loginData.password===''">
+							Password is required
+						</kendo-formerror>
+					</div>
+					<div class="row gx-0 gy-2 fs-6 mb-4">
+						<div class="col-auto text-start">
+							<input type="checkbox" id="remember" name="remember" [(ngModel)]="loginData.remember"
+								(click)="checkremember($event.target.checked)" kendoCheckBox />
+							<label class="k-checkbox-label text-muted" for="remember">Remember me</label>
+						</div>
+						<div class="col text-nowrap text-end">
+							<a role="button" (click)="forgetPassword()"
+								class="link-info text-decoration-none">Forgot password?</a>
+						</div>
+					</div>
+
+					<div class="d-grid mb-3">
+						<button autofocus type="submit"
+							class="btn btn-primary btn-gradient rounded-pill btn-lg fw-semibold fs-5 k-button"
+							(click)="onLoggedin()">
+							LOG IN
+						</button>
+					</div>
+					<div [hidden]="errors === '' && !forgotpassword" class="text-danger fs-6">
+						{{errors}}
+					</div>
+				</form>
+
+				<form #confirmEmailForm="ngForm" role="form" name="ConfirmEmail" class="form-validation text-center px-lg-3 px-md-2" *ngIf="forgotpassword"><!-- [formGroup]="ConfirmEmail"  -->
+					<!-- <div class="mb-3">
+						<kendo-floatinglabel text="EMAIL">
+							<input kendoTextBox [(ngModel)]="loginData.email" name="email" id="email" class="form-control" required />
+						</kendo-floatinglabel>
+						<kendo-formerror>
+							Email is required
+						</kendo-formerror>
+					</div> -->
+
+					<!-- <div class="d-grid mb-3">
+						<button autofocus type="submit" class="btn btn-primary rounded-pill btn-lg fw-semibold fs-5"
+							(click)="confirmEmail()" [disabled]="_disableLoginBtn">
+							SEND
+						</button>
+					</div> -->
+
+					<ng-container *ngIf="checkEmailandSMS">
+						<svg-icon iClass="text-muted avatar-def mb-3" svgicon="icon-forgot-pwd"></svg-icon>
+
+						<h4 class="fw-bold text-uppercase">Forgot your password?</h4>
+						<p class="text-secondary mb-4">Please enter your {{ (emailResponse === true && smsResponse === false) ? 'email address' : (smsResponse === true && emailResponse === false) ? 'phone number' : 'email address or phone number' }} to receive OTP (one-time password)!</p>
+
+						<div class="mb-3" *ngIf="emailResponse && !smsResponse">
+							<kendo-floatinglabel text="EMAIL">
+								<input type="email" kendoTextBox name="Email" id="Email" [(ngModel)]="loginData.Email" class="form-control" #Email="ngModel" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required />
+							</kendo-floatinglabel>
+							<kendo-formerror *ngIf="Email.touched && Email.errors?.required">
+								Email is required.
+							</kendo-formerror>
+							<kendo-formerror *ngIf="Email.touched && Email.errors?.pattern">
+								This is not a valid Email !
+							</kendo-formerror>
+						</div>
+
+						<div class="mb-3" *ngIf="smsResponse && !emailResponse">
+							<kendo-floatinglabel text="PHONE">
+								<input type="tel" kendoTextBox name="Phone" id="Phone" [(ngModel)]="loginData.Phone" class="form-control" #Phone="ngModel" pattern="[0-9၀-၉]+" maxlength="11" required />
+							</kendo-floatinglabel>
+							<kendo-formerror *ngIf="loginData.Phone!==undefined && loginData.Phone===''">
+								Phone is required.
+							</kendo-formerror>
+							<kendo-formerror *ngIf="Phone.touched && Phone.errors?.pattern">
+								This is not a valid Phone !
+							</kendo-formerror>
+						</div>
+
+						<div class="mb-3" *ngIf="emailResponse && smsResponse">
+							<kendo-floatinglabel text="EMAIL OR PHONE">
+								<input type="text" kendoTextBox name="EP_value" id="EP_value" [(ngModel)]="loginData.EP_value" class="form-control" required />
+							</kendo-floatinglabel>
+							<kendo-formerror *ngIf="loginData.EP_value!==undefined && loginData.EP_value===''">
+								Email or Phone is required.
+							</kendo-formerror>
+						</div>
+
+						<div class="d-grid gap-3 mb-3"> 
+							<button autofocus type="submit" class="btn btn-primary btn-gradient rounded-pill btn-lg fw-semibold fs-5 k-button" (click)="generateotp()" [disabled]="confirmEmailForm.invalid">
+								Request OTP
+							</button>
+
+							<span>Back to <a role="button" (click)="backToLogin()" class="link-info text-decoration-none">Login</a></span>
+						</div>
+					</ng-container>
+
+					<ng-container *ngIf="renewpassword">
+						<svg-icon iClass="text-muted avatar-def mb-3" svgicon="icon-password"></svg-icon>
+
+						<h4 class="fw-bold text-uppercase">Reset Password</h4>
+						<p class="text-secondary mb-4">Please enter OTP code that you received on your email or phone and set the new password for your account.</p>
+
+						<div class="row gx-3 mb-3">
+							<div class="col-2">
+								<kendo-floatinglabel text="">
+									<input type="text" kendoTextBox name="prefix_char" class="form-control text-center" [(ngModel)]="loginData.prefix_char" readonly />
+								</kendo-floatinglabel>
+							</div>
+							
+							<div class="col-10 position-relative">
+								<kendo-floatinglabel text="ENTER OTP CODE">
+									<input kendoTextBox name="otpcode" id="otpcode" [(ngModel)]="loginData.otpcode"
+										class="form-control" #otpcode="ngModel" required />
+								</kendo-floatinglabel>
+								<svg-icon iClass="align-middle text-secondary toggle-pwd me-2" role="button" svgicon="icon-open-window" (click)="retryOTPCode()"></svg-icon>
+							</div>
+							<div class="col-12">
+								<kendo-formerror *ngIf="otpcode.touched && otpcode.errors?.required">
+									OTP code is required.
+								</kendo-formerror>
+							</div>
+						</div>
+						<div class="mb-3 position-relative">
+							<kendo-floatinglabel text="NEW PASSWORD">
+								<input type="{{pwdShow ? 'text':'password'}}" kendoTextBox name="new_password"
+									class="form-control" [(ngModel)]="loginData.new_password" #new_password="ngModel" autocomplete="new-password" required />
+							</kendo-floatinglabel>
+							<kendo-formerror *ngIf="new_password.touched && new_password.errors?.required">
+								New Password is required.
+							</kendo-formerror>
+							<kendo-formerror
+								*ngIf="(this.pwdPolicy!=='' && new_password.errors?.validatePassword===false) && ( new_password.touched || new_password.touched.dirty)">
+								Start with uppercase letter,follow lowercase letter , at least one numeric character,at
+								least one
+								special character, Minimum password
+								length is 8..!
+							</kendo-formerror>
+							<svg-icon iClass="align-middle text-secondary toggle-pwd" svgicon="{{pwdShow ? 'icon-eye':'icon-eye-close'}}" (click)="showPassword()"></svg-icon>
+						</div>
+
+						<div class="mb-4">
+							<kendo-floatinglabel text="CONFIRM PASSWORD">
+								<input type="{{pwdShow ? 'text':'password'}}" kendoTextBox name="comfirm_password" class="form-control" [(ngModel)]="loginData.comfirm_password" #comfirm_password="ngModel" required>
+							</kendo-floatinglabel>
+							<kendo-formerror *ngIf="comfirm_password.touched && comfirm_password.errors?.required">
+								Confirm Password is required.
+							</kendo-formerror>
+							<kendo-formerror
+								*ngIf="flag || comfirm_password.errors?.passwordNotEquivalent===true && ( comfirm_password.touched || comfirm_password.dirty)">
+								Password does not match.
+							</kendo-formerror>
+						</div>
+
+						<div class="d-grid gap-3 mb-3">
+							<button autofocus type="submit" class="btn btn-primary btn-gradient rounded-pill btn-lg fw-semibold fs-5 k-button" (click)="ComfirmOTPandNewPassword()" [disabled]="confirmEmailForm.invalid">
+								CONFIRM
+							</button>
+
+							<a role="button" (click)="failandRetryOTP()" class="link-info text-decoration-none fs-6" *ngIf="failotpretrybutton">Resend OTP</a>
+						</div>
+					</ng-container>
+
+					<ng-container *ngIf="checkuniquekey">
+						<svg-icon iClass="text-muted avatar-def mb-3" svgicon="icon-password"></svg-icon>
+
+						<h4 class="fw-bold text-uppercase">Reset Password</h4>
+						<p class="text-secondary mb-4">Please enter OTP code that you received on your email or phone.</p>
+
+						<div class="row gx-3 mb-3">
+							<div class="col-2">
+								<kendo-floatinglabel text="">
+									<input type="text" kendoTextBox name="prefix_char" class="form-control text-center" [(ngModel)]="loginData.prefix_char" readonly />
+								</kendo-floatinglabel>
+							</div>
+							<div class="col-10">
+								<kendo-floatinglabel text="ENTER OTP CODE">
+									<input type="text" kendoTextBox name="twofactory" id="twofactory"
+										[(ngModel)]="loginData.twofactoryOTP" class="form-control" #twofactoryOTP="ngModel" required />
+								</kendo-floatinglabel>
+							</div>
+							<div class="col-12">
+								<kendo-formerror *ngIf="twofactoryOTP.touched && twofactoryOTP.errors?.required">
+									OTP code is required.
+								</kendo-formerror>
+							</div>
+						</div>
+
+						<div class="d-grid gap-3 mb-3">
+							<button autofocus type="submit"
+								class="btn btn-primary btn-gradient rounded-pill btn-lg fw-semibold fs-5 k-button"
+								(click)="checktwoFactoryOTP()" [disabled]="confirmEmailForm.invalid">
+								LOG IN
+							</button>
+
+							<a role="button" (click)="ResendtwoFactory()" class="link-info text-decoration-none fs-6">Resend OTP</a>
+						</div>
+					</ng-container>
+
+					<div [hidden]="errors === '' && forgotpassword" class="text-danger fs-6">
+						{{errors}}
+					</div>
+				</form>
+			</div>
+
+			<div class="fs-6 my-3 text-white-50 text-center">
+				<div class="d-flex justify-content-center mb-2">
+					<a routerLink="terms-and-condition" class="link-success mx-2">Terms & Condition</a>
+					<a routerLink="privacy-policy" class="link-success mx-2">Privacy Policy</a>
+				</div>
+				Global TA Cloud - v2.0.0
+			</div>
+		</div>
+	</div>
+</div>
+<div kendoDialogContainer></div>

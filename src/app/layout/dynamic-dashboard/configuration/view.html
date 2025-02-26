@@ -1,0 +1,43 @@
+<div #configuration class="modal fade" id="configuration" tabindex="-1">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">{{modalheader}}</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body py-0">
+				<div class="ui secondary pointing menu board border-bottom">
+					<a *ngFor="let tab of tabsModel; let i = index" class="item"
+						[ngClass]="{'active': tab.displayName === currentTab }"
+						attr.data-tab="{{tab.groupId}}" (click)="setCurrentTab(i)">{{tab.displayName}}</a>
+				</div>
+				
+				<div *ngFor="let tab of tabsModel; let i = index"
+					class="ui tab" [ngClass]="{'active': tab.displayName === currentTab }"
+					attr.data-tab="{{tab.groupId}}" [@contentSwitch]="tab.displayName === currentTab ? 'active':'inactive'">
+
+					<div *ngIf="tab.groupId === 'boards'">
+						<app-boards-config-tab (dashboardCreateEvent)="createBoard($event)"
+							(dashboardEditEvent)="editBoard($event)"
+							(dashboardDeleteEvent)="deleteBoard($event)"
+							[dashboardList]="dashboardList">
+						</app-boards-config-tab>
+					</div>
+					<!-- <div *ngIf="tab.groupId == 'endpoint'">
+						<app-endpoint-config-tab></app-endpoint-config-tab>
+					</div>
+					<div *ngIf="tab.groupId == 'ai'">
+						<app-ai-config-tab></app-ai-config-tab>
+					</div> -->
+
+					<div *ngIf="tab.groupId === 'options'" class="text-dark">
+						<app-options-config-tab></app-options-config-tab>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="btn btn-secondary" data-bs-dismiss="modal">Close</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,121 @@
+@import "c-variable";
+
+.progress {
+	height: 6px
+}
+.holiday-icon {
+	width: 128px;
+	height: 128px;
+	bottom: .75rem;
+	right: 2rem;
+	opacity: .1
+}
+
+[data-toggle=buttons] {
+	>.btn input[type=checkbox],
+	>.btn input[type=radio],
+	>.btn-group>.btn input[type=checkbox],
+	>.btn-group>.btn input[type=radio] {
+		position: absolute;
+		clip: rect(0,0,0,0);
+		pointer-events: none;
+	}
+}
+.btn span.fa-check ,
+.btn .icon-check {
+	opacity: 0;
+	display: none
+}
+.btn .icon-checkbox {
+	opacity: 1;
+	display: inline-block
+}
+
+.btn input:checked ~ span.fa-check ,
+.btn input:checked ~ .icon-check {
+	opacity: 1;
+	display: inline-block
+}
+.btn input:checked ~ .icon-checkbox {
+	opacity: 0;
+	display: none
+}
+
+.holiday:hover {
+	.avatar-sm {
+		transition: .1s all ease-out;
+		background: $light;
+	}
+}
+
+.gadget {
+	margin-bottom: $semantic-card-padding-y !important;
+	min-height: 220px !important;
+
+	.k-grid .k-grid-pager {
+		padding-left: 0;
+		padding-right: 0
+	}
+}
+.gadget-titlebar {
+	 position: relative;
+	 display: flex !important;
+	 cursor: move;
+	 min-height: 30px;
+    box-sizing: content-box;
+	 /* &::before {
+		  content: "";
+		  height: 38px;
+		  width: 5px;
+		  margin-right: 30px;
+		  background: $primary;
+		  position: absolute;
+		  margin-top: -1px;
+		  left: 0;
+	 } */
+}
+
+.ui.form .field > label {
+	 font-family: 'Helvetica Neue', Helvetica, 'Open Sans', Arial, 'Lucida Grande', sans-serif;
+	 font-size: 1.3em !important;
+	 font-weight: 300;
+	 color: grey;
+}
+
+.ct-title {
+	 color: #585858 !important;
+	 font-size: 1.5em !important;
+	 font-family: 'Helvetica Neue', Helvetica, 'Open Sans', Arial, 'Lucida Grande', sans-serif;
+	 text-align: left !important;
+	 font-weight: 500 !important;
+}
+
+.ui.top.left.floated.label, .ui.top.attached.label {
+	 background-color: white;
+}
+
+.spacer {
+	 height: 2em;
+}
+
+.ui.items > .item > .content > .description {
+	 color: darkgray !important;
+}
+
+.suggestions > li {
+
+	 background-color: white !important;
+
+}
+
+.example-full-width {
+	 width: 100%;
+}
+
+.ui.vertical.segment
+{
+	 border:1px;
+	 border-left-width:3px !important;
+	 border-left-color:green !important;
+}
+.attendance_color {color : #78d237 }

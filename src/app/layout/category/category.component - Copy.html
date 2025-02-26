@@ -1,0 +1,341 @@
+<!--<div class="d-flex flex-column content-box">
+	<div class="d-sm-flex align-items-end header-panel mb-2 mt-1">
+		<app-page-header [mainHeading]="'Category'"
+			[heading]="showNew != true ? 'Category': this.compbutton == false ? ' Add Department': 'Edit Department'"
+			[subheading]="'Master'" [icon]="''"> </app-page-header>
+
+		<div class="title-action-panel ml-auto float-right d-inline-flex">
+			<button [disabled]="this.syncflag" type="submit" (click)="newCategoryType()" *ngxPermissionsOnly="'new'"
+				class="btn btn-primary mr-2 ml-0" placement="bottom-right" ngbTooltip="Add New">
+				<svg class="icon i-sm">
+					<use xlink:href="assets/icons/symbol-defs.svg#icon-plus"></use>
+				</svg>
+			</button>
+			<button class="btn btn-primary mr-2 ml-0" (click)="openImportExcel()" placement="bottom-right"
+				ngbTooltip="Import Excel">
+				<svg class="icon i-sm">
+					<use xlink:href="assets/icons/symbol-defs.svg#icon-import-excel"></use>
+				</svg>
+			</button>
+			<button class="btn btn-primary mr-2 ml-0" (click)="createExcel()" placement="bottom-right"
+				ngbTooltip="Download Template">
+				<svg class="icon i-sm">
+					<use xlink:href="assets/icons/symbol-defs.svg#icon-download-template"></use>
+				</svg>
+			</button>
+			<button (click)="sidePanelToggle($event)" class="btn btn-primary mr-2 ml-0" placement="bottom-right"
+				ngbTooltip="Organization Structure">
+				<svg class="icon i-sm">
+					<use xlink:href="assets/icons/symbol-defs.svg#icon-tree-view"></use>
+				</svg>
+			</button>
+		</div>
+	</div>
+
+	<div class="card rounded-2x border-0 mb-4 flex-grow-1 min-h" *ngIf="showNew != true">
+		<div class="card-header border-0 bg-transparent pt-3 pb-0 card-title position-relative">
+			<div class="d-flex justify-content-end">
+				<form [formGroup]="checkForm">
+					<div class="form-group mb-2 pt-1">
+						<input type="checkbox" id="includeinactive" name="checkIncludeInactive"
+							(click)="checkIncludeInactive($event)" [checked]="inactivemarked" kendoCheckBox />
+						<label class="k-checkbox-label" for="includeinactive">Include Inactive</label>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div class="card-body px-1 pt-2 pb-3 d-flex flex-column">
+			<kendo-grid gridHeight #height="heightDirective" [pageSize]="gridState.take" [skip]="gridState.skip" [style.height.px]="[height.kGridHeight]" [style.minHeight.px]="300" [pageable]="{
+				buttonCount: 5,
+				info: true,
+				type: 'input',
+				pageSizes: true,
+				previousNext: true,
+				responsive: true
+				}" [sort]="gridState.sort" [filter]="gridState.filter" [kendoGridBinding]="GridData" [sortable]="true"
+				[scrollable]="true" [resizable]="true" [filter]="filter" [filterable]="{multi:true,search:true}"
+				[columnMenu]="{
+					filter: {
+						expanded: true
+					},
+					sort: false,
+					columnChooser: false
+				}" class="k-grid-bordered" [loading]="loading">
+		
+				<kendo-grid-column field="ShortCode" title="Short Code" width="80">
+					<ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter"
+					let-filterService="filterService">
+					<app-multicheck-filter [isPrimitive]="true" [field]="column.field"
+						[filterService]="filterService" [currentFilter]="filter"
+						[data]="distinctPrimitive(column.field)"></app-multicheck-filter>
+				</ng-template>
+				</kendo-grid-column>
+				<kendo-grid-column field="EnglishDescription" title="Category Name" width="200" [sortable]="false">
+					<ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter"
+					let-filterService="filterService">
+					<app-multicheck-filter [isPrimitive]="true" [field]="column.field"
+						[filterService]="filterService" [currentFilter]="filter"
+						[data]="distinctPrimitive(column.field)"></app-multicheck-filter>
+				</ng-template>
+				</kendo-grid-column>
+				<kendo-grid-column field="ParentCategory" title="Parent Category Name" width="200" [sortable]="false">
+					<ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter"
+					let-filterService="filterService">
+					<app-multicheck-filter [isPrimitive]="true" [field]="column.field"
+						[filterService]="filterService" [currentFilter]="filter"
+						[data]="distinctPrimitive(column.field)"></app-multicheck-filter>
+				</ng-template>
+				</kendo-grid-column>
+				<kendo-grid-column field="InactiveCat" title="Status" width="150" [sortable]="false" [filterable]="false">
+					<ng-template kendoGridCellTemplate let-dataItem>
+						<div class="d-flex gap">
+							<span class="badge badge-lg" [ngClass]="{'badge-light-danger' : dataItem.InactiveCat , 'badge-light-success' : !dataItem.InactiveCat}">
+								{{dataItem.InactiveCat ? 'Inactive' : 'Active'}}
+							</span>
+							
+						</div>
+					</ng-template>
+				</kendo-grid-column>
+				<kendo-grid-column field="Action" title="Action" width="100" [sortable]="false" [filterable]="false" class="text-nowrap" [minResizableWidth]="50">
+					<ng-template kendoGridCellTemplate let-dataItem>
+						<a class="btn btn-link btn-sm text-primary" (click)="onItemClick('Edit',dataItem)" title="Edit">
+							<svg class="icon i-sm">
+								<use xlink:href="assets/icons/symbol-defs.svg#icon-edit"></use>
+							</svg>
+						</a>
+
+						<button class="btn btn-link btn-sm text-danger" (click)="onItemClick('Delete',dataItem)"
+							title="Delete" [disabled]="this.syncflag">
+							<svg class="icon i-sm">
+								<use xlink:href="assets/icons/symbol-defs.svg#icon-trash"></use>
+							</svg>
+						</button>
+					</ng-template>
+				</kendo-grid-column>
+			</kendo-grid>
+		</div>-->
+<!--</div>
+
+	<form name="editForm" [formGroup]="editForm" class="card rounded-2x border-0 mb-4" *ngIf="showNew == true">
+		<div class="card-body">
+			<div class="mt-3 px-2">
+				<div class="row">
+					<div class="col-xl-3 col-md-4 col-sm-6">
+						<div class="form-group">
+							<kendo-floatinglabel text="Category Code">
+								<input type="text" kendoTextBox name="CategoryCode" class="form-control"
+									formControlName="CategoryCode" />
+							</kendo-floatinglabel>
+						</div>
+					</div>
+				
+				</div>
+				<div class="row">
+					<div class="col-xl-6 col-md-8">
+						<div class="form-group">
+							<kendo-floatinglabel text="Category Name" class="required">
+								<input type="text" kendoTextBox name="CategoryName" class="form-control"
+									formControlName="CategoryName" required />
+							</kendo-floatinglabel>
+							<label class="k-tooltip k-tooltip-validation errormessage"
+								[hidden]=" editForm.controls.CategoryName.valid || editForm.controls.CategoryName.pristine">
+								Category Name is required.
+							</label>
+						</div>
+					
+						<div class="form-group">
+							<!--<kendo-floatinglabel text="Parent Category" class="required">
+								<select class="custom-select form-control" kendoSelectBox
+									name="ParentID" formControlName="ParentID">
+									<option value="0">Select Parent Category...</option>
+									<option *ngFor="let allcategoryname of allcategoryname" [ngValue]="allcategoryname.CategoryID">
+										{{allcategoryname.CategoryName}}</option>
+								</select>
+							</kendo-floatinglabel>-->
+<!--	<kendo-floatinglabel text="Parent Category" class="required">
+							<kendo-dropdowntree name="ParentID" formControlName="ParentID" [kendoDropDownTreeHierarchyBinding]="data"
+									  childrenField="subcategory"
+									  textField="CategoryName"
+									  valueField="CategoryID"
+										[filterable]="true"
+									 >
+									 </kendo-dropdowntree>
+						</kendo-floatinglabel>
+							<label class="k-tooltip k-tooltip-validation errormessage"
+								[hidden]="editForm.controls.CategoryName.valid || editForm.controls.CategoryName.pristine">
+								Parent Category is required.
+							</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<input type="checkbox" id="inactive" name="Inactive" formControlName="Inactive"
+						kendoCheckBox />
+					<label class="k-checkbox-label" for="inactive">Inactive</label>
+				</div>
+			</div>
+		</div>
+		<div class="card-footer bg-transparent border-0">
+			<div class="mb-2" *ngIf="!this.syncflag">
+				<button type="button" (click)="cancel()" class="btn btn-light rounded-pill px-4">Cancel</button>
+				<!-- <button type="button" class="btn btn-outline-secondary rounded-pill px-4" (click)="cancel()">Cancel</button> -->
+<!--	<button type="submit" [disabled]="!editForm.valid" *ngIf="editForm.value.saveBtn"
+					class="btn btn-success rounded-pill px-4" (click)="savecategory()">Save</button>
+				<ng-container *ngxPermissionsOnly="'edit'">
+					<button type="submit" [disabled]="!editForm.valid" *ngIf="editForm.value.updateBtn"
+						class="btn btn-success rounded-pill px-4" (click)="UpdateCategory()">Update</button>
+				</ng-container>
+				<ng-container *ngxPermissionsOnly="'delete'">
+					<button [disabled]="!editForm.valid" class="btn btn-danger rounded-pill px-4"
+						*ngIf="editForm.value.updateBtn" (click)="showConfirmation(editForm.value)">Delete</button>
+				</ng-container>
+			</div>
+			<div class="mb-2" *ngIf="this.syncflag">
+				<button type="button" (click)="cancel()" class="btn btn-light rounded-pill px-4">Cancel</button>
+				<button type="submit" [disabled]="this.syncflag" *ngIf="editForm.value.saveBtn"
+					class="btn btn-success rounded-pill px-4" (click)="savecategory()">Save</button>
+				<ng-container *ngxPermissionsOnly="'edit'">
+					<button type="submit" *ngIf="editForm.value.updateBtn"
+						class="btn btn-success rounded-pill px-4" (click)="UpdateCategory()">Update</button>
+				</ng-container>
+				<ng-container *ngxPermissionsOnly="'delete'">
+					<button [disabled]="this.syncflag" class="btn btn-danger rounded-pill px-4"
+						*ngIf="editForm.value.updateBtn" (click)="showConfirmation(editForm.value)">Delete</button>
+				</ng-container>
+			</div>
+		</div>
+	</form>
+
+	
+	
+</div>
+<kendo-dialog title="" *ngIf="isImportExcel" (close)="closeImportExcel()" [minWidth]="250" [width]="850" 
+	class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md my-2"><strong>Import</strong> From Excel</h3>
+	</kendo-dialog-titlebar>
+	<app-department-import></app-department-import>
+	<kendo-dialog-actions class="px-4 pb-3" [layout]="actionsLayout">
+	</kendo-dialog-actions>
+</kendo-dialog>
+<div kendoDialogContainer></div> -->
+
+<div class="d-flex header-panel">
+	<app-page-header [mainHeading]="'Category'"
+		[heading]="!showNew ? 'Category' : !this.compbutton ? 'Add New Category' : 'Edit Category'"
+		[subheading]="'Master'" [icon]="''"></app-page-header>
+
+	<div class="title-action-panel ms-auto float-end d-inline-flex gap-2 align-items-center">
+		<action-btn textTooltip="Add New" btnSvgicon="icon-plus" (onClick)="newCategoryType()"></action-btn>
+		<action-btn textTooltip="Edit" btnSvgicon="icon-pencil" [hidden]="!this.syncflag" (onClick)="ViewClick()"></action-btn>
+	</div>
+</div>
+
+<div class="card rounded-3" *ngIf="true">
+	<div class="card-body">
+		<div class="row">
+			<div class="col-sm-6 col-xl-4">
+				<kendo-textbox #customInput
+					(valueChange)="filterTerm = $event "
+					[clearButton]="true"
+					placeholder="Filter...">
+					<ng-template kendoTextBoxPrefixTemplate>
+						<span class="k-input-icon k-icon k-i-search"></span>
+					</ng-template>
+				</kendo-textbox>
+
+				<kendo-treeview kendoTreeViewHierarchyBinding kendoTreeViewExpandable
+					[expandOnFilter]="filterExpandSettings" [nodes]="data" textField="CategoryName"
+					isexpand="always"
+					[children]="children" [hasChildren]="hasChildren"
+					[filter]="filterTerm"
+					childrenField="subcategory"
+					parentIdField="ParentID"
+					idField="CategoryID"
+					(selectionChange)="handleSelection($event,'Edit')">
+				</kendo-treeview>
+			</div>
+		</div>
+	</div>
+</div>
+
+<kendo-dialog *ngIf="showNew" autoFocusedElement="#username" title="New Category" (close)="close('cancel')" [minWidth]="250" [width]="500">
+
+	<form name="editForm" [formGroup]="editForm" class="card rounded-2x border-0 mb-4" *ngIf="showNew == true">
+		<div class="card-body">
+			<div class="mt-3 px-2">
+				<div class="row">
+					<div class="col-xl-12">
+						<div class="form-group">
+							<kendo-floatinglabel text="Category Code">
+								<input type="text" kendoTextBox name="CategoryCode" class="form-control"
+									formControlName="CategoryCode" />
+							</kendo-floatinglabel>
+						</div>
+					</div>
+
+				</div>
+				<div class="row">
+					<div class="col-xl-12">
+						<div class="form-group">
+							<kendo-floatinglabel text="Category Name" class="required">
+								<input type="text" kendoTextBox name="CategoryName" class="form-control"
+									formControlName="CategoryName" required />
+							</kendo-floatinglabel>
+							<label class="k-tooltip k-tooltip-validation errormessage"
+								[hidden]=" editForm.controls.CategoryName.valid || editForm.controls.CategoryName.pristine">
+								Category Name is required.
+							</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-12 col-md-4">
+							<div class="form-group">
+
+								<kendo-floatinglabel text="Parent Category" class="required">
+									<kendo-dropdowntree     [kendoDropDownTreeHierarchyBinding]="dataItem"
+										 textField="CategoryName"
+										valueField="CategoryID" 
+										[value]="dataItemvalue"
+										(valueChange)="valueChange($event)"
+										>
+										
+									</kendo-dropdowntree>
+									
+								</kendo-floatinglabel>
+								<label class="k-tooltip k-tooltip-validation errormessage"
+									[hidden]="editForm.controls.CategoryName.valid || editForm.controls.CategoryName.pristine">
+									Parent Category is required.
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-12 col-md-4">
+							<div class="form-check mb-3">
+								<input type="checkbox" id="inactive" name="Inactive" formControlName="Inactive"
+									kendoCheckBox />
+								<label class="k-checkbox-label" for="inactive">Inactive</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card-footer bg-transparent border-0">
+				<button type="button" (click)="cancel()" class="btn btn-light">Cancel</button>
+					<ng-container *ngxPermissionsOnly="'edit'">
+						<button type="submit" [disabled]="this.syncflag" *ngIf="editForm.value.saveBtn"
+					class="btn btn-primary" (click)="savecategory()">Save</button>
+							  <button type="submit" [disabled]="!this.syncflag"  *ngIf="editForm.value.updateBtn"
+							  class="btn btn-primary" (click)="UpdateCategory()">Update </button>
+				</ng-container>
+				
+		
+		</div>
+	</form>
+
+</kendo-dialog>
+<div kendoDialogContainer></div>

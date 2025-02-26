@@ -1,0 +1,160 @@
+<div class="d-flex header-panel">
+	<app-page-header [heading]="'User Level Control'" [subheading]="'System'" [icon]="''"></app-page-header>
+
+	<div class="title-action-panel ms-auto float-end d-inline-flex gap-2 align-items-center">
+		<action-btn textTooltip="Add New" btnSvgicon="icon-plus" disableFlag="{{this.isPermission}}"
+			(byClick)="newUserLevel()"></action-btn>
+	</div>
+</div>
+
+<div class="row g-3 g-xxl-4" gridHeight #height="heightDirective" [style.min-height.px]="[height.kGridHeight] - (-10)">
+	<div class="col-md-4">
+		<div class="card rounded-3 h-100">
+			<div class="card-body">
+				<form [formGroup]="userLevelForm" novalidate class="h-100 d-flex flex-column">
+					<kendo-floatinglabel text="" class="pt-0 input-icon position-relative">
+						<input type="text" kendoTextBox class="form-control" formControlName="filterText"
+							placeholder="Search in all user level..." (input)="searchUserLevel()" tabindex="0"
+							aria-invalid="false">
+						<svg-icon iClass="i-def text-muted" svgicon="icon-search"></svg-icon>
+					</kendo-floatinglabel>
+					<br>
+					<ngx-simplebar [options]="options" class="flex-grow-1 me-n3" style="height: 250px">
+						<div class="d-flex justify-content-between border-bottom me-3"
+							*ngFor="let userLevelSet of userLevelSets  let i = index ">
+							<a href="javascript:void(0)" name="itemName"
+								(click)="selectedUserLevel(userLevelSet.SysID,i)"
+								class="flex-grow-1 p-2 text-decoration-none"
+								[ngClass]="[selected === i ? 'active fw-medium':'']">
+								{{ userLevelSet.UserLevel }}
+							</a>
+
+							<!-- <a (click)="onItemClick(userLevelSet.SysID,i)" class="align-self-center btn btn-link" [ngClass]="[selected === i ? 'active':'']" placement="left" ngbTooltip="Access Permission Control" tooltipClass="fs-7">
+								<svg-icon iClass="i-sm" svgicon="{{selected === i ? 'icon-lock-open' : 'icon-lock'}}"></svg-icon>
+							</a> -->
+						</div>
+					</ngx-simplebar>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="col-md">
+		<form name="saveUserLevelForm" [formGroup]="saveUserLevelForm" class="card rounded-3 h-100">
+			<div class="card-body">
+				<div class="mb-3">
+					<label for="password" class="fs-6 text-danger mb-1">Enter Current Admin Password</label>
+					<input type="password" name="Password" class="form-control px-2" formControlName="Password"
+						(input)="handlePassword()" placeholder="Password is required" autocomplete="off" required />
+				</div>
+
+				<kendo-tabstrip [scrollable]="{ buttonScrollSpeed: 200, mouseScrollSpeed: 100 }"
+					(tabSelect)="onTabSelect($event)">
+					<kendo-tabstrip-tab [title]="'User Level'" [selected]="selectedTab === 0">
+						<!--[selected]="true" -->
+						<ng-template kendoTabContent>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="mb-3">
+										<kendo-floatinglabel text="User Level" class="required">
+											<input type="text" kendoTextBox name="UserLevel" class="form-control"
+												formControlName="UserLevel" [readonly]="isAdmin" required>
+										</kendo-floatinglabel>
+										<label class="k-tooltip k-tooltip-validation errormessage"
+											[hidden]="saveUserLevelForm.controls.UserLevel.valid || saveUserLevelForm.controls.UserLevel.pristine">
+											User Level is required !
+										</label>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="mb-3">
+										<kendo-floatinglabel text="Description" class="required">
+											<input type="text" kendoTextBox name="Description" class="form-control"
+												formControlName="Description" [readonly]="isAdmin" required>
+										</kendo-floatinglabel>
+										<label class="k-tooltip k-tooltip-validation errormessage"
+											[hidden]="saveUserLevelForm.controls.Description.valid || saveUserLevelForm.controls.Description.pristine">
+											Description is required !
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="mb-3">
+								<kendo-floatinglabel text="Restricted IP List">
+									<kendo-textarea resizable="auto" name="RestrictedIplist" class="form-control"
+										formControlName="RestrictedIplist"></kendo-textarea>
+								</kendo-floatinglabel>
+							</div>
+							<div class="mb-3">
+								<kendo-floatinglabel text="Remark">
+									<kendo-textarea resizable="auto" name="Remark" class="form-control"
+										formControlName="Remark"></kendo-textarea>
+								</kendo-floatinglabel>
+							</div>
+							<div class="mb-3">
+								<input type="checkbox" id="ch" name="Menu" formControlName="MenuList" kendoCheckBox
+									[attr.disabled]="isAdmin ? '' : null" />
+								<label class="k-checkbox-label" for="ch"> Menu List</label>
+							</div>
+
+							<div class="mb-3">
+								<input type="checkbox" id="ch1" name="Allow" formControlName="AccessLogin" kendoCheckBox
+									[attr.disabled]="isAdmin ? '' : null" />
+								<label class="k-checkbox-label" for="ch1"> Allow Web Login</label>
+							</div>
+							<div class="mb-3">
+								<input type="checkbox" id="mobile" name="Allow" formControlName="AccessMobileLogin"
+									kendoCheckBox [attr.disabled]="isAdmin ? '' : null" />
+								<label class="k-checkbox-label" for="mobile"> Allow Mobile Login</label>
+							</div>
+						</ng-template>
+					</kendo-tabstrip-tab>
+					<kendo-tabstrip-tab [title]="'Access Permission'" *ngIf="showPermission">
+						<ng-template kendoTabContent>
+
+							<span *ngIf="saveMLoading"
+								class="k-icon k-i-loading k-icon-md text-lightgray position-absolute bottom-50 end-50"></span>
+
+							<label class="my-1">Menu List</label>
+							<div class="p-3 border rounded">
+								<span class="fs-6 text-muted" *ngIf="!isMenuList">You do not have permission to
+									access.</span>
+
+								<span *ngIf="menuLoading"
+									class="k-icon k-i-loading k-icon-md text-lightgray position-absolute bottom-50 end-50"></span>
+
+								<ngx-simplebar gridHeight #height="heightDirective" [options]="options" class="me-n3"
+									style="min-height: 350px" [style.height.px]="[height.kGridHeight] - 135"
+									*ngIf="isMenuList">
+									<kendo-treeview [isDisabled]="isDisabled" [nodes]="menunodes" textField="label"
+										kendoTreeViewExpandable [(expandedKeys)]="expandedKeys1"
+										[children]="fetchChildren1.bind(this)" [hasChildren]="hasChildren1"
+										[(checkedKeys)]="checkedMenuKeys" [checkBy]="key" [loadOnDemand]="false"
+										[isChecked]="isMenuChecked" class="d-inline-block" kendoTreeViewCheckable>
+										<ng-template kendoTreeViewNodeTemplate let-dataItem>
+											<svg-icon iClass="i-sm me-1" svgicon="{{dataItem.icon}}"></svg-icon>
+											{{dataItem.label}}
+										</ng-template>
+									</kendo-treeview>
+								</ngx-simplebar>
+							</div>
+						</ng-template>
+					</kendo-tabstrip-tab>
+				</kendo-tabstrip>
+			</div>
+
+			<div class="card-footer bg-transparent border-0">
+				<button type="button" class="btn btn-light" (click)="newUserLevel()"
+					*ngIf="isUserLevelSetup">Cancel</button>
+				<button type="submit" [disabled]="!saveUserLevelForm.valid" class="btn btn-primary"
+					(click)="saveUserLevel()" *ngIf="isSave && isUserLevelSetup">Save</button>
+				<button type="submit" [disabled]="!saveUserLevelForm.valid" class="btn btn-primary"
+					(click)="updateUserLevel1()" *ngIf="isUpdate && isUserLevelSetup">Update</button>
+				<button type="button" class="btn btn-danger" [disabled]="!saveUserLevelForm.valid"
+					(click)="showConfirmation()" *ngIf="isUpdate && isUserLevelSetup">Delete</button>
+				<button type="button" class="btn btn-primary" (click)="saveUserLevelMenu()" [disabled]="disabled"
+					*ngIf="!isAdmin && isMenuList && isPermission">Update</button>
+			</div>
+		</form>
+	</div>
+</div>

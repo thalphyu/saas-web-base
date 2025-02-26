@@ -1,0 +1,414 @@
+<div id="top"></div>
+<a (click)="goBack()" class="btn btn-link position-fixed btn-icon btn-xl my-0">
+	<svg class="icon i-def">
+	   <use xlink:href="assets/icons/symbol-defs.svg#icon-chevron-left"></use>
+	</svg>
+</a>
+
+<div class="container h-100 mt-5 mt-sm-0 pb-5">
+	<h1 class="d-none">Global TA&HR <small>Cloud Time Attendance System</small></h1>
+	<div class="head d-flex mb-5 align-items-center position-sticky py-2">
+		<img [src]="globals.storedSkin === 'dark' ? 'assets/images/global-ta-hr-cloud-light.svg' : 'assets/images/global-ta-hr-cloud.svg'" width="200px" class="Global TA&HR" />
+
+		<div class="btn-group ms-auto" role="group" ngbDropdown placement="left-top">
+			<button type="button" class="btn btn-light btn-sm dropdown-toggle" ngbDropdownToggle>
+			{{activeLang}}
+			</button>
+			<div class="dropdown-menu shadow border-0 mt-0" aria-labelledby="btnGroupDrop1" ngbDropdownMenu>
+				<div class="dropdown-header">Select Language</div>
+				<a class="dropdown-item py-2" href="javascript:;" *ngFor="let lang of langs" (click)="ChangeLanguage(lang)">{{lang}}</a>
+			</div>
+		</div>
+	</div>
+	<h2 class="h1 text-uppercase fw-light mb-3">GLOBALTA&HR CLOUD PURCHASE AGREEMENT</h2>
+
+	<p *ngIf="!showLang">GlobalTA&HR Cloud System, is a subscription service, sold by Innovative Global Wave Technology Co. ltd ("<strong>Global Wave</strong>"), it is an application based on the cloud and can be used any place where internet access is available.</p>
+
+	<!-- <div>
+		<label for="English" class="ms-3 align-text-top" style="padding-right: 10px;">English</label>
+		<kendo-switch [(ngModel)]="checked" [onLabel]="'I'" [offLabel]="'O'" (click)="ChangeLanguage(checked)"></kendo-switch>
+		<label for="Myanmar" class="ms-3 align-text-top">Myanmar</label>
+	</div> -->
+	<div *ngIf="!showLang">
+		<ol class="custom-number ps-0">
+			<li>
+				<span>Global Wave has developed certain software applications and platforms which it makes available to the Customer via the internet on a pay-per-use basis for the purpose of Time Attendance and Payroll Management.</span>
+			</li>
+			<li>
+				<span>The Customer wishes to use Global Wave's service in its business operations.</span>
+			</li>
+			<li>
+				<span>Global Wave has agreed to provide and the Customer has agreed to take and pay for Global Wave's service 
+				subject to the terms and conditions of this agreement. This agreement includes this Purchase Agreement and 
+				the Global TA Cloud General Terms and Conditions (<b>Terms and Conditions</b>) as may be amended from time 
+				to time and any rules and policies for using the GlobalTA&HR Cloud.</span>
+
+				<div class="ps-2 table-responsive">
+					<table class="table table-bordered mt-4">
+						<tbody>
+						<tr>
+							<th width="180px">Supplier</th>
+							<td colspan="2">Innovative Global Wave Technology Co. ltd</td>
+						</tr>
+						<tr>
+							<th>Purchaser</th>
+							<td colspan="2"></td>
+						</tr>
+						<tr>
+							<th rowspan="3" class="align-middle">Purchaser Details</th>
+							<td width="170px">Address</td>
+							<td width="350px"></td>
+						</tr>
+						<tr>
+							<td>Phone number</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Email</td>
+							<td></td>
+						</tr>
+						<tr>
+							<th rowspan="4" class="align-middle">Subscription Details</th>
+							<td>Number of Subscriptions</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Subscription Fee</td>
+							<td>The Subscription Fees shall amount to a total of 
+							MMK [____________], based on ________ User 
+							Subscriptions at MMK _____ per User Subscription.</td>
+						</tr>
+						<tr>
+							<td>Additional User Subscription Fees</td>
+							<td>Additional User Subscriptions may be purchased by the 
+							Customer in accordance with Terms and Conditions at 
+							MMK [_____] per User Subscription.</td>
+						</tr>
+						<tr>
+							<td>Subscription Term</td>
+							<td>The subscription shall be for [___] months (the Initial 
+							Subscription Period), thereafter it should be renewed 
+							for term of [___] months (the Renewal Term), unless 
+							terminated earlier pursuant to this agreement.</td>
+						</tr>
+						<tr>
+							<th rowspan="2">Services</th>
+							<td colspan="2">
+								<p>The subscription services provided by Global Wave to the Customer under this 
+								agreement via the GlobalTA&HR Cloud platform, providing the Customer with a 
+								cloud based solution to manage Time Attendance, Payroll.</p>
+								<p>Any additional charges not included in the Services are not included in the 
+								Subscription Fee.</p>
+								<p>Implementation, account set-up and support services outlined below are provided 
+								at no additional charge for a period of 90 days from signing this agreement.</p>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" class="p-0">
+								<table class="table inner-tbl mb-0">
+									<tbody>
+									<tr>
+										<td width="130px"><i>Implementation</i></td>
+										<td>
+											<ul class="ps-4">
+												<li>Global Wave will populate the platform with all 
+												employee data. The Customer shall be provided such 
+												data in the requested format. Each employee to be 
+												added to the system or permitted to use the system is 
+												considered an <b>Authorised User</b>.</li>
+
+												<li>Global Wave shall set up platform rules relating to 
+												employee attendance policy. Customer shall provide 
+												Global Wave its attendance policy& payroll policy within 
+												14 Business Days, upon signing this agreement.</li>
+											</ul>
+
+											<p>Global Wave provides implementation as a free service within 
+											90 days of the signing of this agreement. Any information 
+											required which is provided thereafter or if there is any 
+											amendment made to the information already provided, may be 
+											subject to additional service fees.</p>
+											<p>Global Wave shall endeavour to complete the platform set-up 
+											within 14 Business Days of being provided the required 
+											information in the prescribed format.</p>	
+										</td>
+									</tr>
+									<tr>
+										<td><i>Account Set-Up</i></td>
+										<td>
+											<ul class="ps-4">
+												<li>The Customer will be given an administrator user name 
+												and password. The user admin account includes Private 
+												URL, Link, ID Number, User Name and Initial Password.
+												The customer must be responsible to secure the Initial 
+												Password (can change initial password freedom). If the 
+												customer forgets the password, the customer will 
+												receive a new password by notifying Global Wave with 
+												the standard form.</li>
+												<li>Global Wave will provide instruction on how employees can create accounts.</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td><i>Support</i></td>
+										<td>
+											<p>The following technical support will be provided to Customers 
+											for no additional fee within the first 90 days from signing this 
+											agreement:</p>
+											<br>
+
+											<b><i>Free Training</i></b>
+											<ol class="ps-4 mt-3 list-alpha">
+												<li>Global Wave Technology will provide free training one 
+												course ( 3 Days by 2 Hours per Day) for the customer 
+												about how to utilize the application two hours a day. The 
+												training will be delivered in accordance with the 
+												curriculum and regulations of Global Wave Technology.</li>
+
+												<li>The customer will not need to pay extra charges if the 
+												venue of the training is located in the metropolitan areas 
+												of Yangon and Mandalay. However, if the venue is beyond 
+												the aforementioned areas, the customer may need to pay 
+												extra charges for proper fees, transportation, living cost, 
+												and food.</li>
+
+												<li>The customer may require to arrange the following steps 
+												prior to the training.
+													<ol class="ps-4 mt-3">
+														<li>To collect the trainees at the venue</li>
+														<li>The customer may require to sign to acknowledge the 
+														curriculum, regulations and timetable regarding the free 
+														training.</li>
+													</ol>
+												</li>
+
+												<li>The customer may be responsible to provide Global Wave 
+												Technology with related data such as Employee 
+												GlobalTA Purchase Agreement
+												Information, attendance policy, payroll policy and 
+												installation of such data into the application in order to run 
+												the training smoothly.</li>
+											</ol>
+											<br>
+
+											<b><i>Free Technical Support</i></b>
+											<ol class="ps-4 mt-3 list-alpha" start="2">
+												<li>In case of technical errors related with the application,
+													<ol class="sub-list mt-3">
+														<li data-item="(b.a)">The customer will receive instructions on phone firstly. 
+														The customer is expected to report the errors related 
+														to application clearly.</li>
+														<li data-item="(b.b)">If the errors cannot be tackled on phone, Global Wave 
+														will send service technicians to issue the problems.</li>
+														<li data-item="(b.c)">In providing the free services during the free service 
+														period, Global Wave Technology shall not be 
+														responsible for the problems, errors or defects due to 
+														other causes unrelated with the application.</li>
+													</ol>
+
+													All free on site services are only available in Yangon and 
+													Mandalay. Free on site services in other locations will be subject 
+													to the Customer paying transportation and living expenses.
+												</li>
+											</ol>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td colspan="2" class="p-0">
+								<table class="table inner-tbl mb-0">
+									<tbody>
+									<tr>
+										<td width="130px">Additional Services</td>
+										<td>
+											Fingerprint Device needs to be upgraded firmware to connect 
+											the GlobalTA&HR Cloud system which device purchased from
+											Global Wave. Global Wave will upgrade the firmware for the 
+											Fingerprint Device and the Customer may require to provide 
+											Internet access in Fingerprint Devices to check the attendance 
+											of their staff by using the application from time to time.
+										</td>
+									</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<th>Data retention policy</th>
+							<td colspan="2">
+								Global Wave will endeavour to:
+
+								<ul class="mt-3">
+									<li>maintain Attendance Raw Data in the application such as fingerprint press 
+									time, attendance check in/out log, duty roster transaction and event log for 
+									one year.</li>
+									<li>retain calculated attendance reports will maintain up to 3 years in the 
+									system. The system will automatically archive old attendance reports before 
+									delete, user can still download archive files from system and keep it as 
+									backup.</li>
+								</ul>
+
+								The Customer shall take steps to export the relevant data if wishes to retain the 
+								data before the end of the data retention period. Global Wave is not responsible for 
+								any data after the expiry of the data retention period.
+							</td>
+						</tr>
+						<tr>
+							<th>Technology Requirements</th>
+							<td colspan="2">
+								For Using the Application of GPS Mobile Check In / Out Function, Mobile Handset 
+								must be support “Google Service”.
+							</td>
+						</tr>
+						<tr>
+							<th>Payment terms</th>
+							<td colspan="2">
+								The Customer shall pay within 15 business days of receiving the invoice for the Services.
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</li>
+		</ol>
+	</div>
+
+	<div *ngIf="showLang">
+		<ul class="ps-0 ms-4 terms-list mm">
+			<li data-item="၁. ">
+				<h3 class="h5 fw-semibold title">ငွေပေးချေမှု ပုံစံ (Payment Terms)</h3>
+				<p>Application အား ဝယ်ယူ အသုံးပြုရာတွင် ဝန်ထမ်းအရေအတွက် ပေါ်မူတည်၍ ငွေကောက်ခံခြင်း ဖြစ်ပြီး ငွေပေးချေခြင်းအား လစဉ်/နှစ်စဉ် ပေးချေရမည် ဖြစ်ပါသည်။</p>
+			</li>
+			<li data-item="၂. ">
+				<h3 class="h5 fw-semibold title">လုပ်ငန်း အကောင်အထည်ဖော် ဆောင်ရွက်ခြင်း ကာလ</h3>
+				<p>Global Wave သည် ဝယ်ယူသူမှ Application ဝယ်ယူမှု သဘောတူစာချုပ်တွင် လက်မှတ်ရေးထိုးပြီးသည့်အခါ စာချုပ်ချုပ်ဆိုသည့် နေ့ရက်မှ ရက်ပေါင်း (၉၀) တိတိကို လုပ်ငန်းအကောင်အထည်ဖော် ဆောင်ရွက်ခြင်းကာလအဖြစ် သတ်မှတ်ပြီး အောက်ပါလုပ်ငန်းစဉ်များကို ဆောင်ရွက်သွားမည် ဖြစ်ပါသည်။</p>
+				<ul class="mb-3">
+					<li data-item="၂.၁. ">ဝန်ထမ်းများ၏ အချက်အလက်များကို ဝယ်ယူသူဘက်မှ ဖြည့်သွင်းနိုင်ရန်အတွက် Global Wave သည် သတ်မှတ်ထားသော Excel Form ပုံစံကို ဝယ်ယူသူအား ပေးအပ်သွားမည် ဖြစ်ပါသည်။ ဝယ်ယူသူဘက်မှလည်း ၎င်းExcel Form အတွင်း  အချက်အလက်များကို ပြည့်စုံမှန်ကန်စွာ ဖြည့်သွင်းပေးရန် တာဝန်ရှိပါသည်။</li>
+					<li data-item="၂.၂. ">Free Service Period အတွင်း  အလုပ်တက်ဆင်းမှု (Attendance Rule & Policy) နှင့် ပတ်သက်သော မူဝါဒများကို ဝယ်ယူသူဘက်မှ ပံ့ပိုး အတည်ပြုပေးရမည် ဖြစ်ပါသည်။</li>
+					<li data-item="၂.၃. ">
+						ဝယ်ယူသူဘက်မှ အပိုဒ်(ခ)တွင် ဖော်ပြထားသည့်အတိုင်း ပံ့ပိုး အတည်ပြုပေးသည့် အလုပ်တက်ဆင်းမှု ( Attendance Rule) နှင့် ပတ်သက်သည့် မူဝါဒများအတိုင်း Global Wave မှ ပြင်ဆင်ဆောင်ရွက်ပေးမည် ဖြစ်ပါသည်။ အတည်ပြုပြီး နောက်ပိုင်း ဝယ်ယူသူဘက်မှ
+						ပြင်ဆင် ဖြည့်စွက် ပြောင်းလဲလိုပါက Global Wave Technology ဘက်သို့ Additional Charges ထပ်မံပေးဆောင်ရန် လိုအပ်ပါသည်။
+					</li>
+					<li data-item="၂.၄. ">
+						အလုပ်တက်ဆင်းမှု(Attendance Rule & Policy) မူဝါဒ နှင့် စည်းမျဉ်းစည်းကမ်းများကို ပြင်ဆင်လိုပါက ဝယ်ယူသူဘက်မှ မူဝါဒအား အတည်ပြုခဲ့သည့်နေ့မှစ၍ အလုပ်ဖွင့်ရက်
+						(၂)ပတ် အတွင်းသာ ပြင်ဆင်နိုင်ပါသည်။ အလုပ်ဖွင့်ရက် ဆိုသည်မှာ Global Wave Technology၏ အလုပ်ဖွင့်ရက်ကို ဆိုလိုခြင်း ဖြစ်ပါသည်။
+					</li>
+					<li data-item="၂.၅. ">လုပ်ငန်းအချိန်မီ ပြီးစီးဆောင်ရွက်နိုင်စေရန်အတွက် လုပ်ငန်းအကောင်အထည်ဖော် ဆောင်ရွက်ချိန်ကာလ (၂)ပတ် အတွင်း ဝယ်ယူသူဘက်မှ လိုအပ်သည့် အချက်အလက်များကို Global Wave Technology ထံသို့ အချိန်မီ ပံ့ပိုးပေးသွားရန် တာဝန်ရှိပါသည်။</li>
+				</ul>
+			</li>
+			<li data-item="၃. ">
+				<h3 class="h5 fw-semibold title">နည်းပညာပိုင်းဆိုင်ရာ လိုအပ်ချက် ( Technology Requirement )</h3>
+				<p>Application ၏ GPS Mobile Check In/Out Function အား ထည့်သွင်းအသုံးပြုမည့် မိုဘိုင်းဖုန်းများသည် Google Service ကို Supportပေးနိုင်သော မိုဘိုင်းဖုန်းအမျိုးအစားများဖြစ်ရန် လိုအပ်ပါသည်။</p>
+			</li>
+			<li data-item="၄. ">
+				<h3 class="h5 fw-semibold title">နည်းပညာပိုင်းဆိုင်ရာ အထောက်အပံ့ပေးခြင်း(Technological Support)</h3>
+				<p>Global Wave Technology သည် ဝယ်ယူသူဘက်မှ Application ကောင်းမွန်စွာ အသုံးပြုနိုင်ရန်အတွက် အောက်ပါအတိုင်း နည်းပညာပိုင်းဆိုင်ရာ  အထောက်အပံ့များပေးသွားမည် ဖြစ်ပါသည်။</p>
+				<ul class="mb-3">
+					<li data-item="၄.၁. ">
+						Account ဖွင့်လှစ်ခြင်း
+						<ul class="mt-1">
+							<li data-item="၄.၁.၁. ">ဝယ်ယူသူမှ Application အတွင်းရှိ အချက်အလက်များကို ကြည့်ရှုနိုင်ရန်အတွက် Global Wave သည် ဝယ်ယူသူအား User Admin Account တစ်ခု ပေးအပ်သွားမည် ဖြစ်ပါသည်။ ၎င်း User Admin Account တွင် Private URL Link, ID Number, User Name and Initial Passwordများ ပါဝင်မည်ဖြစ်ပါသည်။</li>
+							<li data-item="၄.၁.၂. ">ဝန်ထမ်းများ အသုံးပြုရမည့် User Employee Account များကိုမူ ဝယ်ယူသူဘက်မှသာ မိမိအစီအစဉ်ဖြင့် ဖွင့်လှစ်ရမည်ဖြစ်ပါသည်။</li>
+							<li data-item="၄.၁.၃. ">User Admin Account ၏ Initial Password (Can change initial password freedom) ကို ထိန်းသိမ်းရန်မှာ ဝယ်ယူသူ၏တာဝန် ဖြစ်ပါသည်။ အကယ်၍ Password မေ့လျော့ခြင်းများဖြစ်ပါက Global Wave သို့ သတ်မှတ်ပုံစံဖြင့် တရားဝင်အကြောင်းကြားစာ ပေးပို့ခြင်းဖြင့် Passwordအသစ်အား ပြန်လည်ရရှိနိုင်မည် ဖြစ်ပါသည်။</li>
+						</ul>
+					</li>
+					<li data-item="၄.၂. ">Application သည် Ready Made Package ဖြစ်သောကြောင့် Application အတွင်း နဂိုမူလကတည်းက မပါဝင်သည့် Reports/ Function/ Module များ ထပ်ထည့်ခြင်း၊ ပြုပြင်ပြောင်းလဲခြင်းများကို ဝယ်ယူသူဘက်မှ ပြုလုပ်လိုပါက Global Wave Technology ဘက်မှ ဆောင်ရွက်ပေးမည် မဟုတ်ပါ။</li>
+					<li data-item="၄.၃. ">Global Wave သည် Application ဝယ်ယူမှု သဘောတူစာချုပ် ချုပ်ဆိုသည့်နေ့မှ စတင်၍ ရက်ပေါင်း ကိုးဆယ် တိတိ အား Free Service Period အဖြစ် သတ်မှတ်၍ ဝယ်ယူသူအား အခမဲ့ ဝန်ဆောင်မှု ပေးသွားမည် ဖြစ်ပါသည်။ Free Service Period တွင် ပါဝင်မည့် ဝန်ဆောင်မှုများကို အပိုဒ်(၆)တွင် အသေးစိတ် ဖော်ပြထားပါသည်။</li>
+					<li data-item="၄.၄. ">Application မှတဆင့် ဝန်ထမ်းများ၏ အလုပ်တက်/ ဆင်းမှု အချက်အလက်များကို အချိန်နှင့်တပြေးညီ ကြည့်ရှုစစ်ဆေးနိုင်ရန် Fingerprint Device များတွင် Internet Access ရရှိစေရန် ဝယ်ယူသူဘက်မှ ပံ့ပိုးပေးရမည် ဖြစ်ပါသည်။</li>
+				</ul>
+			</li>
+			<li data-item="၅. ">
+				<h3 class="h5 fw-semibold title">အခမဲ့ ဝန်ဆောင်မှုပေးခြင်းကာလ (Free Service Period)</h3>
+				<p>Global Wave Technology သည် Free Service Period အတွင်း အောက်ပါဝန်ဆောင်မှုများကို ဝယ်ယူသူထံသို့ ဝန်ဆောင်မှုပေးသွားမည် ဖြစ်ပါသည်။</p>
+				<ul class="mb-3">
+					<li data-item="၅.၁. ">အခမဲ့ သင်တန်းပို့ချခြင်း</li>
+					<li data-item="၅.၂. ">
+						Application နှင့် သက်ဆိုင်သည့် ချို့ယွင်းမှု တစ်စုံတစ်ရာ ပေါ်ပေါက်ပါက
+						<ul class="mt-1">
+							<li data-item="၅.၂.၁. ">ပထမဦးစွာ ဖုန်းဖြင့် ဖြေရှင်း ဆောင်ရွက်ပေးသွားပါမည်။ ဝယ်ယူသူဘက်မှလည်း ဖြစ်ပေါ်နေသော Application နှင့်သက်ဆိုင်သည့် အခက်အခဲများကို ဖုန်းဖြင့် သေချာစွာမေးမြန်း ဆောင်ရွက်ရပါမည်။</li>
+							<li data-item="၅.၂.၂. ">ဖုန်းဖြင့် ဖြေရှင်းဆောင်ရွက်သော်လည်း အဆင်မပြေခဲ့လျှင် Global Wave Technology ၏ Service Technician မှ ဝယ်ယူသူ၏ အခက်အခဲ ဖြစ်ပေါ်နေသည့်နေရာသို့ ကိုယ်တိုင်လာရောက် ဖြေရှင်းပေးမည် ဖြစ်ပါသည်။</li>
+							<li data-item="၅.၂.၃. ">အထက်ပါ Free Service Period အတွင်း အခမဲ့ ဝန်ဆောင်မှုပေးရာတွင် Global Wave Technology သည် Application ကြောင့် မဟုတ်ဘဲ အခြားသော ကိစ္စရပ်များကြောင့် ဖြစ်ပေါ်နေသည့် အခက်အခဲများ၊ ချို့ယွင်းမှုများ၊ error များ နှင့်ပတ်သက်၍ တာဝန် မရှိစေရ။</li>
+						</ul>
+					</li>
+					<li data-item="၅.၃. ">Free Service Period ကာလအတွင်း ဝယ်ယူသူအား Global Wave မှ အခမဲ့ ဝန်ဆောင်မှုပေးရာတွင် ရန်ကုန်မြို့နှင့် မန္တလေးမြို့ စည်ပင်သာယာရေး အတွင်းသာ အခမဲ့ ဝန်ဆောင်မှု ပေးမည် ဖြစ်ပါသည်။ ရန်ကုန်မြို့ နှင့် မန္တလေးမြို့ စည်ပင်သာယာရေး နယ်နမိတ်  ပြင်ပသို့ သွားရောက် ဝန်ဆောင်မှု ပေးစေလိုပါက သင့်တော်သော နှုန်းထား + ခရီးစရိတ် + နေစရိတ် + စားစရိတ် တို့ကို ဝယ်ယူသူဘက်မှ တာဝန်ယူရမည် ဖြစ်ပါသည်။</li>
+					<li data-item="၅.၄. ">Global Wave သည် Application အတွင်းရှိ Transaction များကို တစ်နှစ် တိတိ ထိန်းသိမ်းပေးသွားမည် ဖြစ်ပါသည်။ တစ်နှစ်ကျော်သွားသော Transaction များကို Server မှ ဖျက်သိမ်းသွားမည် ဖြစ်ပါသည်။ ထိုသို့ ဖျက်သိမ်းခြင်း မပြုမီ ရက်ပေါင်း (၅) ရက် ကြိုတင်၍ Global Wave မှ ဝယ်ယူသူထံသို့ စာဖြင့် အသိပေးအကြောင်းကြားမည် ဖြစ်ပါသည်။</li>
+					<li data-item="၅.၅. ">ဝယ်ယူသူများအဖြင့် အပိုဒ်(ဃ) တွင် ဖော်ပြထားသည့်အတိုင်း Global Wave မှ Transaction များကို မဖျက်ဆီးမီ မိမိတို့ဘက်မှ data backup file များကို သိမ်းဆည်းထားရန် လိုအပ်ပါသည်။</li>
+				</ul>
+			</li>
+			<li data-item="၆. ">
+				<h3 class="h5 fw-semibold title">အခမဲ့ သင်တန်းပို့ချခြင်း (Free Training)</h3>
+				<ul class="mb-3">
+					<li data-item="၆.၁. ">Global Wave  Technology သည် ဝယ်ယူသူအား Application အသုံးပြုပုံ နှင့်ပတ်သက်၍ အခမဲ့ Training ကို တစ်ကြိမ် (တစ်ရက်လျှင် နှစ်နာရီနှုန်းဖြင့် သုံးရက်) သင်ကြားပို့ချပေးသွားမည် ဖြစ်ပါသည်။ ထိုကဲ့သို့ ပို့ချရာတွင် Global Wave Technology ၏ သင်ရိုးနှင့် စည်းမျဉ်းစည်းကမ်းများအတိုင်း ပို့ချပေးသွားမည် ဖြစ်ပါသည်။</li>
+					<li data-item="၆.၂. ">ထိုသို့ သင်တန်းပို့ချရာတွင် သင်တန်းပို့ချရမည့်နေ့ရာသည် ရန်ကုန်မြို့နှင့် မန္တလေးမြို့ စည်ပင်သာယာရေး နယ်နမိတ်အတွင်းဆိုလျှင် မည်သည့် အဖိုးအခမျှ  ထပ်မံပေးချေရန် မလိုအပ်ပါ။ သို့သော် ရန်ကုန်မြို့နှင့် မန္တလေးမြို့ စည်ပင်သာယာရေး နယ်နမိတ်ပြင်ပနေရာတွင် သင်တန်းပို့ချရပါက သင့်တော်သော နှုန်းထား+ ခရီးစရိတ် + နေစရိတ် + စားစရိတ်တို့ကို ဝယ်ယူသူဘက်မှ ကျခံပေးရမည် ဖြစ်ပါသည်။</li>
+					<li data-item="၆.၃. ">အခမဲ့ သင်တန်း ပို့ချခြင်း မပြုလုပ်မီ ဝယ်ယူသူသည် အောက်ပါအချက်အလက်များကို  စီစဉ်ဆောင်ရွက် ပေးရပါမည်။
+						<ul class="mt-1">
+							<li data-item="၆.၃.၁. ">သင်တန်း တက်ရောက်သူများကို တစ်နေရာတည်းတွင် စုစည်းပေးထားရပါမည်။</li>
+							<li data-item="၆.၃.၂. ">Global Wave Technology ၏ အခမဲ့ သင်တန်း၏ သင်ရိုး၊ စည်းမျဉ်းနှင့် အချိန်ဇယားကို သဘောတူလက်မှတ် ထိုးပေးရန် လိုအပ်ပါသည်။ </li>
+						</ul>
+					</li>
+					<li data-item="၆.၄. ">ဝယ်ယူသူသည် Global Wave Technology မှ အခမဲ့ သင်တန်း ပို့ချရာတွင် အဆင်ပြေလွယ်ကူစေရန် Application အတွင်း ထည့်သွင်းရမည့် သက်ဆိုင်သည့် အချက်အလက်များ ပံ့ပိုးပေးခြင်းနှင့် ထည့်သွင်းပေးခြင်းများကို ဆောင်ရွက်ပေးရမည် ဖြစ်ပါသည်။</li>
+				</ul>
+			</li>
+			<li data-item="၇. ">
+				<p>
+					Application အသုံးပြုခွင့် ကာလသည် ဝယ်ယူသူဘက်မှ ငွေပေးချေထားသည့်ကာလ အတိုင်း ဖြစ်ပါသည်။ Global Wave သည် အသုံးပြုခွင့် သက်တမ်း မကုန်ဆုံးမီ ရက်ပေါင်း(၁၄) ကြိုတင်၍ ဝယ်ယူသူထံသို့ အသိပေး အကြောင်းကြားပေးမည် ဖြစ်ပါသည်။
+					ဝယ်ယူသူသည် အသုံးပြုခွင့်သက်တမ်းကို တိုးမြှင့်လိုပါက သတ်မှတ်ကာလ မကုန်ဆုံးမီ အနည်းဆုံး (၁၄) ရက် ကြိုတင်၍  Global Wave Technology ထံသို့ နှစ်စဉ်ကြေး ပေးသွင်းကာ သက်တမ်း တိုးမြှင့်နိုင်ပါသည်။ အကယ်၍ သက်တမ်းတိုးရန် ပျက်ကွက်ခဲ့ပါက သက်တမ်းကုန်ဆုံးသည့်နေ့မှ (၂၁) ရက်အထိသာ Transaction များ၊ Data များ ကို သိမ်းဆည်းထားမည်ဖြစ်ပြီး ယင်းကာလကျော်လွန်ပါက Global Wave မှ အပြီးသတ် ဖျက်သိမ်းသွားမည် ဖြစ်ပါသည်။
+					ဝယ်ယူသူသည် Application အသုံးပြုနေစဉ်ကာလအတွင်း မူလ သဘောတူညီထားသည့် ဝန်ထမ်းအရေအတွက်ထက် ထပ်တိုး အသုံးပြုလိုသည့်အခါ စာချုပ်ပါ သက်တမ်းအတိုင်း  ကျသင့်ငွေကို ပေးဆောင်၍ ထပ်တိုး အသုံးပြုနိုင်ပါသည်။
+				</p>
+			</li>
+			<li data-item="၈. ">
+				<p>
+					Global Wave Technology သည် Application အတွင်း သိမ်းဆည်းထားသည့် (သို့မဟုတ်) အသုံးပြုသည့် အချက်အလက်များအား နည်းပညာပိုင်းဆိုင်ရာ ပေါက်ကြားခြင်းမရှိစေရန် တာဝန်ယူဆောင်ရွက်ပေးပါမည်။ ဝယ်ယူသူဘက်မှလည်း သတင်းအချက်အလက်များ လုံခြုံစွာသိမ်းဆည်းရန် တာဝန်ရှိသကဲ့သို့ ဝယ်ယူသူဘက်မှ ပေါက်ကြားမှု တစ်စုံတစ်ရာ ပေါ်ပေါက်ပါက အထက်ပါကိစ္စကြောင့် ဖြစ်ပေါ်လာမည့် ကိစ္စရပ်များအတွက် Global Wave Technology တွင် တာဝန်အလျဉ်း မရှိစေရ။
+				</p>
+			</li>
+			<li data-item="၉. ">
+				<h3 class="h5 fw-semibold title">တာဝန်မှ ကင်းလွတ်ခြင်း</h3>
+				<p>Global Wave Technology သည် အောက်ပါ ကိစ္စရပ်များတွင် တာဝန်မှ ကင်းလွတ်ပါသည်။</p>
+				<ul class="mb-3">
+					<li data-item="၉.၁. ">အပိုဒ် ၆ backup(ဃ) နှင့် (င) တို့တွင် ဖော်ပြထားသည့်အတိုင်း ဝယ်ယူသူမှ Backup သိမ်းဆည်းရန် ပျက်ကွက်ပြီး တစ်နှစ်ကျော်သည့် Transaction များ ပျက်စီး/ ပျောက်ဆုံးခြင်းအတွက် တာဝန် မရှိစေရ။</li>
+					<li data-item="၉.၂. ">အပိုဒ် ၈ တွင် ဖော်ပြထားသည့်အတိုင်း ဝယ်ယူသူဘက်မှ သက်တမ်းတိုးရန်  ပျက်ကွက်ခဲ့သည့်အတွက် သက်တမ်း ကုန်ဆုံးသည့်ကာလအတွင်းမှ Transaction များ၊ Data များ ဆုံးရှုံးခြင်းအတွက် တာဝန် မရှိစေရ။</li>
+					<li data-item="၉.၃. ">Global Wave ၏ Application အား ဝယ်ယူသူသည် တရားဥပဒေ နှင့် မညီညွှတ်သည့်ကိစ္စရပ်အတွက် အသုံးပြုသည့်အခါ တာဝန် မရှိစေရ။</li>
+					<li data-item="၉.၄. ">Global Wave သည် ကျသင့်ငွေ လက်ခံရရှိပြီးသည့် မည်သည့်ဝန်ဆောင်မှုအတွက်မဆို ဝယ်ယူသူဘက်မှ အသုံးမပြုတော့ခြင်းအတွက် ငွေပြန်အမ်းရန် တာဝန် မရှိစေရ။</li>
+					<li data-item="၉.၅. ">ဝယ်ယူသူဘက်မှ မှားယွင်း အသုံးပြုမှုကြောင့် ဖြစ်ပေါ်လာသည့် Application ၏ ချို့ယွင်းမှုများ နှင့်ပတ်သက်၍ တာဝန် မရှိစေရ။</li>
+				</ul>
+			</li>
+		</ul>
+
+		<h3 class="h4 title text-uppercase mt-5 mb-4">မူပိုင်ခွင့်နှင့် ပတ်သက်သော အကြောင်းအရာ ကိစ္စများ</h3>
+		<ul class="ps-0 ms-4 terms-list mm">
+			<li data-item="၁. ">
+				<h3 class="h5 fw-semibold title">မူပိုင်ခွင့်</h3>
+				<p>Global Wave Technology သည် Application ကို ဝယ်ယူသူကိုယ်တိုင် သုံးစွဲရန်အတွက်သာ ရောင်းချခြင်း ဖြစ်ပါသည်။ Application အတွင်း ပါဝင်သည့် အချက်အလက်များ၊ functions များနှင့် နည်းစနစ်များအားလုံး၏ မူပိုင်ခွင့်ပိုင်ရှင်မှာ Global Wave ဖြစ်ပါသည်။ Global Wave Technology ၏ ခွင့်ပြုချက်မရဘဲ ဝယ်ယူသူသည် မည်သူတစ်ဦးတစ်ယောက်ကိုမျှ တဆင့် ကူးယူ ဖြန့်ဖြူး ရောင်းချခွင့် မရှိပါ။ အကယ်၍ ပြုလုပ်ခဲ့ပါက ဝယ်ယူသူသည် တည်ဆဲဥပဒေများ နှင့်အညီ အရေးယူခံရမည် ဖြစ်ပါသည်။</p>
+				<p>Global Wave Technology အား မူပိုင်ခွင့်အရပ်ရပ်နှင့် သက်ဆိုင်၍ တစ်ခြားသူတစ်ဦးတစ်ယောက်မှ တရားစွဲဆိုပါက ဝယ်ယူသူအပေါ် တာဝန်ခံခြင်း အလျဉ်းမရှိစေရ။</p>
+			</li>
+			<li data-item="၂. ">
+				<h3 class="h5 fw-semibold title">အထွေထွေ</h3>
+				<ul class="mb-3">
+					<li data-item="၂.၁. ">Global Wave Technology နှင့် Cloud Server အကြား ထားရှိသည့် Terms and Conditions သည်လည်း ဤ GlobalTA Cloud အသုံးပြုခြင်းဆိုင်ရာ စည်းမျဉ်းစည်းကမ်းများတွင် အကျုံးဝင်ပါသည်။</li>
+					<li data-item="၂.၂. ">Global Wave Technology သည် မည်သည့်အချိန်တွင်မဆို ဤ Application ၏ အသုံးပြုမှု ပုံစံ၊ Interface ၊ function နှင့် Application ၏ ဈေးနှုန်းတို့ကို ဝယ်ယူသူအား အကြောင်းကြားမည်ဖြစ်ပြီး ခွင့်ပြုချက်မလိုပဲ ပြောင်းလဲနိုင်သည်။</li>
+					<li data-item="၂.၃. ">Global Wave Technology သည် ဝယ်ယူသူမှ မလျော်ကန်သောနည်းဖြင့် Application အား အသုံးပြုနေကြောင်း တွေ့ရှိရပါက ဝယ်ယူသူ၏ အသုံးပြုခွင့်အား အကြောင်းကြားခြင်း မရှိဘဲ ရပ်ဆိုင်းနိုင်သည့်အပြင် ဥပဒေအရလည်း အရေးယူဆောင်ရွက်နိူင်သည်။</li>
+				</ul>
+			</li>
+			<li data-item="၃. ">
+				<p>အထက်ပါ စည်းမျဉ်းစည်းကမ်းများ အားလုံးကို ဖတ်ရှုပြီး ဝယ်ယူသူသည် မိမိ၏ သဘောဆန္ဒအလျောက် Application အား အသုံးပြုရန်အတွက် အောက်တွင် သဘောတူညီကြောင်း လက်မှတ်ရေးထိုးပါသည်။</p>
+			</li>
+		</ul>
+	</div>
+
+	<div class="text-center">
+		<button type="submit" class="btn btn-primary rounded-pill btn-lg fs-5 px-5" (click)="goBack()">
+			<span class="py-1 d-block fw-semibold">OK</span>
+		</button>
+	</div>
+</div>
+<div class="scroll-to-top" [ngClass]="{'show-scrollTop': windowScrolled}">
+	<button type="button" class="btn btn-icon border-0 rotate-45 text-primary" data-toggle="button" aria-pressed="true" (click)="scrollToTop()">
+		<svg class="icon i-md">
+		   <use xlink:href="assets/icons/symbol-defs.svg#icon-rocket"></use>
+		</svg>
+	</button>
+</div>

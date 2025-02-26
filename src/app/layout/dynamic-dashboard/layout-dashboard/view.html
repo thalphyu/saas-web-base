@@ -1,0 +1,15 @@
+<div class="px-4 py-3">
+	<h3 class="fs-3 text-white">{{modalHeader}}</h3>
+</div>
+
+<hr class="mt-0 mb-4 bg-secondary">
+
+<ngx-simplebar [options]="{autoHide: false}" style="height: calc( 100vh - 80px )">
+	<ul class="list-unstyled">
+		<li *ngFor="let layout of boardLayouts; let i = index">
+			<img [ngClass]="{'layout-selected': layoutId === layout.id }" src="assets/images/{{layout.title}}.png" (click)="selectBoardLayout(layout.id)">
+		</li>
+	</ul>
+</ngx-simplebar>
+
+

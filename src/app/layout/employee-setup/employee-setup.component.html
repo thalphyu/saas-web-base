@@ -1,0 +1,319 @@
+<div class="d-flex header-panel">
+	<app-page-header [heading]="'Employee Information'" [subheading]="'Employee'" [icon]="''"></app-page-header>
+
+	<div class="title-action-panel ms-auto float-end d-inline-flex gap-2 align-items-center">
+		<action-btn textTooltip="Add New" btnSvgicon="icon-plus" (byClick)="newEmployee()" *ngxPermissionsOnly="'new'"></action-btn>
+		<action-btn textTooltip="Filter by Employee" btnSvgicon="icon-filter" (byClick)="openFilterByEmployeePopUp()"></action-btn>
+	</div>
+</div>
+
+<form [formGroup]="employeesetupForm">
+	<div class="row g-3 g-xxl-4">
+		<div class="col-xxl-4 col-xl-4">
+			<div class="card rounded-3 sticky-profile-img">
+				<div class="card-body">
+					<div class="d-flex flex-wrap flex-column align-items-center my-xl-4 my-3 pb-xl-3">
+						
+						<div class="d-flex flex-column align-items-center">
+							<!-- <img *ngIf="previewimage" [src]="previewimage" alt="Profile Image" data-max-size="10kb" class="img-fluid avatar-xl img-fit rounded-circle border-white border border-5 shadow" width="160px" />
+							<div class="img-fluid avatar-xl img-fit rounded-circle border-white border border-5 shadow bg-default text-lightgray fs-3" *ngIf="!previewimage" >IMAGE</div>
+							<kendo-upload class="custom-upload" name="image" formControlName="uploadEmployeePhoto"
+								[multiple]="false" 
+								[restrictions]="uploadRestrictions" 
+								[autoUpload]="true" 
+								[saveUrl]="uploadSaveUrl"
+								[removeUrl]="uploadRemoveUrl"
+								(upload)="uploadEventHandler($event)"
+								(success)="successEventHandler($event)"
+								(remove)="removeEventHandler($event)" 
+								(complete)="completeEventHandler($event)">
+							</kendo-upload> -->
+
+							<div *ngIf="imagePreviews.length">
+								<img *ngFor="let image of imagePreviews" [src]="image.src" alt="Profile Image" data-max-size="10kb" class="img-fluid avatar-xl img-fit rounded-circle border-white border border-5 shadow" width="160px" />
+							</div>
+
+							<img *ngIf="!imagePreviews.length && uploadedImage" [src]="uploadedImage" alt="Profile Image" data-max-size="10kb" class="img-fluid avatar-xl img-fit rounded-circle border-white border border-5 shadow" width="160px" />
+
+							<div class="img-fluid avatar-xl img-fit rounded-circle border-white border border-5 shadow bg-default text-lightgray fs-3" *ngIf="!imagePreviews.length && !uploadedImage">IMAGE</div>
+
+							<kendo-upload class="custom-upload" name="image" formControlName="uploadEmployeePhoto"
+			               [multiple]="false"
+			               [restrictions]="uploadRestrictions"
+			               [autoUpload]="true"
+			               [saveUrl]="uploadSaveUrl"
+			               [removeUrl]="uploadRemoveUrl"
+			               (upload)="uploadEventHandler($event)"
+			               (success)="successEventHandler($event)"
+			               (remove)="removeEventHandler($event)"
+			               (complete)="completeEventHandler($event)"
+
+			               (clear)="clear($event)"
+			               (select)="selectFile($event)"
+			            >
+			            </kendo-upload>
+						</div>
+
+						<h3 class="h5 text-dark my-3" *ngIf="EmployeeName !== ''">
+							{{EmployeeName}}
+							<svg-icon iClass="i-def text-success" svgicon="icon-verified-fill" *ngIf="EmployeeName !== '' && !isLocked"></svg-icon>
+							<svg-icon iClass="i-def text-danger" svgicon="icon-alert-fill" *ngIf="EmployeeName !== '' && isLocked"></svg-icon>
+						</h3>
+
+						<div class="d-flex flex-wrap justify-content-center gap-2 mt-auto">
+							<button class="btn btn-light-danger btn-xs" (click)="deleteImageHandler($event)" *ngIf="uploadedImage">
+								<svg-icon iClass="i-sm" svgicon="icon-trash"></svg-icon> Remove Image
+							</button>
+
+							<button type="button" class="btn btn-danger btn-xs" *ngIf="employeesetupForm.value.EmployeeID!==0"
+								(click)="resetPassword(employeesetupForm.value)">
+								<svg-icon iClass="i-sm" svgicon="icon-password"></svg-icon> Reset Password
+							</button>
+
+							<button type="button" *ngIf="employeesetupForm.value.EmployeeID!==0 && isLocked" class="btn btn-success btn-xs"
+								(click)="AccessStatusChange(employeesetupForm.value)">
+								<svg-icon iClass="i-sm" svgicon="icon-unlock-password"></svg-icon> Unlock
+							</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="col-xxl-8 col-xl-8">
+			<div class="card rounded-3">
+				<div class="card-body">
+					<input type="text" formControlName="EmployeeID" hidden>
+
+					<div class="row">
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Enroll Number" class="required">
+									<input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" min="0" kendoTextBox name="EnrollNumber" class="form-control" formControlName="EnrollNumber" autocomplete="off" required>
+								</kendo-floatinglabel>
+								<kendo-formerror
+									[hidden]="employeesetupForm.controls.EnrollNumber.valid || employeesetupForm.controls.EnrollNumber.pristine">
+									This field is limited to 11 number.
+								</kendo-formerror>
+							</div>
+						</div>
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Employee Code" class="required">
+									<input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" min="0" kendoTextBox name="EmployeeCode" class="form-control" formControlName="EmployeeCode" required>
+								</kendo-floatinglabel>
+								<kendo-formerror
+									[hidden]="employeesetupForm.controls.EmployeeCode.valid || employeesetupForm.controls.EmployeeCode.pristine">
+									This field is limited to 50 character.
+								</kendo-formerror>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Name" class="required">
+									<input type="text" kendoTextBox name="EmployeeName" class="form-control" formControlName="EmployeeName" required>
+								</kendo-floatinglabel>
+								<kendo-formerror
+									[hidden]="employeesetupForm.controls.EmployeeName.valid || employeesetupForm.controls.EmployeeName.pristine">
+									This field is limited to 200 character.
+								</kendo-formerror>
+							</div>
+						</div>
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Myanmar Name">
+									<input type="text" kendoTextBox name="MyanmarName" class="form-control"
+										formControlName="MyanmarName">
+								</kendo-floatinglabel>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Date of Birth">
+									<kendo-datepicker [format]="'dd MMM yyyy'" formatPlaceholder="formatPattern" class="form-control" [(value)]="DOBvalue" calendarType="classic">
+									</kendo-datepicker>
+								</kendo-floatinglabel>
+							</div>
+						</div>
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Gender" class="d-block pt-4">
+									<span class="d-inline-block mt-1">
+										<input type="radio" formControlName="Gender" name="Gender" id="male"
+											[value]="false" kendoRadioButton checked="checked">
+										<label class="k-radio-label me-4" for="male">Male</label>
+									</span>
+									<span class="d-inline-block mt-1">
+										<input type="radio" formControlName="Gender" name="Gender" id="female"
+											[value]="true" kendoRadioButton>
+										<label class="k-radio-label" for="female">Female</label>
+									</span>
+								</kendo-floatinglabel>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Email">
+									<input type="text" kendoTextBox name="Email" class="form-control"
+										formControlName="Email" autocomplete="off">
+								</kendo-floatinglabel>
+								<kendo-formerror
+									[hidden]="employeesetupForm.controls.Email.valid || employeesetupForm.controls.Email.pristine">
+									Wrong Email Format.
+								</kendo-formerror>
+							</div>
+						</div>
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Phone">
+									<input type="tel" kendoTextBox name="Phone" class="form-control"
+										formControlName="Phone">
+								</kendo-floatinglabel>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="N.R.C">
+									<input type="text" kendoTextBox name="nrc" class="form-control"
+										formControlName="nrc" placeholder="--/---(N)------">
+								</kendo-floatinglabel>
+							</div>
+						</div>
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Nationality">
+									<input type="text" kendoTextBox name="Nationality" class="form-control" formControlName="Nationality">
+								</kendo-floatinglabel>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Company">
+									<select class="form-select" (change)="onChange($event)" name="CID" formControlName="CID">
+										<option *ngFor="let pr of Company" [ngValue]="pr.CID">
+											{{pr.CName}}</option>
+									</select>
+								</kendo-floatinglabel>
+							</div>
+						</div> 
+						<!--add Divison--> 
+						<div class="col-xxl-4 col-sm-6" *ngIf="show_Divison">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Division">
+									<select class="form-select" name="DivisionID"
+										formControlName="DivisionID">
+										<option *ngFor="let pr of Division" [ngValue]="pr.DivisionID">{{pr.DivisionName}}</option>
+									</select>
+								</kendo-floatinglabel>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xxl-4 col-sm-6" >
+							<div class="mb-3">
+								<kendo-floatinglabel text="User Level">
+									<select class="form-select" name="SysID" formControlName="SysID">
+										<option *ngFor="let pr of UserLevel" [ngValue]="pr.SysID">
+											{{pr.UserLevel}}</option>
+									</select>
+								</kendo-floatinglabel>
+							</div>
+						</div>
+						<div class="col-xxl-4 col-sm-6" *ngIf="employeesetupForm.value.EmployeeID === 0 ">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Login Password" class="required">
+									<input type="password" kendoTextBox name="LoginPassword"
+										class="form-control" formControlName="LoginPassword"
+										autocomplete="new-password" required>
+								</kendo-floatinglabel>
+								<kendo-formerror
+									[hidden]="employeesetupForm.controls.LoginPassword.valid || employeesetupForm.controls.LoginPassword.pristine">
+									Password is required..!
+								</kendo-formerror>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xxl-8">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Address">
+									<kendo-textarea resizable="auto" name="Address" class="form-control" formControlName="Address"></kendo-textarea>
+								</kendo-floatinglabel>
+							</div>
+						</div>
+						<div class="col-xxl-8">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Contact Address">
+									<kendo-textarea resizable="auto" name="ContactAddress" class="form-control" formControlName="ContactAddress"></kendo-textarea>
+								</kendo-floatinglabel>
+							</div>
+						</div>
+					</div>
+					<div class="form-check">
+						<input type="checkbox" id="inactiveEmp" name="InactiveEmployee"
+							formControlName="InactiveEmployee"
+							(click)="inactiveEmp($event.target.checked)" kendoCheckBox>
+						<label class="k-checkbox-label" for="inactiveEmp">Inactive Employee</label>
+					</div>
+				</div>
+				<div class="card-footer bg-transparent border-0">
+					<button type="button" (click)="cancel()" class="btn btn-light">Cancel</button>
+					<ng-container *ngxPermissionsOnly="'new'">
+						<button type="button" class="btn btn-primary"
+							[disabled]="!employeesetupForm.valid || restrictedfiletype === true" *ngIf="saveBtn" (click)="saveEmpData()">Save</button>
+					</ng-container>
+					<ng-container *ngxPermissionsOnly="'edit'">
+						<button type="button" class="btn btn-primary"
+							[disabled]="!employeesetupForm.valid || restrictedfiletype === true" *ngIf="updateBtn" (click)="update()">Update</button>
+					</ng-container>
+					<ng-container *ngxPermissionsOnly="'delete'">
+						<button type="button" class="btn btn-danger"
+							*ngIf="employeesetupForm.value.EmployeeID!==0"
+							(click)="showConfirmation(employeesetupForm.value)">Delete</button>
+					</ng-container>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</form>
+
+<!--for FilterByEmployeePopUp -->
+<kendo-dialog title="" *ngIf="isShowUploadFilter" (close)="closeFilterByEmployeePopUp()" [minWidth]="250" [width]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h5 class="modal-title">Searching Employee</h5>
+	</kendo-dialog-titlebar>
+
+	<app-filterbyemployee></app-filterbyemployee>
+	<kendo-dialog-actions [layout]="actionsLayout">
+		<button type="button" class="btn btn-light"
+			(click)="closeFilterByEmployeePopUp()">Cancel</button>
+		<button type="submit" class="btn btn-primary" (click)="select()">Select</button>
+	</kendo-dialog-actions>
+</kendo-dialog>
+
+<!--for Searching user level assign  -->
+<kendo-dialog title="" *ngIf="isUserLevelFilter" (close)="closeUserlevelPopup()" [minWidth]="250" [width]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h5 class="modal-title">Add User Level Control</h5>
+	</kendo-dialog-titlebar>
+	<app-filterbyuserlevelassign  [SelectedEmployeeID]="this.selectempid" (checkedKeysOutput)="getcheckedKeysOutput($event)">
+	</app-filterbyuserlevelassign>
+	<kendo-dialog-actions [layout]="actionsLayout">
+		<button type="button" class="btn btn-light" (click)="closeUserlevelPopup()">Cancel</button>
+		<button type="submit" class="btn btn-primary" (click)="selectUserlevel()">Select</button>
+	</kendo-dialog-actions>
+</kendo-dialog>
+
+<div kendoDialogContainer></div>

@@ -1,0 +1,8 @@
+<app-header kendoRippleContainer></app-header>
+<app-sidebar kendoRippleContainer></app-sidebar>
+<section class="main-container d-flex flex-column position-relative" [ngClass]="{collapsed: globals.collapsed}">
+<!-- <div class="container-fluid flex-grow-1"> -->
+   <router-outlet></router-outlet>
+<!-- </div> -->
+</section>
+<div class="backdrop-overlay" [ngClass]="{collapsed: globals.collapsed}" (click)="resetToggle($event)"></div>

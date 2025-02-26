@@ -1,0 +1,11 @@
+<button
+	type="{{btnType === '' ? 'submit' : btnType}}"
+	class="btn {{btnClass === '' ? 'btn-primary btn-icon btn-sm' : btnClass}}"
+	(click)="onClickButton($event)"
+	placement="{{textTooltip !== undefined ? 'bottom-right' : null}}"
+	ngbTooltip="{{textTooltip !== undefined ? textTooltip : null}}"
+	[disabled]="disableFlag === 'true'">
+
+	<svg-icon iClass="i-def {{btniClass !== '' ? btniClass : ''}}" svgicon="{{btnSvgicon}}"></svg-icon> {{btnText !== '' ? btnText : '' }}
+
+</button>

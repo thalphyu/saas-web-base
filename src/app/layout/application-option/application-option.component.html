@@ -1,0 +1,121 @@
+<div class="d-flex header-panel">
+	<app-page-header [mainHeading]="'Application Option'" [heading]="'Application Option'" [subheading]="'System'" [icon]="''">
+		</app-page-header>
+</div>
+
+<form name="applicationOptionForm" [formGroup]="applicationOptionForm">
+	<div class="row gx-3 gx-lg-4">
+		<div class="col-xl-4 col-md-5 order-md-last mb-3">
+			<div class="card rounded-3 h-100">
+				<div class="card-body">
+					<ngx-simplebar [options]="options" class="" style="height: 250px">
+						
+						<div class="form-check mb-3">
+							<input type="checkbox" name="AccessNewEmployeeToAllUserlevel" formControlName="AccessNewEmployeeToAllUserlevel" id="accessUserlevel" kendoCheckBox>
+							<label class="k-checkbox-label" for="accessUserlevel">Access New Employee To All Userlevel</label>
+						</div>
+						
+					</ngx-simplebar>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-xl-8 col-md-7 mb-3">
+			<div class="card rounded-3 h-100">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-xl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Date Format">
+									<select class="form-select" name="DateFormat"
+										formControlName="DateFormat">
+										<option selected>yyyy/MM/dd</option>
+										<option>yyyy-MM-dd</option>
+										<option>yyyy/MMM/dd</option>
+										<option>yyyy-MMM-dd</option>
+										<option>MM/dd/yyyy</option>
+										<option>MM-dd-yyyy</option>
+										<option>MMM/dd/yyyy</option>
+										<option>MMM-dd-yyyy</option>
+										<option>dd/MM/yyyy</option>
+										<option>dd-MM-yyyy</option>
+										<option>dd/MMM/yyyy</option>
+										<option>dd-MMM-yyyy</option>
+									</select>
+								</kendo-floatinglabel>
+							</div>
+						</div>
+						<div class="col-xl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="First Day Of Week">
+									<select class="form-select" name="FirstDay"
+										formControlName="FirstDay">
+										<option [ngValue]="1">Monday</option>
+										<option [ngValue]="2">Tuesday</option>
+										<option [ngValue]="3">Wednesday</option>
+										<option [ngValue]="4">Thursday</option>
+										<option [ngValue]="5">Friday</option>
+										<option [ngValue]="6">Saturday</option>
+										<option [ngValue]="7">Sunday</option>
+									</select>
+								</kendo-floatinglabel>
+							</div>
+						</div>
+					</div>
+					
+					<kendo-floatinglabel text="Time Format" class="d-block pt-4">
+						<div class="mt-1">
+							<div class="mb-3">
+								<input type="radio" name="TimeValue" id="shift" formControlName="TimeValue"
+									value="1" (click)="timecheckChange(1)" kendoRadioButton>
+								<label class="k-radio-label" for="shift">Civilian Time(01:00AM - 12:00PM)
+								</label>
+							</div>
+							<div class="mb-3">
+								<input type="radio" name="TimeValue" id="IsAllowMobile"
+									formControlName="TimeValue" value="0" (click)="timecheckChange(0)"
+									kendoRadioButton>
+								<label class="k-radio-label" for="IsAllowMobile">Military Time(01:00 - 24:00)
+								</label>
+							</div>
+						</div>
+					</kendo-floatinglabel>
+
+					<div class="row">
+						<div class="col-xl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Grid Paging Size" class="required">
+									<input type="number" name="GridPagingsize" minlength="2" class="form-control"
+										formControlName="GridPagingsize" kendoTextBox required>
+								</kendo-floatinglabel>
+								<kendo-formhint class="text-muted">Size must be between 10 and 100.
+								</kendo-formhint>
+								<kendo-formerror
+									[hidden]="applicationOptionForm.controls.GridPagingsize.valid ||	applicationOptionForm.controls.GridPagingsize.pristine">
+									Grid paging size must be between 10 and 100 !
+								</kendo-formerror>
+							</div>
+						</div>
+						<div class="col-xl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Allow Login Failure Count" class="required">
+									<input type="number" name="AllowLoginFailureCount" class="form-control"
+										formControlName="AllowLoginFailureCount"
+										(keyup)="textChangeValidation('AllowLoginFailureCount',$event)"
+										kendoTextBox required>
+								</kendo-floatinglabel>
+								<kendo-formhint class="text-muted">Failure count must be at least 5.
+								</kendo-formhint>
+								<kendo-formerror
+									[hidden]="applicationOptionForm.controls.AllowLoginFailureCount.valid || applicationOptionForm.controls.AllowLoginFailureCount.pristine">
+									Allow login failure count is required !
+								</kendo-formerror>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<button type="submit" [disabled]="!applicationOptionForm.valid" class="btn btn-primary" (click)="SaveSetting()">Save</button>
+</form>

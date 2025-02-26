@@ -1,0 +1,23 @@
+<p class="mt-4">
+	The following options control various aspects of the board's and gadget's behavior. Changes take effect immediately.
+</p>
+<br>
+<!-- <div class="form-check form-switch mb-2">
+  <input class="form-check-input" type="checkbox" role="switch" id="showGadget" checked="enableHover" (change)="onHooverOptionChange($event)" aria-checked="false">
+  <label class="form-check-label" for="showGadget">Always show the gadget delete button in the title. By default delete button show / hide when you hover over the title.</label>
+</div>
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" role="switch" id="autoSlide" [checked]="enableSlide" (change)="onSlideOptionChange($event)" aria-checked="false">
+  <label class="form-check-label" for="autoSlide">Auto Slide Boards After 1 minute.</label>
+</div> -->
+<mat-slide-toggle color="secondary"
+	 [checked]="enableHover" (change)="onHooverOptionChange($event)"
+	 class="d-block mb-3">
+	Always show the gadget delete button in the title. By default delete button show / hide when you hover over the title.
+</mat-slide-toggle>
+
+<mat-slide-toggle
+	[checked]="enableSlide"
+	(change)="onSlideOptionChange($event)" class="d-block">
+	Auto Slide Boards After 1 minute .
+</mat-slide-toggle>

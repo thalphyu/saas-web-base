@@ -1,0 +1,214 @@
+<div class="d-flex flex-column px-3 content-box">
+    <div class="d-sm-flex align-items-center header-panel mb-2 p-1">
+        <app-page-header [mainHeading]="'SMS Setting'" [heading]="'SMS Setting'" [subheading]="'System'" [icon]="''">
+        </app-page-header>
+        <div class="title-action-panel ml-auto float-right mt-1 mt-sm-0 d-inline-flex">
+        </div>
+    </div>
+
+    <div class="card rounded-2x border-0 mb-4 flex-grow-1">
+        <div class="card-body">
+            <form name="SMSSettingForm" [formGroup]="SMSSettingForm" class="mt-3 px-2">
+                <div class="row">
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="form-group">
+                            <kendo-floatinglabel text="Provider Name" class="required">
+                                <select class="form-select" name="providerid"
+                                    formControlName="providerid">
+                                    <option *ngFor="let data of providerData" [ngValue]="data.providerid">
+                                        {{data.providername}}
+                                    </option>
+                                </select>
+                                <label class="k-tooltip k-tooltip-validation errormessage"
+                                    [hidden]="SMSSettingForm.controls.providerid.valid || SMSSettingForm.controls.providerid.pristine">
+                                    Provider Name is required.
+                                </label>
+                            </kendo-floatinglabel>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="form-group">
+                            <kendo-floatinglabel text="Sender Name" class="required">
+                                <input type="text" kendoTextBox name="sendername" class="form-control"
+                                    formControlName="sendername" required />
+                            </kendo-floatinglabel>
+                            <label class="k-tooltip k-tooltip-validation errormessage"
+                                [hidden]=" SMSSettingForm.controls.sendername.valid || SMSSettingForm.controls.sendername.pristine">
+                                Sender Name is required.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="form-group">
+                            <kendo-floatinglabel text="Client ID" class="required">
+                                <input type="text" kendoTextBox name="clientid" class="form-control"
+                                    formControlName="clientid" required />
+                            </kendo-floatinglabel>
+                            <label class="k-tooltip k-tooltip-validation errormessage"
+                                [hidden]=" SMSSettingForm.controls.clientid.valid || SMSSettingForm.controls.clientid.pristine">
+                                Client ID is required.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="form-group">
+                            <kendo-floatinglabel text="Client Secret" class="required">
+                                <input type="password" kendoTextBox name="clientsecret" class="form-control"
+                                    formControlName="clientsecret" required />
+                            </kendo-floatinglabel>
+                            <label class="k-tooltip k-tooltip-validation errormessage"
+                                [hidden]=" SMSSettingForm.controls.clientsecret.valid || SMSSettingForm.controls.clientsecret.pristine">
+                                Client Secret is required.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="form-group">
+                            <kendo-floatinglabel text="Token Url">
+                                <input type="text" kendoTextBox name="tokenurl" class="form-control"
+                                    formControlName="tokenurl" />
+                            </kendo-floatinglabel>
+                            <!-- <label class="k-tooltip k-tooltip-validation errormessage"
+                                [hidden]=" SMSSettingForm.controls.tokenurl.valid || SMSSettingForm.controls.tokenurl.pristine">
+                                Token Url is required.
+                            </label> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="form-group">
+                            <kendo-floatinglabel text="Redirect Url">
+                                <input type="text" kendoTextBox name="redirecturl" class="form-control"
+                                    formControlName="redirecturl" />
+                            </kendo-floatinglabel>
+                            <!-- <label class="k-tooltip k-tooltip-validation errormessage"
+                                [hidden]=" SMSSettingForm.controls.redirecturl.valid || SMSSettingForm.controls.redirecturl.pristine">
+                                Redirect Url is required.
+                            </label> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="form-group">
+                            <kendo-floatinglabel text="Authorize Url">
+                                <input type="text" kendoTextBox name="authorizeurl" class="form-control"
+                                    formControlName="authorizeurl" />
+                            </kendo-floatinglabel>
+                            <!-- <label class="k-tooltip k-tooltip-validation errormessage"
+                                [hidden]=" SMSSettingForm.controls.authorizeurl.valid || SMSSettingForm.controls.authorizeurl.pristine">
+                                Authorize Url is required.
+                            </label> -->
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="form-group">
+                            <kendo-floatinglabel text="User Name">
+                                <input type="text" kendoTextBox name="username" class="form-control"
+                                    formControlName="username" />
+                            </kendo-floatinglabel>
+                            <!-- <label class="k-tooltip k-tooltip-validation errormessage"
+                                [hidden]=" SMSSettingForm.controls.username.valid || SMSSettingForm.controls.username.pristine">
+                                User Name is required.
+                            </label> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="form-group">
+                            <kendo-floatinglabel text="Password">
+                                <input type="password" kendoTextBox name="password" class="form-control"
+                                    formControlName="password" />
+                            </kendo-floatinglabel>
+                            <!-- <label class="k-tooltip k-tooltip-validation errormessage"
+                                [hidden]=" SMSSettingForm.controls.password.valid || SMSSettingForm.controls.password.pristine">
+                                Password is required.
+                            </label> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="form-group">
+                            <kendo-floatinglabel text="BaseURL">
+                                <input type="password" kendoTextBox name="baseurl" class="form-control"
+                                    formControlName="baseurl" />
+                            </kendo-floatinglabel>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="form-group">
+                            <kendo-floatinglabel text="API Key">
+                                <input type="password" kendoTextBox name="apikey" class="form-control"
+                                    formControlName="apikey" />
+                            </kendo-floatinglabel>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-6 col-sm-6">
+                        <div class="form-group">
+                            <!-- <button type="submit" [disabled]="!SMSSettingForm.valid" class="btn btn-info rounded-pill px-4"
+                  (click)="openTestMailSettingPopUp()">Test Mail</button> -->
+                            <button type="submit" [disabled]="!SMSSettingForm.valid"
+                                class="btn btn-success rounded-pill px-4" (click)="SaveSMSSetting()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div kendoDialogContainer></div>
+<!-- <kendo-dialog title="Cloud Time Attendance System - Test Mail Setting" *ngIf="isShowUpload"
+    (close)="closeTestMailSettingPopUp()" [minWidth]="400" [width]="600">
+    <form name="MailForm" [formGroup]="MailForm">
+      <div class="py-4 px-3">
+        <div class="form-group row">
+          <div *ngIf="loading" class="k-i-loading" style="position: absolute;z-index: 10"></div>
+          <label class="text-md-right text-sm font-weight-semibold col-xl-4 col-md-5 col-form-label">Please enter Email :
+          </label>
+          <div class="col-md-6">
+            <input type="email" name="Mail" class="form-control rounded-0 text-sm" formControlName="Mail" required />
+            <label class="k-tooltip k-tooltip-validation errormessage"
+              [hidden]="MailForm.controls.Mail.valid || MailForm.controls.Mail.pristine">
+              Mail is required !
+            </label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="offset-xl-4 offset-md-5 col-md-6">
+            <button type="submit" [disabled]="!MailForm.valid" class="btn btn-success rounded-0"
+              (click)="testMailSetting()">Send Mail</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </kendo-dialog> -->

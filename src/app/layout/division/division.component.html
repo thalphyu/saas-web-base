@@ -1,0 +1,99 @@
+<div class="d-sm-flex align-items-end header-panel">
+	<app-page-header [mainHeading]="'Division'" [heading]="showNew !== true ? 'Division': this.compbutton === false ? 'Add Division': 'Edit Division'" [subheading]="'Setup'" [icon]="''"></app-page-header>
+
+	<div class="title-action-panel ms-auto float-end d-inline-flex gap-2 align-items-center">
+		<action-btn textTooltip="Add New" btnSvgicon="icon-plus" (byClick)="newDivision()"></action-btn>
+	</div>
+</div>
+
+<div class="card rounded-3" *ngIf="showNew !== true">
+	<div class="card-header p-2"></div>
+	<div class="px-1 pb-2"><!--[kendoGridBinding]="gridData" [filter]="filter"-->
+		<kendo-grid [data]="view | async" gridHeight #height="heightDirective" [pageSize]="gridState.take" [skip]="gridState.skip" [style.height.px]="[height.kGridHeight]" [style.minHeight.px]="300" [pageable]="{
+			buttonCount: 5,
+			info: true,
+			type: 'input',
+			pageSizes: true,
+			previousNext: true,
+			responsive: true
+			}" [sort]="gridState.sort" [filter]="gridState.filter" [sortable]="true" (dataStateChange)="onStateChange($event)"
+			[scrollable]="true" [resizable]="true"  [filterable]="{multi:true,search:true}" [loading]="loading"
+			[columnMenu]="{
+				filter: {
+					expanded: true
+				},
+				sort: false,
+				columnChooser: false
+			}">
+			<kendo-grid-column field="Division" title="Division" width="250" [minResizableWidth]="30">
+			</kendo-grid-column>
+			<kendo-grid-column field="Inactive_Division" title="Status" width="160" filter="boolean" [minResizableWidth]="30">
+				<ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
+					<app-multicheck-filter [isPrimitive]="false" [field]="column.field"
+						[filterService]="filterService" [currentFilter]="filter"
+						[data]="statuslist" valueField="id" textField="value">
+					</app-multicheck-filter>
+				</ng-template>
+				<ng-template kendoGridCellTemplate let-dataItem>
+					<div class="text-nowrap d-inline"><span class="legend-indicator me-2" [ngClass]="!dataItem.Inactive_Division ? 'bg-success' : 'bg-danger'"></span>
+					<label [ngClass]="this.globals.storedSkin === 'dark' ? 'text-muted' : 'text-darkgray'">{{!dataItem.Inactive_Division ? 'Active' : 'Inactive'}}</label></div>
+					<span *ngIf="dataItem.Is_Default === true" class="badge badge-lg bg-success ms-3">Default</span>
+				</ng-template>
+			</kendo-grid-column>
+			<kendo-grid-column field="Action" title="Action" width="100" [sortable]="false" [filterable]="false" [minResizableWidth]="100" [sticky]="true">
+				<ng-template kendoGridCellTemplate let-dataItem>
+					<button class="btn btn-icon btn-clean btn-sm" (click)="onItemClick('Edit',dataItem)" title="Edit">
+						<svg-icon iClass="i-sm" svgicon="icon-pencil"></svg-icon>
+					</button>
+					<button class="btn btn-icon btn-clean btn-sm" (click)="onItemClick('Delete',dataItem)" title="Delete">
+						<svg-icon iClass="i-sm" svgicon="icon-trash"></svg-icon>
+					</button>
+				</ng-template>
+			</kendo-grid-column>
+		</kendo-grid>
+	</div>
+</div>
+
+<div class="card rounded-3" *ngIf="showNew === true">
+	<div class="card-body">
+		<form name="divisionForm" [formGroup]="divisionForm">
+			<div class="row">
+				<div class="col-xl-5 col-md-6">
+					<div class="mb-3">
+						<kendo-floatinglabel text="Division Name" class="required">
+							<input type="text" kendoTextBox name="Division" class="form-control"
+								formControlName="Division" required />
+						</kendo-floatinglabel>
+						<kendo-formerror
+							[hidden]="divisionForm.controls.Division.valid || divisionForm.controls.Division.pristine">
+							Division Name is required !
+						</kendo-formerror>
+					</div>
+					<div class="form-check mb-3">
+						<input type="checkbox" name="is_Default" formControlName="Is_Default" id="division" kendoCheckBox>
+						<label class="k-checkbox-label" for="division">Use this division as default</label>
+					</div>
+					<div class="form-check mb-3">
+						<input type="checkbox" name="inactive_Division" formControlName="Inactive_Division" id="inactive" kendoCheckBox>
+						<label class="k-checkbox-label" for="inactive">Inactive</label>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="card-footer bg-transparent border-0">
+		<button type="button" (click)="cancel()" class="btn btn-light">Cancel</button>
+		<ng-container *ngxPermissionsOnly="'edit'">
+			<button type="submit" [disabled]="!divisionForm.valid" *ngIf="saveBtn"
+				class="btn btn-primary" (click)="saveDivision()">Save</button>
+			<button type="submit" [disabled]="!divisionForm.valid" *ngIf="updateBtn"
+				class="btn btn-primary" (click)="updateDivision()">Update </button>
+		</ng-container>
+		<ng-container *ngxPermissionsOnly="'delete'">
+			<button [disabled]="!divisionForm.valid" class="btn btn-danger"
+				*ngIf="updateBtn" (click)="showConfirmation(divisionForm.value)">Delete</button>
+		</ng-container>
+	</div>
+</div>
+
+<div kendoDialogContainer></div>

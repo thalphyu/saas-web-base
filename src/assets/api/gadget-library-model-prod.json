@@ -1,0 +1,1018 @@
+{
+  "library": [
+    {
+      "componentType": "MonthlyRequestsSummaryGadgetComponent",
+      "name": "Monthly Requests Summary",
+      "description": "Monthly requests summary",
+      "icon": "icon-bar-chart",
+      "instanceId": -1,
+      "inputDate":"",
+      "tags": [
+        {
+          "facet": "Summary",
+          "name": "Monthly requests summary"
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Run",
+            "groupId": "run",
+            "position": 10,
+            "properties": [
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "Monthly Requests Summary",
+                "required": true,
+                "order": 1
+              },
+              {
+                "controlType": "dynamicdropdown",
+                "key": "endpoint",
+                "label": "Chart Data Source",
+                "value": "",
+                "required": true,
+                "order": 3
+              },
+              {
+                "controlType": "hidden",
+                "key": "state",
+                "label": "",
+                "value": "run",
+                "required": true,
+                "order": -1
+              },
+              {
+                "controlType": "hidden",
+                "key": "instanceId",
+                "label": "",
+                "value": 999,
+                "required": true,
+                "order": -2
+              }
+            ]
+          },
+          {
+            "displayName": "Chart",
+            "groupId": "chart",
+            "position": 11,
+            "properties": [
+              {
+                "controlType": "dropdown",
+                "type": "dropdown",
+                "key": "barChartType",
+                "label": "Bar Chart Type",
+                "value": "stackedVertical",
+                "required": true,
+                "order": 1,
+                "options": [
+                  {
+                    "key": "Normalized Horizontal",
+                    "value": "normalizedHorizontal"
+                  },
+                  {
+                    "key": "Normalized Vertical",
+                    "value": "normalizedVertical"
+                  },
+                  {
+                    "key": "Stacked Horizontal",
+                    "value": "stackedHorizontal"
+                  },
+                  {
+                    "key": "Stacked Vertical",
+                    "value": "stackedVertical"
+                  }
+                ]
+              },
+              {
+                "controlType": "textbox",
+                "key": "yAxisLabel",
+                "label": "Y Axis Label",
+                "value": "",
+                "required": false,
+                "order": 2
+              },
+              {
+                "controlType": "textbox",
+                "key": "xAxisLabel",
+                "label": "X Axis Label",
+                "value": "",
+                "required": false,
+                "order": 3
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "gradient",
+                "label": "Show colors in gradient",
+                "value": false,
+                "required": true,
+                "order": 4
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "showDataLabel",
+                "label": "Show data label",
+                "value": true,
+                "required": false,
+                "order": 5
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "showXAxis",
+                "label": "Show x axis",
+                "value": true,
+                "required": false,
+                "order": 6
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "showYAxis",
+                "label": "Show y axis",
+                "value": true,
+                "required": false,
+                "order": 7
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "showLegend",
+                "label": "Show chart legend",
+                "value": true,
+                "required": false,
+                "order": 8
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "showXAxisLabel",
+                "label": "Show x axis label",
+                "value": true,
+                "required": false,
+                "order": 9
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "showYAxisLabel",
+                "label": "Show y axis label",
+                "value": false,
+                "required": false,
+                "order": 10
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "name": "Add"
+        }
+      ]
+    },
+    {
+      "componentType": "DailyAttendanceSummaryGadgetComponent",
+      "name": "Daily Attendance Summary",
+      "description": "Daily attendance summary",
+      "icon": "icon-donut-chart",
+      "instanceId": -1,
+      "tags": [
+        {
+          "facet": "Summary",
+          "name": "Daily attendance summary"
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Run",
+            "groupId": "run",
+            "position": 10,
+            "properties": [
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "Daily Attendance Summary",
+                "required": true,
+                "order": 1
+              },
+              {
+                "controlType": "dynamicdropdown",
+                "key": "endpoint",
+                "label": "Chart Data Source",
+                "value": "",
+                "required": true,
+                "order": 3
+              },
+              {
+                "controlType": "hidden",
+                "key": "instanceId",
+                "label": "",
+                "value": 999,
+                "required": true,
+                "order": -1
+              },
+              {
+                "controlType": "hidden",
+                "key": "state",
+                "label": "",
+                "value": "run",
+                "required": true,
+                "order": -2
+              }
+            ]
+          },
+          {
+            "displayName": "Chart",
+            "groupId": "chart",
+            "position": 11,
+            "properties": [
+              {
+                "controlType": "dropdown",
+                "type": "dropdown",
+                "key": "pieChartType",
+                "label": "PieChart Type",
+                "value": "pieChart",
+                "required": true,
+                "order": 1,
+                "options": [
+                  {
+                    "key": "PieChart",
+                    "value": "pieChart"
+                  },
+                  {
+                    "key": "Advanced PieChart",
+                    "value": "advancedPieChart"
+                  }
+                  
+                ]
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "explodeSlices",
+                "label": "Explode slices",
+                "value": true,
+                "required": false,
+                "order": 1
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "showDonut",
+                "label": "Show donut",
+                "value": true,
+                "required": false,
+                "order": 2
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "gradient",
+                "label": "Show colors in gradient",
+                "value": false,
+                "required": true,
+                "order": 3
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "showLegend",
+                "label": "Show chart legend",
+                "value": true,
+                "required": false,
+                "order": 4
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "showLabels",
+                "label": "Show labels",
+                "value": false,
+                "required": false,
+                "order": 5
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "name": "Add"
+        }
+      ]
+    },
+    {
+      "componentType": "AttendanceEmployeesGraphGadgetComponent",
+      "name": "Attendance Employee Counts By Graph",
+      "description": "Attendance employee counts by graph",
+      "icon": "icon-bar-chart",
+      "instanceId": -1,
+      "inputDate":"",
+      "tags": [
+        {
+          "facet": "Summary",
+          "name": "attendance employee counts by graph"
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Run",
+            "groupId": "run",
+            "position": 10,
+            "properties": [
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "Attendance Employee Counts By Graph",
+                "required": true,
+                "order": 1
+              },
+              {
+                "controlType": "dynamicdropdown",
+                "key": "endpoint",
+                "label": "Chart Data Source",
+                "value": "",
+                "required": true,
+                "order": 3
+              },
+              {
+                "controlType": "hidden",
+                "key": "state",
+                "label": "",
+                "value": "run",
+                "required": true,
+                "order": -1
+              },
+              {
+                "controlType": "hidden",
+                "key": "instanceId",
+                "label": "",
+                "value": 999,
+                "required": true,
+                "order": -2
+              }
+            ]
+          },
+          {
+            "displayName": "Chart",
+            "groupId": "chart",
+            "position": 11,
+            "properties": [
+              {
+                "controlType": "dropdown",
+                "type": "dropdown",
+                "key": "barChartType",
+                "label": "Bar Chart Type",
+                "value": "stackedVertical",
+                "required": true,
+                "order": 1,
+                "options": [
+                  {
+                    "key": "Normalized Horizontal",
+                    "value": "normalizedHorizontal"
+                  },
+                  {
+                    "key": "Normalized Vertical",
+                    "value": "normalizedVertical"
+                  },
+                  {
+                    "key": "Stacked Horizontal",
+                    "value": "stackedHorizontal"
+                  },
+                  {
+                    "key": "Stacked Vertical",
+                    "value": "stackedVertical"
+                  }
+                ]
+              },
+              {
+                "controlType": "textbox",
+                "key": "yAxisLabel",
+                "label": "Y Axis Label",
+                "value": "Employee Count",
+                "required": false,
+                "order": 2
+              },
+              {
+                "controlType": "textbox",
+                "key": "xAxisLabel",
+                "label": "X Axis Label",
+                "value": "",
+                "required": false,
+                "order": 3
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "gradient",
+                "label": "Show colors in gradient",
+                "value": true,
+                "required": true,
+                "order": 4
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "showDataLabel",
+                "label": "Show data label",
+                "value": true,
+                "required": false,
+                "order": 5
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "showXAxis",
+                "label": "Show x axis",
+                "value": true,
+                "required": false,
+                "order": 6
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "showYAxis",
+                "label": "Show y axis",
+                "value": true,
+                "required": false,
+                "order": 7
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "showLegend",
+                "label": "Show chart legend",
+                "value": false,
+                "required": false,
+                "order": 8
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "showXAxisLabel",
+                "label": "Show x axis label",
+                "value": true,
+                "required": false,
+                "order": 9
+              },
+              {
+                "controlType": "checkbox",
+                "type": "checkbox",
+                "key": "showYAxisLabel",
+                "label": "Show y axis label",
+                "value": true,
+                "required": false,
+                "order": 10
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "name": "Add"
+        }
+      ]
+    },
+    {
+      "componentType": "DailyAttendanceGadgetComponent",
+      "name": "Daily Attendance",
+      "description": "My daily attendance",
+      "icon": "icon-daily-attendance",
+      "instanceId": -1,
+      "tags": [
+        {
+          "facet": "My Attendance",
+          "name": "My daily Attendance"
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Run",
+            "groupId": "run",
+            "position": 11,
+            "properties": [
+              {
+                "controlType": "dynamicdropdown",
+                "key": "endpoint",
+                "label": "Chart Data Source",
+                "value": "",
+                "required": true,
+                "order": 3
+              },
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "My Daily Attendance",
+                "required": true,
+                "order": 1
+              },
+              {
+                "controlType": "hidden",
+                "key": "instanceId",
+                "label": "",
+                "value": 2,
+                "required": false,
+                "order": -1
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "name": "Add"
+        }
+      ]
+    },
+    {
+      "componentType": "MymonthlyattendanceGadgetComponent",
+      "name": "Monthly Attendance",
+      "description": "My monthly Attendance",
+      "icon": "icon-monthly-attendance",
+      "instanceId": -1,
+      "tags": [
+        {
+          "facet": "My Attendance",
+          "name": "My monthly Attendance"
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Run",
+            "groupId": "run",
+            "position": 11,
+            "properties": [
+              {
+                "controlType": "dynamicdropdown",
+                "key": "endpoint",
+                "label": "Chart Data Source",
+                "value": "",
+                "required": true,
+                "order": 3
+              },
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "My Monthly Attendance",
+                "required": true,
+                "order": 1
+              },
+              {
+                "controlType": "hidden",
+                "key": "instanceId",
+                "label": "",
+                "value": 2,
+                "required": false,
+                "order": -1
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "name": "Add"
+        }
+      ]
+    },
+    {
+      "componentType": "LeavehistoryGadgetComponent",
+      "name": "Leave History",
+      "description": "My leave history",
+      "icon": "icon-table-view",
+      "instanceId": -1,
+      "tags": [
+        {
+          "facet": "My Leave History",
+          "name": "My leave history"
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Run",
+            "groupId": "run",
+            "position": 11,
+            "properties": [
+              {
+                "controlType": "dynamicdropdown",
+                "key": "endpoint",
+                "label": "Chart Data Source",
+                "value": "",
+                "required": true,
+                "order": 3
+              },
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "My Leave History",
+                "required": true,
+                "order": 1
+              },
+              {
+                "controlType": "hidden",
+                "key": "instanceId",
+                "label": "",
+                "value": 2,
+                "required": false,
+                "order": -1
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "name": "Add"
+        }
+      ]
+    },
+    {
+      "componentType": "MyteamGadgetComponent",
+      "name": "My Team",
+      "description": "My team",
+      "icon": "icon-team-member",
+      "instanceId": -1,
+      "tags": [
+        {
+          "facet": "Team",
+          "name": "My team"
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Run",
+            "groupId": "run",
+            "position": 10,
+            "properties": [
+              {
+                "controlType": "dynamicdropdown",
+                "key": "endpoint",
+                "label": "News URL",
+                "value": "",
+                "required": true,
+                "order": 3
+              },
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "My Team",
+                "required": true,
+                "order": 1
+              },
+              {
+                "controlType": "hidden",
+                "key": "instanceId",
+                "label": "",
+                "value": 2,
+                "required": true,
+                "order": -1
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "name": "Add"
+        }
+      ]
+    },
+    {
+      "componentType": "LeaverequestedteammateGadgetComponent",
+      "name": "Leave Requested Teammates",
+      "description": "Leave requested teammates",
+      "icon": "icon-table-view",
+      "instanceId": -1,
+      "tags": [
+        {
+          "facet": "Team",
+          "name": "Leave requested teammates"
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Run",
+            "groupId": "run",
+            "position": 10,
+            "properties": [
+              {
+                "controlType": "dynamicdropdown",
+                "key": "endpoint",
+                "label": "News URL",
+                "value": "",
+                "required": true,
+                "order": 3
+              },
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "Leave Requested Teammates",
+                "required": true,
+                "order": 1
+              },
+              {
+                "controlType": "hidden",
+                "key": "instanceId",
+                "label": "",
+                "value": 2,
+                "required": true,
+                "order": -1
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "name": "Add"
+        }
+      ]
+    },
+    {
+      "componentType": "BirthdaysGadgetComponent",
+      "name": "Birthdays",
+      "description": "Teammates' birthdays",
+      "icon": "icon-birthday-calendar",
+      "instanceId": -1,
+      "tags": [
+        {
+          "facet": "News",
+          "name": "Teammates' birthdays"
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Run",
+            "groupId": "run",
+            "position": 10,
+            "properties": [
+              {
+                "controlType": "dynamicdropdown",
+                "key": "endpoint",
+                "label": "News URL",
+                "value": "",
+                "required": true,
+                "order": 3
+              },
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "Teammates' Birthdays",
+                "required": true,
+                "order": 1
+              },
+              {
+                "controlType": "hidden",
+                "key": "instanceId",
+                "label": "",
+                "value": 2,
+                "required": true,
+                "order": -1
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "name": "Add"
+        }
+      ]
+    },
+    {
+      "componentType": "HolidaysGadgetComponent",
+      "name": "Holidays",
+      "description": "Upcoming holidays",
+      "icon": "icon-holiday-calendar",
+      "instanceId": -1,
+      "tags": [
+        {
+          "facet": "News",
+          "name": "Upcoming holidays"
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Run",
+            "groupId": "run",
+            "position": 10,
+            "properties": [
+              {
+                "controlType": "dynamicdropdown",
+                "key": "endpoint",
+                "label": "News URL",
+                "value": "",
+                "required": true,
+                "order": 3
+              },
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "Holidays",
+                "required": true,
+                "order": 1
+              },
+              {
+                "controlType": "hidden",
+                "key": "instanceId",
+                "label": "",
+                "value": 2,
+                "required": true,
+                "order": -1
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "name": "Add"
+        }
+      ]
+    },
+    {
+      "componentType": "AnnouncementGadgetComponent",
+      "name": "Announcements",
+      "description": "Monthly announcements",
+      "icon": "icon-announcement-list",
+      "instanceId": -1,
+      "tags": [
+        {
+          "facet": "News",
+          "name": "Announcements"
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Run",
+            "groupId": "run",
+            "position": 10,
+            "properties": [
+              {
+                "controlType": "dynamicdropdown",
+                "key": "endpoint",
+                "label": "News URL",
+                "value": "",
+                "required": true,
+                "order": 3
+              },
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "Announcements",
+                "required": true,
+                "order": 1
+              },
+              {
+                "controlType": "hidden",
+                "key": "instanceId",
+                "label": "",
+                "value": 2,
+                "required": true,
+                "order": -1
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "name": "Add"
+        }
+      ]
+    },
+    {
+      "componentType": "PermanentemployeelistGadgetComponent",
+      "name": "Permanent Employee List",
+      "description": "Permanent Employee List",
+      "icon": "icon-emp-list",
+      "instanceId": -1,
+      "tags": [
+        {
+          "facet": "News",
+          "name": "Permanent Employee List"
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Run",
+            "groupId": "run",
+            "position": 10,
+            "properties": [
+              {
+                "controlType": "dynamicdropdown",
+                "key": "endpoint",
+                "label": "News URL",
+                "value": "",
+                "required": true,
+                "order": 3
+              },
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "Permanent Employee List",
+                "required": true,
+                "order": 1
+              },
+              {
+                "controlType": "hidden",
+                "key": "instanceId",
+                "label": "",
+                "value": 2,
+                "required": true,
+                "order": -1
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "name": "Add"
+        }
+      ]
+    },
+    {
+      "componentType": "TasksStatusCountReportComponent",
+      "name": "Tasks Status Count",
+      "description": "Tasks Status Count",
+      "icon": "icon-team-member",
+      "instanceId": -1,
+      "tags": [
+        {
+          "facet": "Team",
+          "name": "Tasks Status Count"
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Run",
+            "groupId": "run",
+            "position": 10,
+            "properties": [
+              {
+                "controlType": "dynamicdropdown",
+                "key": "endpoint",
+                "label": "News URL",
+                "value": "",
+                "required": true,
+                "order": 3
+              },
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "Tasks Status Count",
+                "required": true,
+                "order": 1
+              },
+              {
+                "controlType": "hidden",
+                "key": "instanceId",
+                "label": "",
+                "value": 2,
+                "required": true,
+                "order": -1
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "name": "Add"
+        }
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,29 @@
+<div class="ui top attached gadget-titlebar mx-n4 px-4 py-3 align-items-center">
+	<h3 class="ui top flex-grow-1 fs-4 my-1">{{title}}</h3>
+	<button class="btn btn-sm btn-light m-0"
+		*ngIf="showControls || globalOptions.enableHover" (click)="remove()">
+		<svg class="icon i-sm">
+			<use xlink:href="assets/icons/symbol-defs.svg#icon-trash"></use>
+		</svg>
+	</button>
+	<!-- <button class="compact ui button right floated"
+		*ngIf="showControls || globalOptions.enableHover && showConfigurationControl" (click)="toggleConfigMode()">
+		<i class="setting  icon" style="margin-right:0 !important"></i>
+	</button> -->
+	<!-- <button class="compact ui button right floated"
+		*ngIf="showControls || globalOptions.enableHover" (click)="help()">
+		<i class="info icon" style="margin-right:0 !important" ></i>
+	</button> -->
+
+	<!-- <app-gadget-operation-control *ngIf="showControls || globalOptions.enableHover"
+		[inRun]="inRun"
+		[inConfig]="inConfig"
+		[actionInitiated]="actionInitiated"
+		[showOperationControls]="showOperationControls"
+		[gadgetHasOperationControls]="gadgetHasOperationControls"
+		(runEvent)="run()"
+		(stopEvent)="stop()">
+	</app-gadget-operation-control> -->
+</div>
+<!-- <div class="spacer"></div> -->
+	 

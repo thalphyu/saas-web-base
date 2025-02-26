@@ -1,0 +1,243 @@
+<div class="d-flex header-panel">
+	<app-page-header [mainHeading]="'Company Profile'" [heading]="showNew !== true ? 'Company Profile': this.compbutton === false ? 'Add Company Profile': 'Edit Company Profile'" [subheading]="'Master'" [icon]="''"> </app-page-header>
+
+	<div class="title-action-panel ms-auto float-end d-inline-flex gap-2 align-items-center">
+		<action-btn textTooltip="Add New" btnSvgicon="icon-plus" (byClick)="newCompany()" disableFlag="{{this.syncflag}}"></action-btn>
+	</div>
+</div>
+
+<div class="card rounded-3" *ngIf="showNew !== true">
+	<div class="card-header p-2">
+	</div>
+	<div class="px-1 pb-2">
+		<kendo-grid [data]="view | async" gridHeight #height="heightDirective" [pageSize]="gridState.take" [skip]="gridState.skip" [style.height.px]="[height.kGridHeight]" [style.minHeight.px]="300" [pageable]="{
+			buttonCount: 5,
+			info: true,
+			type: 'input',
+			pageSizes: true,
+			previousNext: true,
+			responsive: true
+			}" [sort]="gridState.sort" [filter]="gridState.filter" (dataStateChange)="onStateChange($event)" [sortable]="true" [scrollable]="true" [resizable]="true" [filterable]="{multi:true,search:true}" [loading]="loading"
+			[columnMenu]="{
+				filter: {
+					expanded: true
+				},
+				sort: false,
+				columnChooser: false
+			}">
+
+			<kendo-grid-column field="Name" title="Company Name" width="300" [minResizableWidth]="30">
+				<!--<ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
+					<app-multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></app-multicheck-filter>
+				</ng-template>-->
+				<ng-template kendoGridCellTemplate let-dataItem>
+					<div class="d-flex align-items-center">
+						<div *ngIf="!uploadedImage" class="avatar-sm bg-default rounded-circle flex-shrink-0" style="width: 42px; height: 42px">
+	                  <svg-icon iClass="i-def text-secondary" svgicon="icon-building"></svg-icon>
+	            	</div>
+	            	<img *ngIf="uploadedImage" [src]="previewimage" alt="Profile Image" data-max-size="10kb" class="img-fluid avatar-sm img-fit rounded-circle flex-shrink-0" style="width: 42px; height: 42px" />
+						<div class="ms-3">
+							<span class="h6 mb-0 d-block">{{dataItem.Name}}</span>
+							<span class="text-secondary fs-6 d-block">{{dataItem.Email}}</span>
+						</div>
+					</div>
+				</ng-template>
+			</kendo-grid-column>
+			<kendo-grid-column field="Action" title="Action" width="100" [sortable]="false" [filterable]="false" [minResizableWidth]="100">
+				<ng-template kendoGridCellTemplate let-dataItem>
+					<button class="btn btn-icon btn-clean btn-sm" (click)="onItemClick('Edit',dataItem)" title="Edit" *ngxPermissionsOnly="'edit'">
+						<svg-icon iClass="i-sm" svgicon="icon-pencil"></svg-icon>
+					</button>
+		
+					<button class="btn btn-icon btn-clean btn-sm" [disabled]="this.syncflag" (click)="onItemClick('Delete',dataItem)" title="Delete" *ngxPermissionsOnly="'delete'">
+						<svg-icon iClass="i-sm" svgicon="icon-trash"></svg-icon>
+					</button>
+				</ng-template>
+			</kendo-grid-column>
+		</kendo-grid>
+	</div>
+</div>
+
+<form name="compForm" [formGroup]="compForm" *ngIf="showNew === true">
+	<div class="row g-3 g-xxl-4">
+		<div class="col-xxl-4 col-xl-4">
+			<div class="card rounded-3 sticky-profile-img">
+				<div class="card-body text-center">
+					<div class="d-flex flex-column align-items-center">
+						<div *ngIf="imagePreviews.length">
+							<img *ngFor="let image of imagePreviews" [src]="image.src" alt="Profile Image" data-max-size="10kb" class="img-fluid avatar-xl img-fit rounded-circle border-white border border-5 shadow" width="160px" />
+						</div>
+
+						<img *ngIf="!imagePreviews.length && uploadedImage" [src]="uploadedImage" alt="Profile Image" data-max-size="10kb" class="img-fluid avatar-xl img-fit rounded-circle border-white border border-5 shadow" width="160px" />
+
+						<div class="img-fluid avatar-xl img-fit rounded-circle border-white border border-5 shadow bg-default text-lightgray fs-3" *ngIf="!imagePreviews.length && !uploadedImage">IMAGE</div>
+
+						<kendo-upload class="custom-upload mb-3" name="image" formControlName="CompanyPhoto"
+		               [multiple]="false"
+		               [restrictions]="uploadRestrictions"
+		               [autoUpload]="true"
+		               [saveUrl]="uploadSaveUrl"
+		               [removeUrl]="uploadRemoveUrl"
+		               (upload)="uploadEventHandler($event)"
+		               (success)="successEventHandler($event)"
+		               (remove)="removeEventHandler($event)"
+		               (complete)="completeEventHandler($event)"
+
+		               (clear)="clear($event)"
+		               (select)="selectFile($event)"
+		            >
+		            </kendo-upload>
+		            <label class="text-danger fs-6" [hidden]="!isUploadPending">
+							File upload pending. Please wait to complete upload before save.
+						</label>
+					</div>
+
+					<h3 class="h5 text-dark mt-3 mb-1" *ngIf="compForm.controls.CompanyId.value !==null">{{compName}}</h3>
+					<p class="text-muted fs-6" *ngIf="compForm.controls.CompanyId.value !==null">{{compEmail}}</p>
+
+					<button class="btn btn-light-danger btn-xs mb-3" (click)="deleteImageHandler($event)" *ngIf="uploadedImage">
+						<svg-icon iClass="i-sm" svgicon="icon-trash"></svg-icon> Remove Image
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-xxl-8 col-xl-8">
+			<div class="card rounded-3">
+				<div class="card-body">
+					
+					<div class="row">
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Company Name" class="required">
+									<input type="text" kendoTextBox name="companyName" class="form-control" formControlName="Name" required>
+								</kendo-floatinglabel>
+								<kendo-formerror
+									[hidden]="compForm.controls.Name.valid || compForm.controls.Name.pristine">
+									Company Name is required
+								</kendo-formerror>
+							</div>
+						</div>
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Company Myanmar Name">
+									<input type="text" kendoTextBox name="companyMynName" class="form-control" formControlName="MyanmarName">
+								</kendo-floatinglabel>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xxl-8">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Email (example@gmail.com)">
+									<input type="email" kendoTextBox name="email" class="form-control" formControlName="Email">
+								</kendo-floatinglabel>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Phone">
+									<input type="tel" kendoTextBox name="phone" class="form-control" formControlName="Phone">
+								</kendo-floatinglabel>
+							</div>
+						</div>
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Fax">
+									<input type="text" kendoTextBox name="fax" class="form-control" formControlName="Fax">
+								</kendo-floatinglabel>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xxl-8">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Address">
+									<input type="text" kendoTextBox name="address" class="form-control" formControlName="Address">
+								</kendo-floatinglabel>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="City">
+									<input type="text" kendoTextBox name="city" class="form-control" formControlName="City">
+								</kendo-floatinglabel>
+							</div>
+						</div>
+						<div class="col-xxl-4 col-sm-6">
+							<div class="mb-3">
+								<kendo-floatinglabel text="State">
+									<input type="text" kendoTextBox name="State" class="form-control" formControlName="State">
+								</kendo-floatinglabel>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xxl-5 col-sm-8">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Country">
+									<select class="form-select" name="country" formControlName="Country">
+										<option *ngFor="let country of CountryList" [ngValue]="country">{{country}}
+										</option>
+									</select>
+								</kendo-floatinglabel>
+							</div>
+						</div>
+						<div class="col-xxl-3 col-sm-4">
+							<div class="mb-3">
+								<kendo-floatinglabel text="Zip Code">
+									<input type="text" kendoTextBox name="Zip" class="form-control" formControlName="Zip">
+								</kendo-floatinglabel>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xxl-5 col-md-8">
+							<div class="mb-3">
+								<kendo-floatinglabel text="WebSite">
+									<input type="url" kendoTextBox name="WebSite" class="form-control" formControlName="WebSite" placeholder="http://www.sample.com">
+								</kendo-floatinglabel>
+							</div>
+						</div>
+						<div class="col-xxl-3 col-md-4">
+							<div class="mb-3">
+								<kendo-floatinglabel text="SSB Register No.">
+									<input type="text" kendoTextBox name="SSBRegisterNo" class="form-control" formControlName="SSBRegister">
+								</kendo-floatinglabel>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+
+				<div class="card-footer bg-transparent border-0">
+					<button type="button" (click)="cancel()" class="btn btn-light">Cancel</button>
+					<!-- <ng-container *ngxPermissionsOnly="'edit'">
+						<button type="submit" [disabled]="!compForm.controls.Name.valid" *ngIf="saveBtn && syncflag==false" class="btn btn-primary" (click)="saveCompany()">Save</button>
+						<button type="submit" [disabled]="btnupdate" *ngIf="updateBtn && syncflag==false" class="btn btn-primary" (click)="updateCompany()">Update</button>
+
+						<button type="submit" [disabled]="this.syncflag" *ngIf="saveBtn && this.syncflag" class="btn btn-primary" (click)="saveCompany()">Save</button>
+						<button type="submit" *ngIf="updateBtn && this.syncflag " class="btn btn-primary" (click)="updateCompany()">Update</button>
+					</ng-container> -->
+					<ng-container *ngxPermissionsOnly="'new'">
+						<button type="submit" [disabled]="!compForm.controls.Name.valid" *ngIf="saveBtn && syncflag===false" class="btn btn-primary" (click)="saveCompany()">Save</button>
+						<button type="submit" [disabled]="btnupdate" *ngIf="updateBtn && syncflag===false" class="btn btn-primary" (click)="updateCompany()">Update</button>
+					</ng-container>
+					<ng-container *ngxPermissionsOnly="'edit'">
+						<button type="submit" [disabled]="this.syncflag" *ngIf="saveBtn && this.syncflag" class="btn btn-primary" (click)="saveCompany()">Save</button>
+						<button type="submit" *ngIf="updateBtn && this.syncflag " class="btn btn-primary" (click)="updateCompany()">Update</button>
+					</ng-container>
+					<ng-container *ngxPermissionsOnly="'delete'">
+						<button [disabled]="btnupdate" class="btn btn-danger" *ngIf="updateBtn && syncflag===false" (click)="showConfirmation(compForm.value)">Delete</button>
+						<button [disabled]="this.syncflag" class="btn btn-danger" *ngIf="updateBtn && this.syncflag" (click)="showConfirmation(compForm.value)">Delete</button>
+					</ng-container>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+
+<div kendoDialogContainer></div>

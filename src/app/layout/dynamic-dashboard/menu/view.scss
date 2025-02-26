@@ -1,0 +1,71 @@
+@import "custom-variables";
+
+.ui {
+	&.secondary {
+		&.pointing {
+			&.menu {
+				border-bottom: none;
+				min-height: 2rem;
+
+				.item {
+					color: $secondary;
+					padding: .5rem 1rem;
+					&:active {
+						color: $darkgrey;
+						border-color: transparent;
+					}
+					&.active {
+						color: $primary;
+						border-color: $primary;
+						border-width: 2px; 
+					}
+				}
+			}
+		}
+	}
+}
+/* .ui.secondary.pointing.menu .active.item {
+	color: #f9f9f9 !important;
+	font-weight: 500 !important;
+	border-color: #00ff00 !important;
+	border-width: medium !important;
+	font-family: 'Roboto', sans-serif !important;
+	font-size: 1.2em;
+}
+
+.ui.secondary.pointing.menu .item {
+	color: rgba(128, 128, 128, 0.7) !important;
+	font-weight: 500 !important;
+	font-family: 'Roboto', sans-serif !important;
+	font-size: 1.2em;
+}
+
+.ui.secondary.pointing.menu {
+	border-bottom: none !important;
+}
+
+
+input {
+	padding: 5px;
+	font-weight: 300 !important;
+	font-family: 'Roboto', sans-serif !important;
+	font-size: 1.1em;
+	outline: none !important;
+}
+
+.ui.floating.label{
+	top:.5em;
+	margin:0;
+}
+.ui.menu .item>.floating.label{
+	padding:.3em .6em
+}
+
+.ui.menu{
+	border-radius:0px;
+}
+
+.ui.menu .item>i.icon {
+	margin: 0;
+}
+ */

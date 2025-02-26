@@ -1,0 +1,60 @@
+@media only screen 
+and (-webkit-min-device-pixel-ratio: 3)
+and (orientation: landscape) {
+	.min-h {
+		min-height: auto
+	}
+
+	.k-animation-container-shown {
+		> .k-popup {
+			&.k-grid-columnmenu-popup {
+				.ngx-scrollbar {
+					max-height: 30vh
+				}
+			}
+		}
+	}
+  
+}
+
+/* iPhone Portrait and Landscape */
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 375px) 
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: portrait) {
+	.min-h {
+		min-height: auto
+	}
+	.k-animation-container-shown {
+		> .k-popup {
+			&.k-grid-columnmenu-popup {
+				.ngx-scrollbar {
+					max-height: 35vh
+				}
+			}
+		}
+	}
+
+	.d-xs-none {
+		display: none;
+	}
+}
+@media only screen 
+and (min-device-width : 568px) 
+and (max-device-width : 667px) 
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: landscape) {
+	.min-h {
+		min-height: auto
+	}
+	.k-animation-container-shown {
+		> .k-popup {
+			&.k-grid-columnmenu-popup {
+				.ngx-scrollbar {
+					max-height: 35vh
+				}
+			}
+		}
+	}
+}

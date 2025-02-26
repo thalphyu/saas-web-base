@@ -1,0 +1,93 @@
+@import "c-variable";
+
+::selection {
+	background-color: $primary;
+	color: color-contrast($primary);
+}
+a {
+	text-decoration: none;
+}
+input:focus-visible {
+	outline: none;
+}
+
+.no-caret {
+	&:after {
+		content: none
+	}
+}
+
+.border-dashed {
+	border-style: dashed !important;
+}
+.rounded-4 {
+	border-radius: $border-radius-xl;
+}
+.fw-medium {
+	font-weight: $font-weight-medium !important;
+}
+.fw-semibold {
+	font-weight: $font-weight-semibold !important;
+}
+
+.img-fit {
+	object-fit: cover;
+}
+
+.rotate-45 {
+	-ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
+	-webkit-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+
+@keyframes blinker {
+	50% {
+		opacity: 0;
+	}
+}
+@keyframes blinkborder {
+	50% {
+		border-color: transparent !important;
+	}
+}
+.blink {
+	animation: blinker .5s step-end infinite alternate;
+}
+.blink-border {
+	animation: blinkborder .5s step-end infinite alternate;
+}
+
+@keyframes fadeIn {
+	0% { opacity:0 }
+	to { opacity:1 }
+}
+@-webkit-keyframes fadeIn {
+	0% { opacity:0 }
+	to { opacity:1 }
+}
+@keyframes slideInUp{
+	from {
+		-webkit-transform: translate3d(0,20px,0);
+		transform: translate3d(0,20px,0);
+		visibility: visible
+	}
+	to {
+		-webkit-transform: translate3d(0,0,0);
+		transform: translate3d(0,0,0)
+	}
+}
+.slideInUp {
+	-webkit-animation-name: slideInUp;
+	animation-name: slideInUp
+}
+.fadeIn {
+	-webkit-animation-name: fadeIn;
+	animation-name: fadeIn;
+	animation-delay: 1s;
+}
+.animated {
+	-webkit-animation-duration: .3s;
+	-webkit-animation-fill-mode: both;
+	animation-duration: .3s;
+	animation-fill-mode: both;
+}

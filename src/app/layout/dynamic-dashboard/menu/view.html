@@ -1,0 +1,55 @@
+<div *ngIf="showdb" class="ui d-flex flex-wrap header-panel"><!--  #stickymenu_tag -->
+	<div class="ui secondary pointing menu board flex-grow-1 border-bottom mb-0 me-3">
+		<a *ngFor="let board of dashboardList; let i = index" class="item"
+			[ngClass]="{'active':board === selectedBoard}" (click)="emitBoardSelectEvent(board)">
+			{{board}}
+		</a>
+	</div>
+
+	<div class="title-action-panel ms-auto float-end d-inline-flex gap-2 align-self-start">
+		<button class="btn btn-primary btn-icon btn-sm" (click)="addGadgetModal.showComponentLibraryModal('Add Gadget')" placement="bottom-right" ngbTooltip="Add Gadget">
+			<svg class="icon i-def">
+				<use xlink:href="assets/icons/symbol-defs.svg#icon-plus"></use>
+			</svg>
+		</button>
+		<button class="btn btn-primary btn-icon btn-sm" (click)="toggleLayoutSideBar()" placement="bottom-right" ngbTooltip="Layout">
+			<svg class="icon i-def">
+				<use xlink:href="assets/icons/symbol-defs.svg#icon-grid-layout"></use>
+			</svg>
+		</button>
+		<!-- <button class="btn btn-primary btn-icon btn-sm" *ngFor="let board of dashboardList; let i = index" (click)="emitBoardSelectEvent(board)" placement="bottom-right" ngbTooltip="Refresh Dashboard">
+			<svg class="icon i-def">
+				<use xlink:href="assets/icons/symbol-defs.svg#icon-refresh"></use>
+			</svg>
+		</button> -->
+		<button (click)="boardConfigModal.showConfigurationModal('Configuration')" class="btn btn-primary btn-icon btn-sm" placement="bottom-right" ngbTooltip="Configuration">
+			<svg class="icon i-def">
+				<use xlink:href="assets/icons/symbol-defs.svg#icon-gear"></use>
+			</svg>
+		</button>
+		<!-- <button (click)="sidePanelToggle($event)" class="btn btn-primary btn-icon btn-sm" placement="bottom-right" ngbTooltip="Organization Structure">
+			<svg class="icon i-def">
+				<use xlink:href="assets/icons/symbol-defs.svg#icon-tree-view"></use>
+			</svg>
+		</button> -->
+	</div>
+</div>
+
+<app-add-gadget-modal #addGadgetModal
+	(addGadgetEvent)="emitBoardAddGadgetEvent($event)">
+</app-add-gadget-modal>
+
+<app-configuration-modal #boardConfigModal
+	(dashboardCreateEvent)="emitBoardCreateEvent($event)"
+	(dashboardEditEvent)="emitBoardEditEvent($event)"
+	(dashboardDeleteEvent)="emitBoardDeleteEvent($event)"
+	[dashboardList]="dashboardList">
+</app-configuration-modal>
+
+<div class="ui sidepanel position-right shadow bg-dark" #layoutSideBar_tag>
+	<app-board-layout-manager-modal [layoutId]="layoutId"
+		(boardLayoutChangeEvent)="emitBoardChangeLayoutEvent($event)">
+	</app-board-layout-manager-modal>
+</div>
+
+<app-board-component></app-board-component>

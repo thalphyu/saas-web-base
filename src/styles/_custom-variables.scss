@@ -1,0 +1,122 @@
+/*******Version 2 theme color variables*******/
+
+$themeblue:		#3F6BE6;//#265bd1
+$themeorange:	#FFA800;//#265bd1
+$primary:		$themeblue;
+$warning:		$themeorange;
+$secondary:		#aab3bc;//#919AA3
+$purple:			#8950FC;//#aa46be;
+$default:		#272727;
+$darkgrey:		#515151;
+$green:			#3ed2a5;//#54dab1;
+$danger:			#eb5363;//#F64E60;//#f25961;//#F96094;
+$indigo:			#302e75;
+$navygray:		#494B74;
+$softblue:		#A8BFFF;
+$white:			#fff;
+$black:			#000;
+$light:			#f3f5f7;
+$smokewhite:	#f6f7f9;//#f6f8f8;
+$gray:			#CECECE;
+
+$header-height: 55px;
+$sidebar-width: 260px;
+$sidenav-width: 280px;
+$ratingSize: 80px;
+
+$font-weight-medium: 500 !default;
+$font-weight-semibold: 600 !default;
+$font-title: 'Noto Sans SC', Roboto, 'Pyidaungsu', -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+$font-size-xxs: 0.65rem !default;//10.4px
+$font-size-xs: 0.75rem !default;//12px
+$font-size-sm: 0.8125rem !default;//13px
+$font-size-base: 0.875rem !default;//14px
+$font-size-md: $font-size-base * 1.25 !default;//17.5px
+$font-size-lg: $font-size-base * 1.715 !default;//24px
+$font-size-xl: $font-size-base * 2.215 !default;//24px
+$font-size-xxl: $font-size-base * 2.5 !default;//28px
+
+$f-sizes:	"xxs" $font-size-xxs,
+				"xs" $font-size-xs,
+				"sm" $font-size-sm,
+				"base" $font-size-base,
+				"md" $font-size-md,
+				"lg" $font-size-lg,
+				"xl" $font-size-xl;
+
+$i-sizes:	"xs" 12,
+				"sm" 16,
+				"def" 20,
+				"md" 32,
+				"lg" 42,
+				"xl" 64;
+
+$avatars: "xxs" 24, "xs" 32, "sm" 48, "def" 90, "lg" 110;
+
+$body-bg: $smokewhite !default;
+$body-color: #424344 !default;
+$font-family-sans-serif: Roboto, 'Inter', 'Pyidaungsu', -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+$zindex-modal-backdrop: 10004 !important;
+$zindex-modal: 10005 !default;
+$btn-font-weight: $font-weight-medium !default;
+$btn-padding-y: .45rem !default;
+$btn-focus-box-shadow: none;
+$grid-gutter-width: 20px !default;
+$panelbar-header-selected-text: $primary !default;
+$yiq-contrasted-threshold:  180 !default;
+$custom-select-border-radius: 0 !default;
+
+// Kendo Theme Material - Reset
+$grid-alt-bg: rgba($secondary, .05) !default;
+$grid-hovered-bg: $light !default;
+$grid-border: rgba( $secondary, .1 ) !default;
+$font-family: $font-family-sans-serif;
+$error: $danger !default;
+$textarea-padding-x: .75rem !default;
+$input-border: $gray !default;
+$input-padding-x: 0px !default;
+$input-font-size: $font-size-base !default;
+$input-hovered-border: $secondary !default;
+$textarea-hovered-border: $secondary !default;
+$input-border-radius: 0 !default;
+$textarea-bg: transparent;
+$textarea-hovered-bg: transparent;
+//$font-size-lg: $font-size-base !default;
+$input-bg: transparent;
+//$checkbox-checked-bg: $green !default;
+//$checkbox-checked-border: $green !default;
+$tooltip-arrow-color: #343a40;
+$switch-size: 3.5rem !default;
+$switch-handle-size: 1.75rem !default;
+$dialog-buttongroup-border-width: 0 !default;
+$dialog-button-spacing: 0 !default;
+$grid-column-menu-popup-padding-y: 0 !default;
+$link-text: $primary !default;
+
+$spacer: 1rem !default;
+$spacers: () !default;
+$spacers: map-merge(
+	// The rest of numbers you need to use...
+	( 6: ($spacer * 5) ),
+	$spacers
+);
+
+$theme-colors: (
+  "primary": $primary,
+  "success": $green,
+  "purple": $purple,
+  "gray": $gray,
+  "darkgrey": $darkgrey,
+  "smokewhite": $smokewhite,
+  "indigo": $indigo
+);
+
+
+// Create your own map
+$custom-colors: (
+  "custom-color": #900
+);
+
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $custom-colors);

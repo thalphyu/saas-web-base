@@ -1,0 +1,28 @@
+<!-- <div class="ui grid"> -->
+<div class="row">
+	<div class="col-md-4">
+	<!-- <div class="{{layoutColumnOneWidth}} wide computer column"> -->
+		<div class="rounded px-4 py-3 h-100" [ngClass]="this.globals.storedSkin === 'dark' ? 'bg-dark' : 'bg-light'">
+			<app-typeahead-input
+				[searchList]="objectTitleList"
+				[placeHolderText]="placeHolderText"
+				[typeAheadIsInMenu]="typeAheadIsInMenu"
+				(selectionEvent)="filterListBySearchString($event)">
+			</app-typeahead-input>
+			<app-filter-list #filterComponent
+				[facet_tags]="facetTags"
+				(tagSelectEvent)="filterTag.updateFilterList($event)">
+			</app-filter-list>				
+		</div>
+	</div>
+	<div class="col-md-8">
+		<!-- <div class="{{layoutColumnTwoWidth}} wide computer column"> -->
+			<!-- <app-filter-tag #filterTag
+			(updateFilterListEvent)="filterListByTags($event)">
+		</app-filter-tag> -->
+		
+		<ngx-simplebar [options]="options" class="pe-3 me-n3 mt-3 mt-md-0" style="max-height: 570px">
+			<ng-template ngFor [ngForOf]="objectList" [ngForTemplate]="template"></ng-template>
+		</ngx-simplebar>
+	</div>
+</div>

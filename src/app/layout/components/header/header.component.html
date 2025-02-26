@@ -1,0 +1,140 @@
+<nav class="navbar navbar-expand-md navbar-light fixed-top p-0">
+	<div class="collapse navbar-collapse d-flex flex-row align-items-stretch" [ngClass]="{'sticky' : isSticky}">
+		<div class="navbar-nav-left me-auto d-flex align-items-center" [ngClass]="{collapsed: globals.collapsed}">
+			<!-- <button class="brand-toggle btn btn-sm btn-icon px-0 hambuger me-2" [ngClass]="{collapsed: globals.collapsed}"
+				(click)="toggleCollapsed($event)">
+				<span></span>
+			</button> -->
+			<span class="fw-semibold">HELP : 09 777 111 911</span>
+			<div class="badge border border-danger text-danger rounded-pill px-2 blink ms-3 align-text-bottom" *ngIf="LicenseExpired">Your license has expired !</div>
+			<!-- <div class="badge badge-success rounded-pill px-2" [ngClass]="{collapsed: globals.collapsed}">License until: 20/6/2021</div> -->
+		</div>
+	 
+		<ul class="navbar-nav ms-auto align-items-center flex-row pe-3">
+			<li class="nav-item noti-info" ngbDropdown>
+				<a (click)="Detail()" href="javascript:void(0)" class="nav-link p-2 no-caret" ngbDropdownToggle data-bs-toggle="dropdown" data-bs-auto-close="outside"   data-bs-display="static" aria-expanded="false">
+					<svg-icon svgicon="icon-bell"></svg-icon>
+					<span class="badge bg-danger count fw-medium" *ngIf="count > 0">{{count}}</span>
+				</a>
+				<div class="dropdown-menu dropdown-menu-end dropdown-menu-center border-0 rounded-3 animated slideInUp shadow" [ngClass]="this.globals.storedSkin === 'dark' ? 'dropdown-menu-dark' : ''" ngbDropdownMenu>
+					<div class="dropdown-header">
+						<h5 class="fw-bold mb-0 text-darkgray">Notification</h5>
+						<span class="fs-6" [ngClass]="this.globals.storedSkin === 'dark' ? 'text-muted' : ''">You have {{count}} new messages</span>
+					</div>
+					<div class="dropdown-divider"></div>
+
+					<div class="scrollbox scroll-y">
+						<div class="scroll-content"> <!-- *ngIf="count > 0" -->
+							<span *ngFor="let item of data">
+								<a (click)="GotoLink(item.Type,item.NotiName)" class="dropdown-item d-flex py-3">
+									<span class="btn btn-circle btn-warning fw-bold text-white mt-1"
+										*ngIf="item.NotiStatus ==='Pending'">P</span>
+									<span class="btn btn-circle btn-success fw-bold text-white mt-1"
+										*ngIf="item.NotiStatus ==='Approved'">A</span>
+									<span class="btn btn-circle btn-danger fw-bold text-white mt-1"
+										*ngIf="item.NotiStatus ==='Rejected'">R</span>
+									<span class="btn btn-circle btn-success fw-bold text-white mt-1"
+										*ngIf="item.NotiStatus ===''"></span>
+									<div class="noti-content ml-3">
+										<div class="fs-6 text-dark" *ngIf="item.Type ==='LeaveRequest'">{{item.LeaveStatus}}
+										</div>
+										<div class="fs-6 text-dark" *ngIf="item.Type ==='AttendanceRequest'">{{item.AttStatus}}
+										</div>
+										<div class="fs-6 text-dark" *ngIf="item.Type ==='OvertimeRequest'">{{item.AttStatus}}
+										</div>
+										<div class="fs-6 text-dark" *ngIf="item.Type ==='LeaveRequestForApprove'">
+											{{item.LeaveStatusForApprove}}</div>
+										<div class="fs-6 text-dark" *ngIf="item.Type ==='AttendanceRequestForApprove'">
+											{{item.AttStatusForApprove}}</div>
+										<div class="fs-6 text-dark" *ngIf="item.Type ==='OvertimeRequestForApprove'">
+											{{item.AttStatusForApprove}}</div>
+										<div class="fs-6 text-dark" *ngIf="item.Type ==='Announcement'">{{item.NotiType}}</div>
+										<div class="fs-6 text-dark" *ngIf="item.NotiName === 'Daily Task Notification'">{{item.Message}}</div>
+										<small class="fs-6 text-secondary">{{item.NotiDate}}</small>
+									</div>
+								</a>
+							</span>
+						</div>
+					</div>
+				</div>
+			</li>
+			<!-- <li class="nav-item">
+				<input type="checkbox" id="switchBtn" class="d-none">
+				<label for="switchBtn" (click)="switchModeIcon()" class="nav-link">
+					<svg-icon iClass="light-mode" svgicon="{{darkMode ? 'icon-dark-mode':'icon-light-mode'}}"></svg-icon>
+				</label>
+			</li> -->
+			<li class="nav-item d-none d-sm-inline-block">
+				<a href="javascript:void(0)" class="nav-link p-2" (click)="fullscreenhandler()" alt="Full Screen" title="Full Screen">
+					<svg-icon svgicon="icon-expand"></svg-icon>
+				</a>
+			</li>
+			<!-- <li class="nav-item">
+				<a href="javascript:void(0)" class="btn btn-sm btn-success mt-1 text-white" (click)="DownloadUserManualPDF()">
+					<svg-icon iClass="i-def me-md-1" svgicon="icon-download"></svg-icon><span class="d-none d-md-inline">Download User Manual</span>
+				</a>
+			</li> -->
+			<li class="nav-item dropdown user-profile" placement="bottom-right" id="user-profile">
+				<a class="nav-link p-2 dropdown-toggle no-caret" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+					<span *ngIf="srcImg">
+						<img *ngFor="let image of imagePreviews" [src]="image.src" width="24"
+							class="rounded-circle avatar-xxs img-fit">
+					</span>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-end border-0 rounded-3 animated slideInUp shadow" [ngClass]="this.globals.storedSkin === 'dark' ? 'dropdown-menu-dark' : ''">
+					<div class="dropdown-item-text py-2">
+						<b class="text-dark text-capitalize fw-semibold">{{username}}</b>
+						<div class="fs-6 text-secondary">{{currentDesignation}}</div>
+					</div>					
+					<div class="dropdown-divider"></div>
+					<li class="dropstart">
+						<a href="#" class="dropdown-item dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+							<svg-icon iClass="i-def my-1 me-2" svgicon="icon-roller"></svg-icon> Customization
+							<svg class="icon i-sm text-muted ms-auto me-n1">
+								<use xlink:href="assets/icons/symbol-defs.svg#icon-chevron-right"></use>
+							</svg>
+						</a>
+						<div class="dropdown-menu mt-0 border-0 rounded-3 animated slideInUp shadow" [ngClass]="this.globals.storedSkin === 'dark' ? 'dropdown-menu-dark' : ''">
+							<div class="dropdown-header">
+								Layout skins
+							</div>
+							<div class="dropdown-item-text d-flex flex-column text-nowrap">
+								<div class="form-check form-check-inline" *ngFor="let skin of skins">
+									<input type="radio" name="layoutSkin"
+										value="{{skin}}" id="{{skin}}" [checked]="globals.storedSkin === skin"
+										(click)="appComponent.setSkin(skin)"
+										kendoRadioButton />
+									<label class="k-radio-label text-capitalize" for="{{skin}}">{{skin}}</label>
+								</div><!-- (change)="skinChangeHandler($event)" -->
+								<!-- <div class="form-check form-check-inline">
+									<input type="radio" name="skin" value="false" id="dark" kendoRadioButton />
+									<label class="k-radio-label" for="dark">Dark</label>
+								</div> -->
+							</div>
+
+							<div class="dropdown-header">
+								Theme Colors
+							</div>
+							<div class="dropdown-item-text theme-options d-flex gap-2 mb-3">
+								<div id="{{theme}}" class="{{theme}}" [ngClass]="(globals.storedTheme === theme) ? 'active shadow-sm' : ''" (click)="appComponent.setTheme(theme)" *ngFor="let theme of themes"></div>
+								<!-- <div id="theme-blue" class="bg-blue" [ngClass]="(storedTheme === 'theme-blue') ? 'active' : ''" (click)="setTheme('theme-blue')"></div>
+								<div id="theme-orange" class="bg-orange" [ngClass]="(storedTheme === 'theme-orange') ? 'active' : ''" (click)="setTheme('theme-orange')"></div>
+								<div id="theme-indigo" class="bg-indigo" [ngClass]="(storedTheme === 'theme-indigo') ? 'active' : ''" (click)="setTheme('theme-indigo')"></div>
+								<div id="theme-green" class="bg-success" [ngClass]="(storedTheme === 'theme-green') ? 'active' : ''" (click)="setTheme('theme-green')"></div>
+								<div id="theme-red" class="bg-danger" [ngClass]="(storedTheme === 'theme-red') ? 'active' : ''" (click)="setTheme('theme-red')"></div> -->
+							</div>
+						</div>
+					</li>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" [routerLink]="['/profile']">
+						<svg-icon iClass="i-def my-1 me-2" svgicon="icon-user"></svg-icon> {{ 'Profile' | translate }}
+					</a>
+					<a class="dropdown-item" [routerLink]="['/changepassword']">
+						<svg-icon iClass="i-def my-1 me-2" svgicon="icon-password"></svg-icon> {{ 'Change Password' | translate }}
+					</a>
+					<a href="javascript:void(0);" class="btn btn-primary d-block text-white m-3" (click)="onLoggedout()">{{ 'Log Out' | translate }}</a>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</nav>

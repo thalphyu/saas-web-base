@@ -1,0 +1,46 @@
+<div #addGadget class="modal fade" id="addGadget" tabindex="-1">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">{{modalheader}}</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body py-0">
+				<app-data-list
+					[objectList]="gadgetObjectList"
+					[objectTitleList]="gadgetObjectTitleList"
+					[placeHolderText]="placeHolderText"
+					[typeAheadIsInMenu]="typeAheadIsInMenu"
+					[layoutColumnOneWidth]="layoutColumnOneWidth"
+					[layoutColumnTwoWidth]="layoutColumnTwoWidth"
+					[listHeader]="listHeader"
+					[facetTags]="facetTags">
+
+					<ng-template let-item="$implicit">
+						<div [@showHideAnimation] class="card mb-2">
+							<div class="card-body d-flex flex-wrap align-items-start">
+								<div class="flex-grow-1 me-2">
+									<svg class="icon i-lg me-3 float-start">
+										<use attr.xlink:href="assets/icons/symbol-defs.svg#{{item.icon}}"></use>
+									</svg>
+									<div class="overflow-hidden">
+										<h4 class="fs-5 mb-1 text-primary">{{item.name}}</h4>
+										<p class="fs-6 text-secondary mb-2">{{item.description}}</p>
+									</div>
+								</div>
+								<a *ngIf="item.actions.length === 1"
+									routerLink="." class="btn btn-light-primary btn-sm px-3 ms-auto"
+									(click)="actionHandler(item, item.actions[0].name)">
+									{{item.actions[0].name}}
+								</a>
+							</div>
+						</div>
+					</ng-template>
+				</app-data-list>
+			</div>
+			<div class="modal-footer">
+				<div class="btn btn-secondary" data-bs-dismiss="modal">Close</div>
+			</div>
+		</div>
+	</div>
+</div>

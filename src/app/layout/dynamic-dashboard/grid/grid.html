@@ -1,0 +1,40 @@
+<div *ngIf="showdb" class="d-flex flex-wrap align-items-center justify-content-between mt-1 mb-3">
+	<h3 class="page-title h4 fw-normal me-3 my-0">
+		<small class="text-muted fs-6 d-block mb-1">Welcome Back !</small>
+		<strong>{{greetingName}},</strong> {{greetingMessage}}
+	</h3>
+
+	<kendo-floatinglabel text="" class="ms-auto mt-2 pt-0 px-1" style="width: 156px">
+      <kendo-datepicker [(value)]="dateValue" calendarType="classic"
+         class="form-control" placeholder="" [format]="'yyyy MMM dd'" (valueChange)="onChange($event)">
+      </kendo-datepicker>
+   </kendo-floatinglabel>
+</div>
+<div class="ui grid left stackable mt-0" *ngIf="showdb">
+	<div *ngFor="let row of model.rows; let r = index" class="row centered"
+		[ngClass]="{'short-row': row.columns.length > 3, 'tall-row': row.columns.length <= 3 }"><!--  'three column': row.columns.length == 3,  -->
+		<div *ngFor="let col of row.columns; let c = index" class="{{col.styleClass}} column" dnd-droppable [dropZones]="['c' + c]" (onDropSuccess)="updateGadgetPositionInBoard($event, c, r, 'column')">
+
+			<div *ngIf="!col.gadgets || col.gadgets.length === 0" class="ui p-5 bg-default opacity-25 rounded-3 text-center message-card border-dashed border border-darkgray"
+				[ngClass]="{'short-row': row.columns.length > 3, 'tall-row': row.columns.length <= 3 }" (click)="addGadgetModal.showComponentLibraryModal('Add Gadget')">
+				<span class="text-dark fs-4">Add Gadget!</span>
+			</div>
+
+			<app-grid-cell *ngFor="let cellGadget of col.gadgets"
+				[gadgetInstanceId]="cellGadget.instanceId"
+				[gadgetConfig]="cellGadget.config"
+				[gadgetType]="cellGadget.componentType"
+				[gadgetTags]="cellGadget.tags">
+			</app-grid-cell>
+
+		</div>
+	</div>
+	<app-department-dashboard [viewMenu]="this.viewMenuForm.value"
+		(editDepartmentForm)="getFormData($event)" (viewMenuOutput)="getViewMenu($event)">
+	</app-department-dashboard>
+</div>
+
+<app-add-gadget-modal #addGadgetModal
+	(addGadgetEvent)="emitBoardAddGadgetEvent($event)">
+</app-add-gadget-modal>
+<app-toast></app-toast>

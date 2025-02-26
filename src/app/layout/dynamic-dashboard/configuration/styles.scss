@@ -1,0 +1,8 @@
+tr.sortable {
+	&:hover {
+		cursor: grab !important;
+	}
+	&:active {
+		cursor: grabbing !important;
+	}
+}

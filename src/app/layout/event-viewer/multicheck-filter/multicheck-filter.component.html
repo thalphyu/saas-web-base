@@ -1,0 +1,15 @@
+<div *ngIf="showFilter">
+	<kendo-floatinglabel text="" class="pt-0">
+		<input kendoTextBox (input)="onInput($event)" class="form-control m-0" placeholder="Search ..." />
+	</kendo-floatinglabel>
+</div>
+<div class="scrollbox scroll-y mt-3" style="max-height: 175px">
+   <div class="scroll-content">
+		<div *ngFor="let item of currentData; let i = index;" (click)="onSelectionChange(valueAccessor(item))" [ngClass]="{'k-state-selected': isItemSelected(item)}" class="text-truncate">
+			<input type="checkbox" id="chk-{{valueAccessor(item)}}" kendoCheckBox [checked]="isItemSelected(item)" />
+			<label class="k-multiselect-checkbox k-checkbox-label d-inline" for="chk-{{valueAccessor(item)}}">
+				{{ textAccessor(item) }}
+			</label>
+		</div>
+	</div>
+</div>

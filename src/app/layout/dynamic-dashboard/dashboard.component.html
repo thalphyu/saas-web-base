@@ -1,0 +1,537 @@
+<!-- <div class="pt-3 px-3 px-md-4 bg-smokewhite" *ngIf="showdb">
+	<div class="d-flex justify-content-between mb-3">
+		<h3 class="font-weight-light mb-1 text-truncate">Daily Attendance Summary</h3>
+		<div class="title-action-panel ml-auto float-right mt-1 mt-sm-0 d-inline-flex">
+			<div class="mr-2 ml-0">
+				<kendo-datepicker [(value)]="dateValue" [format]="'yyyy MMM dd'" (valueChange)="onChange($event)"
+				class="btn-hover btn-gradient-indigo btn-date px-2 px-md-3 py-1 ml-2" style="width: 156px">
+				</kendo-datepicker>
+			</div>		
+			<button (click)="sidePanelToggle($event)" class="btn btn-primary mr-2 ml-0" placement="bottom" ngbTooltip="Organization Tree">
+				<svg-icon iClass="i-sm" svgicon="icon-tree-view"></svg-icon>
+			</button>
+		</div>		
+	</div>
+
+	<div class="row">
+		<div class="col-lg-4">
+			<div class="card card-full shadow-sm mb-md-4 mb-3">
+				<div class="card-header px-3 bg-transparent border-0">
+					<div class="d-flex justify-content-between align-items-center">
+						<h3 class="text-default mb-1 text-truncate">Attendance</h3>
+					</div>
+					<p class="text-muted text-sm">Total Employee Count : {{empCount}}</p>
+				</div>
+				<div class="card-body px-3 pt-0">
+					<kendo-chart *ngIf="AttAbsentlength>0">
+						<kendo-chart-area background="none"></kendo-chart-area>
+						<ng-template kendoChartDonutCenterTemplate>
+							<h4 class="mb-0 text-center"><small class="d-block text-xs">Total</small>{{empCount}}</h4>
+						</ng-template>
+						<kendo-chart-series>
+							<kendo-chart-series-item type="donut" [holeSize]="50" [data]="AttCountData"
+								categoryField="kind" field="share" colorField="color" background="none">
+								<kendo-chart-series-item-tooltip>
+									<ng-template let-category="category">
+										{{category}}
+									</ng-template>
+								</kendo-chart-series-item-tooltip>
+							</kendo-chart-series-item>
+						</kendo-chart-series>
+						<kendo-chart-legend [visible]="true" padding="10px" position="bottom" orientation="horizontal">
+							<kendo-chart-legend-item padding="10px"></kendo-chart-legend-item>
+						</kendo-chart-legend>
+					</kendo-chart>
+
+					<kendo-chart *ngIf="AttAbsentlength==0" class="chart1">
+						<kendo-chart-area background="none"></kendo-chart-area>
+						<ng-template kendoChartDonutCenterTemplate>
+							<h5>{{empCount}}</h5>
+						</ng-template>
+						<kendo-chart-series>
+							<kendo-chart-series-item type="donut" [data]="AttCountNoneData" categoryField="kind"
+								field="share" background="none"></kendo-chart-series-item>
+						</kendo-chart-series>
+						<kendo-chart-legend [visible]="true" position="bottom" orientation="vertical">
+						</kendo-chart-legend>
+					</kendo-chart>
+				</div>
+				<div class="card-footer">
+
+					<form class="k-form p-0" [formGroup]="checkboxForm">
+						<div class="d-flex flex-lg-column flex-md-row flex-column">
+							<div class="form-check md-check mr-3 mb-2">
+								<input type="checkbox" id="ch1" class="form-check-input" formControlName="AttCheck"
+									checked="checked" />
+								<i class="bg-success"></i>
+								<label class="form-check-label text-sm font-weight-semibold"
+									for="ch1">Attendance_Onduty</label>
+							</div>
+							<div class="form-check md-check mr-3 mb-2">
+								<input type="checkbox" id="ch2" class="form-check-input"
+									formControlName="AbsentCheck" />
+								<i class="bg-danger"></i>
+								<label class="form-check-label text-sm font-weight-semibold" for="ch2">Absent</label>
+							</div>
+							<div class="form-check md-check mr-3 mb-2">
+								<input type="checkbox" id="ch3" class="form-check-input" formControlName="LeaveCheck">
+								<i class="bg-warning"></i>
+								<label class="form-check-label text-sm font-weight-semibold" for="ch3">Leave</label>
+							</div>
+							<div class="form-check md-check mr-3 mb-2">
+								<input type="checkbox" id="ch4" class="form-check-input" formControlName="OffCheck">
+								<i class="bg-purple"></i>
+								<label class="form-check-label text-sm font-weight-semibold" for="ch4">Duty Off</label>
+							</div>
+							<div class="form-check md-check mr-3 mb-2">
+								<input type="checkbox" id="ch5" class="form-check-input"
+									formControlName="AttendancePendingCheck">
+								<i class="bg-primary"></i>
+								<label class="form-check-label text-sm font-weight-semibold" for="ch5">Attendance
+									Pending</label>
+							</div>
+						</div>
+						<hr class="mt-2">
+						<a class="d-flex justify-content-between text-u-none align-items-center text-md pb-2"
+							(click)="Detail()" href="javascript:void(0)">
+							<span class="text-sm">View Detail</span><i class="fa fa-arrow-circle-o-right"></i>
+						</a>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="col-lg-8">
+			<div class="card card-full shadow-sm mb-md-4 mb-3">
+				<div class="card-header px-3 bg-transparent border-0">
+					<div class="d-flex justify-content-between align-items-center">
+						<h3 class="text-default mb-1 text-truncate">Attendance Employee Counts</h3>
+						<kendo-dropdownlist [(ngModel)]="selectedItem" [data]="ChartType"
+							[defaultItem]="defaultChartItem" [textField]="'text'" [valueField]="'value'"
+							(valueChange)="onDropDownChartChange($event)">
+						</kendo-dropdownlist>
+					</div>
+					<p class="text-muted text-sm">Total Attendance Employee Count : {{AttendanceCount}}</p>
+				</div>
+				<div class="card-body px-3 pt-0">
+					<kendo-chart style="height: 400px" class="chart" [pannable]="{ lock: 'y' }">
+						<kendo-chart-value-axis>
+							<kendo-chart-value-axis-item [title]="{ text: 'Employee Count' }" [min]="0" [max]="count">
+							</kendo-chart-value-axis-item>
+						</kendo-chart-value-axis>
+						<kendo-chart-category-axis>
+							<kendo-chart-category-axis-item [categories]="categories" [labels]="{ rotation: 'auto' }">
+							</kendo-chart-category-axis-item>
+						</kendo-chart-category-axis>
+
+						<kendo-chart-series>
+							<kendo-chart-series-item [stack]="true" [data]="DepartmentCount" type="column"
+								color="#32CD32">
+							</kendo-chart-series-item>
+							<kendo-chart-series-item [stack]="true" [data]="Absent" type="column" color="#ca7373">
+							</kendo-chart-series-item>
+							<kendo-chart-series-item [stack]="true" [data]="Leave" type="column" color="#ffb546">
+							</kendo-chart-series-item>
+							<kendo-chart-series-item [stack]="true" [data]="DutyOff" type="column" color="#aa46be">
+							</kendo-chart-series-item>
+							<kendo-chart-series-item [stack]="true" [data]="AttendancePending" type="column"
+								color="#43CCC1">
+							</kendo-chart-series-item>
+							<kendo-chart-series-item-tooltip>
+								<ng-template let-value="value">
+									{{value}}
+								</ng-template>
+							</kendo-chart-series-item-tooltip>
+						</kendo-chart-series>
+					</kendo-chart>
+					<button class="btn btn-success rounded-0" (click)="showGrid()" style="float: right;"><i
+							class="fa fa-save"></i>
+						Show by Grid</button>
+				</div>
+
+			</div>
+
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="card shadow-sm mb-md-4 mb-3 mt-sm-3 mt-4">
+						<div class="card-body pt-2">
+							<div class="d-flex justify-content-between">
+								<div class="rounded icon-box bg-pink mr-3">
+									<i class="fa fa-users fa-2x text-white"></i>
+								</div>
+								<div class="text-right">
+									<div class="text-muted mt-1">Late</div>
+									<h3 class="text-dark">{{LateCount}}</h3>
+								</div>
+							</div>
+							<div class="pt-3 mb-0 mt-3 border-top">
+								<a class="text-muted text-sm text-u-none" (click)="openLateEmployeeListPopup()"
+									href="javascript:void(0)">
+									<i class="fa fa-info-circle text-default mr-1"></i> View Details
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="card shadow-sm mb-md-4 mb-3 mt-sm-3 mt-4">
+						<div class="card-body pt-2">
+							<div class="d-flex justify-content-between">
+								<div class="rounded icon-box bg-cyan mr-3">
+									<i class="fa fa-users fa-2x text-white"></i>
+								</div>
+								<div class="text-right">
+									<div class="text-muted mt-1">Early Out</div>
+									<h3 class="text-dark">{{EarlyOutCount}}</h3>
+								</div>
+							</div>
+							<div class="pt-3 mb-0 mt-3 border-top">
+								<a class="text-muted text-sm text-u-none" (click)="openEarlyOutEmployeeListPopup()"
+									href="javascript:void(0)">
+									<i class="fa fa-info-circle text-default mr-1"></i> View Details
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="d-flex justify-content-between align-items-center mb-3 mt-2">
+		<h3 class="font-weight-light mb-1 text-truncate">Monthly Summary</h3>
+		<kendo-datepicker [(value)]="monthValue" [topView]="'year'" [bottomView]="'year'" [format]="'yyyy MMM'"
+			(valueChange)="onMonthChange($event)" class="btn-hover btn-gradient-indigo btn-date px-2 px-md-3 py-1 ml-2"
+			style="width: 156px"></kendo-datepicker>
+	</div>
+	<div class="row">
+		<div class="col-lg-4">
+			<div class="card card-full shadow-sm mb-md-4 mb-3">
+				<div class="card-header px-3 bg-transparent border-0">
+					<div class="d-flex justify-content-between align-items-center">
+						<h3 class="text-default mb-1 text-truncate">Attendance <small
+								class="ml-1 text-purple">[Total-{{AttTotalCount}}]</small></h3>
+					</div>
+				</div>
+				<div class="card-body px-3 pt-0">
+					<kendo-chart class="my-3" style="height: 225px" *ngIf="showAtt == true">
+						<kendo-chart-axis-defaults [majorGridLines]="{ visible : false}"></kendo-chart-axis-defaults>
+						<kendo-chart-value-axis>
+							<kendo-chart-value-axis-item [line]="{visible:false}" labels="false">
+							</kendo-chart-value-axis-item>
+						</kendo-chart-value-axis>
+						<kendo-chart-category-axis>
+							<kendo-chart-category-axis-item [line]="{visible:false}">
+							</kendo-chart-category-axis-item>
+						</kendo-chart-category-axis>
+
+						<kendo-chart-series>
+							<kendo-chart-series-item type="bar" [gap]=".2" [data]="attendData" field="attendance"
+								categoryField="attendanceStatus" colorField="fillColor" [border]="{ width: 0 }"
+								[labels]="attendanceLabels">
+								<kendo-chart-series-item-tooltip>
+									<ng-template let-value="value" let-category="category">
+										{{category}}: {{ value }}
+									</ng-template>
+								</kendo-chart-series-item-tooltip>
+							</kendo-chart-series-item>
+						</kendo-chart-series>
+					</kendo-chart>
+					<div class="pt-3 mb-0 mt-1 mb-lg-0 mb-4 border-top">
+						<a class="text-muted text-sm text-u-none" href="javascript:void(0)"
+							(click)="openAttendanceRequestPopup()">
+							<i class="fa fa-info-circle text-default mr-1"></i> View Details
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="card card-full shadow-sm mb-md-4 mb-3">
+				<div class="card-header px-3 bg-transparent border-0">
+					<div class="d-flex justify-content-between align-items-center">
+						<h3 class="text-default mb-1 text-truncate">Leave <small
+								class="ml-1 text-purple">[Total-{{LeaveTotalCount}}]</small></h3>
+					</div>
+				</div>
+				<div class="card-body px-3 pt-0">
+					<kendo-chart class="my-3" [seriesColors]="['#aa46be']" style="height: 225px"
+						*ngIf="showLeave == true">
+						<kendo-chart-category-axis>
+							<kendo-chart-category-axis-item [categories]="['Approved', 'Pending', 'Rejected']">
+							</kendo-chart-category-axis-item>
+						</kendo-chart-category-axis>
+
+						<kendo-chart-series>
+							<kendo-chart-series-item type="line" style="smooth" [data]="lData" field="leave"
+								[labels]="leaveLabels">
+								<kendo-chart-series-item-tooltip>
+									<ng-template let-value="value" let-category="category">
+										{{category}}: {{ value }}
+									</ng-template>
+								</kendo-chart-series-item-tooltip>
+							</kendo-chart-series-item>
+						</kendo-chart-series>
+					</kendo-chart>
+					<div class="pt-3 mb-0 mt-1 border-top">
+						<a class="text-muted text-sm text-u-none" href="javascript:void(0)"
+							(click)="openLeaveRequestPopup()">
+							<i class="fa fa-info-circle text-default mr-1"></i> View Details
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="card card-full shadow-sm mb-md-4 mb-3">
+				<div class="card-header px-3 bg-transparent border-0">
+					<div class="d-flex justify-content-between align-items-center">
+						<h3 class="text-default mb-1 text-truncate">Overtime <small
+								class="ml-1 text-purple">[Total-{{OTTotalCount}}]</small></h3>
+					</div>
+				</div>
+				<div class="card-body px-3 pt-0">
+					<kendo-chart class="my-3" style="height: 225px" *ngIf="showOT == true">
+						<kendo-chart-axis-defaults [majorGridLines]="{ visible : false}"></kendo-chart-axis-defaults>
+						<kendo-chart-value-axis>
+							<kendo-chart-value-axis-item [line]="{visible:false}" labels="false">
+							</kendo-chart-value-axis-item>
+						</kendo-chart-value-axis>
+						<kendo-chart-category-axis>
+							<kendo-chart-category-axis-item [line]="{visible:false}">
+							</kendo-chart-category-axis-item>
+						</kendo-chart-category-axis>
+						<kendo-chart-series>
+							<kendo-chart-series-item type="column" [gap]=".2" [data]="otData" field="ot"
+								categoryField="otStatus" colorField="fillColor" [border]="{ width: 0 }"
+								[labels]="otLabels">
+								<kendo-chart-series-item-tooltip>
+									<ng-template let-value="value" let-category="category">
+										{{category}}: {{ value }}
+									</ng-template>
+								</kendo-chart-series-item-tooltip>
+							</kendo-chart-series-item>
+						</kendo-chart-series>
+					</kendo-chart>
+					<div class="pt-3 mb-0 mt-1 border-top">
+						<a class="text-muted text-sm text-u-none" href="javascript:void(0)"
+							(click)="openOTRequestPopup()">
+							<i class="fa fa-info-circle text-default mr-1"></i> View Details
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<app-department-dashboard [viewMenu]="this.viewMenuForm.value" (editDepartmentForm)="getFormData($event)" (viewMenuOutput)="getViewMenu($event)" ></app-department-dashboard>
+</div>
+
+<footer class="px-3 px-md-4 pt-3 pb-4">
+	<div class="row mb-2">
+		<div class="col-sm-4 text-center text-sm-right order-sm-1">
+			<a href="" routerLink="/login/terms-and-condition" class="text-dark text-decoration-none text-sm">Terms and Condition</a>
+		</div>
+		<div class="col-sm-8 text-center text-sm-left mt-3 mt-sm-0">
+			<span class="text-muted d-block text-sm">Copyright &copy; 2020 <a href="https://www.globalwave.com.mm" target="_blank" class="text-decoration-none text-uppercase">Global Wave Technology</a>. All rights reserved</span>
+		</div>
+	</div>
+</footer>
+
+<div kendoDialogContainer></div>
+
+<kendo-dialog title="Employee List" *ngIf="isShowAttendance" (close)="closeAttendanceEmployeeListPopup()"
+	[minWidth]="250" [width]="800">
+	<app-employee-list-detail [model]="DashboardData"></app-employee-list-detail>
+</kendo-dialog>
+
+<kendo-dialog title="AttendaceRequest List" *ngIf="isAttendanceRequest" (close)="closeAttendanceRequestPopup()"
+	[minWidth]="250" [width]="800" [height]="600">
+	<kendo-grid [data]="gridData|async" [loading]="gridData.loading" [height]="500" [sort]="gridState.sort"
+		[filter]="gridState.filter" [group]="gridState.group" [filterable]="true" [sortable]="true" [resizable]="true"
+		[scrollable]="true" (dataStateChange)="onStateChange($event)" [groupable]="{ showFooter: true }">
+		<kendo-grid-column field="EnrollNumber" title="EnrollNumber" width="150"></kendo-grid-column>
+		<kendo-grid-column field="EmployeeName" title="EmployeeName" width="200"></kendo-grid-column>
+		<kendo-grid-column field="AttendanceFromDate" title="Request Date" width="250" filter="date"
+			format="{0:yyyy-MM-dd}">
+			<ng-template kendoGridCellTemplate let-dataItem>
+				{{dataItem.AttendanceFromDate | date:"yyyy-MM-dd"}}
+			</ng-template>
+		</kendo-grid-column>
+		<kendo-grid-column field="Type" title="Type" width="200">
+			<ng-template kendoGridFilterCellTemplate let-filter>
+				<kendo-dropdownlist [data]="type" [defaultItem]="defaultItem" [textField]="'text'"
+					[valueField]="'value'" (valueChange)="onDropDownTypeChange($event)">
+				</kendo-dropdownlist>
+			</ng-template>
+		</kendo-grid-column>
+		<kendo-grid-column field="Status" title="Status" width="200">
+			<ng-template kendoGridFilterCellTemplate let-filter>
+				<kendo-dropdownlist [data]="data" [defaultItem]="defaultItem" [textField]="'text'"
+					[valueField]="'value'" (valueChange)="onDropDownChange($event)">
+				</kendo-dropdownlist>
+			</ng-template>
+		</kendo-grid-column>
+	</kendo-grid>
+</kendo-dialog>
+
+<kendo-dialog title="OTRequest List" *ngIf="isOTRequest" (close)="closeOTRequestPopup()" [minWidth]="250" [width]="800"
+	[height]="600">
+	<kendo-grid [data]="gridDataForOT|async" [loading]="gridDataForOT.OTloading" [height]="500"
+		[sort]="gridStateForOT.sort" [filter]="gridStateForOT.filter" [group]="gridStateForOT.group" [filterable]="true"
+		[sortable]="true" [resizable]="true" [scrollable]="true" (dataStateChange)="onStateChangeForOT($event)"
+		[groupable]="{ showFooter: true }">
+		<kendo-grid-column field="EnrollNumber" title="EnrollNumber" width="150"></kendo-grid-column>
+		<kendo-grid-column field="EmployeeName" title="EmployeeName" width="200"></kendo-grid-column>
+		<kendo-grid-column field="AttendanceFromDate" title="Request Date" width="250" filter="date"
+			format="{0:yyyy-MM-dd}">
+			<ng-template kendoGridCellTemplate let-dataItem>
+				{{dataItem.AttendanceFromDate | date:"yyyy-MM-dd"}}
+			</ng-template>
+		</kendo-grid-column>
+		<kendo-grid-column field="Type" title="Type" width="200" [filterable]="false">
+		</kendo-grid-column>
+		<kendo-grid-column field="Status" title="Status" width="200">
+			<ng-template kendoGridFilterCellTemplate let-filter>
+				<kendo-dropdownlist [data]="data" [defaultItem]="defaultItem" [textField]="'text'"
+					[valueField]="'value'" (valueChange)="onDropDownOTChange($event)">
+				</kendo-dropdownlist>
+			</ng-template>
+		</kendo-grid-column>
+	</kendo-grid>
+</kendo-dialog>
+
+<kendo-dialog title="LeaveRequest List" *ngIf="isLeaveRequest" (close)="closeLeaveRequestPopup()" [minWidth]="250"
+	[width]="800" [height]="600">
+	<kendo-grid [data]="gridDataForLeave|async" [loading]="gridDataForLeave.loading" [height]="500"
+		[sort]="gridStateForLeave.sort" [filter]="gridStateForLeave.filter" [group]="gridStateForLeave.group"
+		[filterable]="true" [sortable]="true" [resizable]="true" [scrollable]="true"
+		(dataStateChange)="onStateChangeForLeave($event)" [groupable]="{ showFooter: true }">
+		<kendo-grid-column field="EnrollNumber" title="EnrollNumber" width="150"></kendo-grid-column>
+		<kendo-grid-column field="EmployeeName" title="EmployeeName" width="200"></kendo-grid-column>
+		<kendo-grid-column field="LeaveDate" title="Request Date" width="250" filter="date" format="{0:yyyy-MM-dd}">
+			<ng-template kendoGridCellTemplate let-dataItem>
+				{{dataItem.LeaveDate | date:"yyyy-MM-dd"}}
+			</ng-template>
+		</kendo-grid-column>
+		<kendo-grid-column field="LeaveName" title="LeaveName" width="200"></kendo-grid-column>
+		<kendo-grid-column field="Type" title="Type" width="200">
+			<ng-template kendoGridFilterCellTemplate let-filter>
+				<kendo-dropdownlist [data]="Leavetype" [defaultItem]="defaultItem" [textField]="'text'"
+					[valueField]="'value'" (valueChange)="onDropDownLeaveTypeChange($event)">
+				</kendo-dropdownlist>
+			</ng-template>
+		</kendo-grid-column>
+		<kendo-grid-column field="Status" title="Status" width="200">
+			<ng-template kendoGridFilterCellTemplate let-filter>
+				<kendo-dropdownlist [data]="data" [defaultItem]="defaultItem" [textField]="'text'"
+					[valueField]="'value'" (valueChange)="onDropDownLeaveChange($event)">
+				</kendo-dropdownlist>
+			</ng-template>
+		</kendo-grid-column>
+	</kendo-grid>
+</kendo-dialog>
+
+<kendo-dialog title="Attendance List" *ngIf="openGrid" (close)="closeGrid()" [minWidth]="250" [width]="800">
+	<div class="row">
+		<div class="col-sm-3">
+			<button *ngIf="!IsShift" class="btn btn-dark rounded-0" (click)="createExcel()"><i
+					class="fas fa-file-download"></i>
+				Excel Export</button>
+			<button *ngIf="IsShift" class="btn btn-dark rounded-0" (click)="createExcelForShift()"><i
+					class="fas fa-file-download"></i>
+				Excel Export</button>
+		</div>
+		<div class="col-sm-3" *ngIf="IsDepartment">
+			<div class="form-check md-check">
+				<input type="checkbox" id="shift" class="form-check-input" [(ngModel)]="IsShift"
+					(click)="viewByShift($event.target.checked)" />
+				<i class="bg-success"></i>
+				<label class="form-check-label text-sm font-weight-semibold" for="shift">View By Shift</label>
+			</div>
+		</div>
+	</div>
+
+	<kendo-grid *ngIf="!IsShift" [kendoGridBinding]="Attendance" [pageSize]="gridState1.take" [pageable]="{
+		buttonCount:[5,10,20,30,40,50,60,70,80,90,100],
+		info: true,
+		type: 'input',
+		refresh: true,
+		pageSizes: [40,60,80,100],
+		previousNext: true
+		}" [skip]="gridState1.skip" [sort]="gridState1.sort" [filter]="gridState1.filter" [filterable]="false"
+		[sortable]="true" [resizable]="true" [scrollable]="true">
+		<kendo-grid-column field="Department" title="{{title}}" width="250">
+			<ng-template kendoGridFooterTemplate>
+				Total </ng-template>
+		</kendo-grid-column>
+		<kendo-grid-column field="Company" title="Company" width="200" *ngIf="company"></kendo-grid-column>
+		<kendo-grid-column field="AttendanceCount" title="Attendance_Onduty" width="200">
+			<ng-template kendoGridFooterTemplate let-column="column">{{total["AttendanceCount"].sum}}</ng-template>
+		</kendo-grid-column>
+		<kendo-grid-column field="AbsentCount" title="Absent" width="150">
+			<ng-template kendoGridFooterTemplate let-column="column">{{total["AbsentCount"].sum}}</ng-template>
+		</kendo-grid-column>
+
+		<kendo-grid-column field="LeaveCount" title="Leave" width="150">
+			<ng-template kendoGridFooterTemplate let-column="column">{{total["LeaveCount"].sum}}</ng-template>
+		</kendo-grid-column>
+		<kendo-grid-column field="OffDayCount" title="DutyOff" width="150">
+			<ng-template kendoGridFooterTemplate let-column="column">{{total["OffDayCount"].sum}}</ng-template>
+		</kendo-grid-column>
+		<kendo-grid-column field="AttendancePendingCount" title="Attendance Pending" width="150">
+			<ng-template kendoGridFooterTemplate let-column="column">{{total["AttendancePendingCount"].sum}}</ng-template>
+		</kendo-grid-column>
+	</kendo-grid>
+
+	<kendo-grid *ngIf="IsShift" [kendoGridBinding]="ShiftData" [pageSize]="gridStateForShift.take" [pageable]="{
+		buttonCount:[5,10,20,30,40,50,60,70,80,90,100],
+		info: true,
+		type: 'input',
+		refresh: true,
+		pageSizes: [40,60,80,100],
+		previousNext: true
+		}" [skip]="gridStateForShift.skip" [group]="gridStateForShift.group" [sort]="gridStateForShift.sort"
+		[filterable]="false" [sortable]="true" [resizable]="true" [scrollable]="true">
+
+		<kendo-grid-column field="Company" title="Company" width="200" *ngIf="company">
+			<ng-template kendoGridFooterTemplate>
+				Total </ng-template>
+		</kendo-grid-column>
+		<kendo-grid-column field="Department" title="Department" width="250"></kendo-grid-column>
+		<kendo-grid-column field="Shift" title="Shift" width="150"></kendo-grid-column>
+		<kendo-grid-column field="AttendanceCount" title="Attendance_Onduty" width="200">
+			<ng-template kendoGridFooterTemplate let-column="column">{{totalShift["AttendanceCount"].sum}}</ng-template>
+		</kendo-grid-column>
+		<kendo-grid-column field="AbsentCount" title="Absent" width="150">
+			<ng-template kendoGridFooterTemplate let-column="column">{{totalShift["AbsentCount"].sum}}</ng-template>
+		</kendo-grid-column>
+
+		<kendo-grid-column field="LeaveCount" title="Leave" width="150">
+			<ng-template kendoGridFooterTemplate let-column="column">{{totalShift["LeaveCount"].sum}}</ng-template>
+		</kendo-grid-column>
+		<kendo-grid-column field="OffDayCount" title="DutyOff" width="150">
+			<ng-template kendoGridFooterTemplate let-column="column">{{totalShift["OffDayCount"].sum}}</ng-template>
+		</kendo-grid-column>
+		<kendo-grid-column field="AttendancePendingCount" title="Attendance Pending" width="150">
+			<ng-template kendoGridFooterTemplate let-column="column">{{totalShift["AttendancePendingCount"].sum}}</ng-template>
+		</kendo-grid-column>
+		<kendo-grid-column field="Total" title="Total" width="150">
+			<ng-template kendoGridFooterTemplate let-column="column">{{totalShift["Total"].sum}}</ng-template>
+		</kendo-grid-column>
+	</kendo-grid>
+</kendo-dialog> -->
+
+<app-menu-component></app-menu-component>
+<footer class="pt-4 pt-sm-3 mt-auto fs-6">
+	<div class="row gx-0">
+		<div class="col-sm-4 text-center text-sm-end order-sm-1">
+			<a *ngIf="showdb" href="javascript:void(0)" (click)="ViewTermsAndConditions()" class="link-dark">Terms and Condition</a>
+			<a *ngIf="!showdb" href="" routerLink="/login/terms-and-condition" class="link-dark" fragment="top">Terms and Condition</a>
+		</div>
+		<div class="col-sm-8 text-center text-sm-start mt-1 mt-sm-0">
+			<span class="text-secondary d-block">Copyright &copy; <a href="https://www.globalwave.com.mm" target="_blank" class="text-decoration-none link-primary">Global Wave Technology</a> 2020</span>
+		</div>
+	</div>
+</footer>

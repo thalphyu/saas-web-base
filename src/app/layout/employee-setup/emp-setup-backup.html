@@ -1,0 +1,1583 @@
+<div class="d-flex flex-column content-box">
+	<div class="d-sm-flex align-items-start header-panel mb-2 mt-1" kendoRippleContainer>
+		<app-page-header [heading]="'Employee Information'" [subheading]="'Employee'" [icon]="''"></app-page-header>
+		<div class="title-action-panel ms-auto float-right d-inline-flex flex-sm-nowrap flex-wrap justify-content-end">
+			<button *ngxPermissionsOnly="'new'" (click)="newEmployee()" class="btn btn-primary me-2 ms-0"
+				[disabled]="showNew == true" placement="bottom-right" ngbTooltip="Add New">
+				<svg class="icon i-sm">
+					<use xlink:href="assets/icons/symbol-defs.svg#icon-plus"></use>
+				</svg>
+			</button>
+			<button class="btn btn-primary me-2 ms-0" (click)="GotoEmpReport()" placement="bottom-right"
+				ngbTooltip="Go To People Directory" *ngIf="!this.IsddmsCustomer">
+				<svg class="icon i-sm">
+					<use xlink:href="assets/icons/symbol-defs.svg#icon-users"></use>
+				</svg>
+			</button>
+			<button class="btn btn-primary me-2 ms-0" (click)="openImportExcel()" placement="bottom-right"
+				ngbTooltip="Import">
+				<svg class="icon i-sm">
+					<use xlink:href="assets/icons/symbol-defs.svg#icon-import-excel"></use>
+				</svg>
+			</button>
+			<button class="btn btn-primary me-2 ms-0" (click)="openDependentImportExcel()" placement="bottom-right"
+				ngbTooltip="Import Dependent" *ngIf="!this.IsddmsCustomer">
+				<svg class="icon i-sm">
+					<use xlink:href="assets/icons/symbol-defs.svg#icon-import-people"></use>
+				</svg>
+			</button>
+			<button class="btn btn-primary me-2 ms-0" (click)="createExcel()" placement="bottom-right"
+				ngbTooltip="Download Template">
+				<svg class="icon i-sm">
+					<use xlink:href="assets/icons/symbol-defs.svg#icon-download-template"></use>
+				</svg>
+			</button>
+			<button class="btn btn-primary me-2 ms-0" (click)="createDependentExcel()" placement="bottom-right"
+				ngbTooltip="Download Dependent Template" *ngIf="!this.IsddmsCustomer">
+				<svg class="icon i-sm">
+					<use xlink:href="assets/icons/symbol-defs.svg#icon-download-people"></use>
+				</svg>
+			</button>
+			<button class="btn btn-primary me-2 ms-0" (click)="sidePanelToggle($event)" placement="bottom-right"
+				ngbTooltip="Organization Structure" *ngIf="!this.IsddmsCustomer" [disabled]="showfilter == false">
+				<svg class="icon i-sm">
+					<use xlink:href="assets/icons/symbol-defs.svg#icon-tree-view"></use>
+				</svg>
+			</button>
+			<button class="btn btn-primary me-2 ms-0" (click)="openFilterByEmployeeMultiPopUp_DDMS()" placement="bottom-right"
+				ngbTooltip="Filter by Employee" *ngIf="this.isbtn_empFilter_ddms" [disabled]="showDDMSfilter == false">
+				<svg class="icon i-sm">
+					<use xlink:href="assets/icons/symbol-defs.svg#icon-filter"></use>
+				</svg>
+			</button>
+			<button class="btn btn-primary me-2 ms-0" (click)="openFilterByEmployeePopUp()" placement="bottom-right"
+				ngbTooltip="Filter by Employee" *ngIf="this.isbtn_empFilter" [disabled]="showfilter == false">
+				<svg class="icon i-sm">
+					<use xlink:href="assets/icons/symbol-defs.svg#icon-filter"></use>
+				</svg>
+			</button>
+		</div>
+	</div>
+
+	<form [formGroup]="employeesetupForm" class="card rounded-2x border-0 mb-4 flex-grow-1">
+		<div class="card-body px-1 pt-2 pb-3 d-flex flex-column overflow-auto">
+			<input type="text" formControlName="EmployeeID" hidden>
+			<div class="row no-gutters">
+				<div class="col-auto">
+					<div class="d-flex flex-wrap pl-4 pt-4">
+						<img *ngFor="let image of imagePreviews" [src]="image.src" alt="image preview"
+							data-max-size="10kb" class="img-fluid rounded-circle avatar-lg img-fit" width="110px" />
+						<div class="ms-3 align-self-end pb-2">
+							<h3 class="title h4 font-weight-medium text-dark mb-0 d-inline align-middle me-2"
+								*ngIf="EmployeeName != ''">
+								{{EmployeeName}}
+							</h3>
+							<span class="badge badge-success rounded-pill px-2"
+								*ngIf="EmployeeName != '' && resignLabel==false">Active</span>
+							<span class="badge badge-danger rounded-pill px-2"
+								*ngIf="EmployeeName != '' && resignLabel==true">Resign</span>
+							<span class="text-sm text-secondary d-block">{{DesignationName}}</span>
+							<!-- <span class="text-sm text-info">EmployeeID: 20005</span> -->
+							<!-- <kendo-upload name="image" required [batch]="true" [multiple]="false" [autoUpload]="false"
+								(select)="selectEventHandler($event)"
+								(upload)="uploadEventHandler($event,employeesetupForm.value.EmployeeID)"
+								(clear)="clearEventHandler($event)" (remove)="removeEventHandler($event)"
+								(complete)="completeEventHandler()" class="border-0 bg-transparent mt-2 no-autoupload"
+								primary="true" [restrictions]="FileTypeRestrictions">
+							</kendo-upload>-->
+							<label class="k-tooltip k-tooltip-validation errormessage" *ngIf="restrictedfiletype">
+								Invalid File Type!
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="col-md align-self-end text-right">
+					<div class="pb-2 pr-4">
+						<button type="button" class="btn btn-danger btn-sm"
+							*ngIf="employeesetupForm.value.EmployeeID!=0"
+							(click)="resetPassword(employeesetupForm.value)">
+							<svg class="icon i-sm me-1 align-text-top">
+								<use xlink:href="assets/icons/symbol-defs.svg#icon-password"></use>
+							</svg> Reset Password
+						</button>
+
+						<button type="button" class="btn btn-info btn-sm" *ngIf="employeesetupForm.value.EmployeeID!=0"
+							(click)="resetDevice(employeesetupForm.value)">
+							<svg class="icon i-sm me-1 align-text-top">
+								<use xlink:href="assets/icons/symbol-defs.svg#icon-re-device"></use>
+							</svg> Reset Device
+						</button>
+						<button type="button" class="btn btn-info btn-sm" *ngIf="isLocked"
+							(click)="AccessStatusChange(employeesetupForm.value)">
+							<svg class="icon i-sm me-1 align-text-top">
+								<use xlink:href="assets/icons/symbol-defs.svg#icon-unlock-password"></use>
+							</svg> Unlock
+						</button>
+					</div>
+				</div>
+			</div>
+			<span *ngIf="resignLabel" role="alert" class="alert alert-light-danger mx-3 mb-0 mt-3 animated fadeIn">
+				<svg class="icon i-def me-1 align-top">
+					<use xlink:href="assets/icons/symbol-defs.svg#icon-warning"></use>
+				</svg> This employee already <span class="font-weight-medium blink">resigned !!!</span>
+			</span>
+
+			<kendo-tabstrip [animate]="true" class="mt-3">
+				<!-- (tabSelect)="onTabSelect($event)" -->
+				<kendo-tabstrip-tab [title]="'Basic'" [selected]="true">
+					<ng-template kendoTabContent>
+						<div class="px-4">
+							<div class="row">
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Enroll Number" class="required">
+											<input type="text" min="0" kendoTextBox name="EnrollNumber"
+												class="form-control" formControlName="EnrollNumber" autocomplete="off"
+												required>
+										</kendo-textbox-container>
+										<label class="k-tooltip k-tooltip-validation errormessage"
+											[hidden]="employeesetupForm.controls.EnrollNumber.valid || employeesetupForm.controls.EnrollNumber.pristine">
+											This field is limited to 11 number.</label>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Employee Code" class="required">
+											<input type="text" min="0" kendoTextBox name="EmployeeCode"
+												class="form-control" formControlName="EmployeeCode" required>
+										</kendo-textbox-container>
+										<label class="k-tooltip k-tooltip-validation errormessage"
+											[hidden]="employeesetupForm.controls.EmployeeCode.valid || employeesetupForm.controls.EmployeeCode.pristine">
+											This field is limited to 50 character.</label>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Name" class="required">
+											<input type="text" kendoTextBox name="Name" class="form-control"
+												formControlName="EmployeeName" required>
+										</kendo-textbox-container>
+										<label class="k-tooltip k-tooltip-validation errormessage"
+											[hidden]="employeesetupForm.controls.EmployeeName.valid || employeesetupForm.controls.EmployeeName.pristine">
+											This field is limited to 200 character.</label>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Myanmar Name">
+											<input type="text" kendoTextBox name="MyanmarName" class="form-control"
+												formControlName="MyanmarName">
+										</kendo-textbox-container>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Gender" class="d-block pt-4">
+											<span class="d-inline-block mt-1">
+												<input type="radio" formControlName="Gender" name="Gender" id="male"
+													[value]="false" kendoRadioButton checked="checked">
+												<label class="k-radio-label me-4" for="male">Male</label>
+											</span>
+											<span class="d-inline-block mt-1">
+												<input type="radio" formControlName="Gender" name="Gender" id="female"
+													[value]="true" kendoRadioButton>
+												<label class="k-radio-label" for="female">Female</label>
+											</span>
+										</kendo-textbox-container>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Date of Birth">
+											<kendo-datepicker [format]="'dd MMM yyyy'" formatPlaceholder="formatPattern"
+												class="form-control" [(value)]="DOBvalue">
+											</kendo-datepicker>
+										</kendo-textbox-container>
+									</div>
+								</div>
+								<div class="col-xl-6 col-md-8 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Email">
+											<input type="text" kendoTextBox name="Email" class="form-control"
+												formControlName="Email" autocomplete="off">
+										</kendo-textbox-container>
+										<label class="k-tooltip k-tooltip-validation errormessage"
+											[hidden]="employeesetupForm.controls.Email.valid || employeesetupForm.controls.Email.pristine">
+											Wrong Email Format.</label>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="N.R.C">
+											<input type="text" kendoTextBox name="nrc" class="form-control"
+												formControlName="nrc" placeholder="--/---(N)------">
+										</kendo-textbox-container>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Nationality">
+											<input type="text" kendoTextBox name="Nationality" class="form-control"
+												formControlName="Nationality">
+										</kendo-textbox-container>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									<div class="form-group">
+										<!--<kendo-textbox-container floatingLabel="Card ID">
+											<input type="text" kendoTextBox name="CardID" class="form-control"
+												formControlName="CardID">
+										</kendo-textbox-container>-->
+
+										<kendo-textbox-container floatingLabel="Company">
+											<select class="form-control custom-select" (change)="onChange($event)"
+												name="pr" formControlName="CID">
+												<option *ngFor="let pr of Company" [ngValue]="pr.CID">
+													{{pr.CName}}</option>
+											</select>
+										</kendo-textbox-container>
+
+									</div>
+								</div> 
+
+								<!--add Divison--> 
+								<div class="col-md-12 col-sm-6" *ngIf="show_Divison">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Division">
+											<select class="form-control custom-select" name="pr"
+												formControlName="DivisionID">
+												<option *ngFor="let pr of Division" [ngValue]="pr.DivisionID">{{pr.DivisionName}}</option>
+											</select>
+										</kendo-textbox-container>
+									</div>
+								</div>
+
+
+								<div class="col-xl-6 col-md-8 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Phone">
+											<input type="text" kendoTextBox name="Phone" class="form-control"
+												formControlName="Phone">
+										</kendo-textbox-container>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									<div class="form-group"
+										*ngIf="employeesetupForm.value.EmployeeID == 0 && !this.IsddmsCustomer">
+										<kendo-textbox-container floatingLabel="Login Password" class="required">
+											<input type="password" kendoTextBox name="LoginPassword"
+												class="form-control" formControlName="LoginPassword"
+												autocomplete="new-password" required>
+										</kendo-textbox-container>
+										<label class="k-tooltip k-tooltip-validation errormessage"
+											[hidden]="employeesetupForm.controls.LoginPassword.valid || employeesetupForm.controls.LoginPassword.pristine">
+											Password is required..!</label>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xl-6">
+									<div class="form-group">
+										<kendo-floatinglabel text="Address">
+											<textarea kendoTextArea rows="2" name="Address" class="form-control"
+												formControlName="Address"></textarea>
+										</kendo-floatinglabel>
+									</div>
+								</div>
+								<div class="col-xl-6">
+									<div class="form-group">
+										<kendo-floatinglabel text="Contact Address">
+											<textarea kendoTextArea rows="2" name="ContactAddress" class="form-control"
+												formControlName="ContactAddress"></textarea>
+										</kendo-floatinglabel>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xl-3 col-md-4 col-sm-6" *ngIf="this.IsddmsCustomer">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Location">
+											<select class="form-control custom-select" name="pr"
+												formControlName="LocationID">
+												<option *ngFor="let pr of Location" [ngValue]="pr.LocationID">
+													{{pr.LocationName}}</option>
+											</select>
+										</kendo-textbox-container>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-4 col-sm-6" *ngIf="!this.IsddmsCustomer">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="User Level">
+											<select class="custom-select form-control" name="pr"
+												formControlName="SysID">
+												<option *ngFor="let pr of UserLevel" [ngValue]="pr.SysID">
+													{{pr.UserLevel}}</option>
+											</select>
+										</kendo-textbox-container>
+									</div>
+								</div>
+								<!-- <div class="col-xl-3 col-md-4 col-sm-6" *ngIf="!this.IsddmsCustomer">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Employment Type">
+											<select class="custom-select form-control" name="empt"
+												formControlName="EmployementType">
+												<option value=0>Permanent</option>
+												<option value=1>Contract</option>
+											</select>
+										</kendo-textbox-container>
+									</div>
+								</div> -->
+								<div class="col-xl-6 col-md-8">
+									<kendo-textbox-container floatingLabel="" class="d-block pt-xl-4 pt-2">
+										<span class="d-inline-block mt-1">
+											<input type="checkbox" id="inactiveEmp" name="InactiveEmployee"
+												formControlName="InactiveEmployee"
+												(click)="inactiveEmp($event.target.checked)" kendoCheckBox>
+											<label class="k-checkbox-label me-4" for="inactiveEmp">Inactive
+												Employee</label>
+										</span>
+										<!-- <span class="d-inline-block mt-1">
+											<input type="checkbox" id="inactiveCard" name="InactiveCard"
+												formControlName="InactiveCard"
+												(click)="inactiveCard($event.target.checked)" kendoCheckBox>
+											<label class="k-checkbox-label" for="inactiveCard">Inactive Card</label>
+										</span> -->
+									</kendo-textbox-container>
+									<br>
+								</div>
+							</div>
+						</div>
+					</ng-template>
+				</kendo-tabstrip-tab>
+				<!--
+				<kendo-tabstrip-tab [title]="'Organizational'" *ngIf="!this.IsddmsCustomer">
+					<ng-template kendoTabContent>
+						<div class="px-4">
+							<div class="row">
+								<div class="col-xl-5 col-md-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Company">
+											<select class="form-control custom-select" (change)="onChange($event)"
+												name="pr" formControlName="CID">
+												<option *ngFor="let pr of Company" [ngValue]="pr.CID">
+													{{pr.CName}}</option>
+											</select>
+										</kendo-textbox-container>
+									</div>
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Department">
+											<select class="form-control custom-select" name="pr"
+												formControlName="DepartmentID">
+												<option *ngFor="let pr of Department" [ngValue]="pr.DepartmentID">
+													{{pr.EDesc}}</option>
+											</select>
+										</kendo-textbox-container>
+									</div>
+									<div class="row">
+										<div class="col-sm-8">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Designation">
+													<select class="form-control custom-select" name="pr"
+														formControlName="DesignationID">
+														<option *ngFor="let pr of Designation"
+															[ngValue]="pr.DesignationID">
+															{{pr.DesignationName}}</option>
+													</select>
+												</kendo-textbox-container>
+											</div>
+										</div>
+										<div class="col-sm-4">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Grade">
+													<select class="form-control custom-select" name="pr"
+														formControlName="GradeID">
+														<option *ngFor="let pr of Grade" [ngValue]="pr.GradeID">
+															{{pr.GradeName}}</option>
+													</select>
+												</kendo-textbox-container>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-4 col-md-5 offset-md-1">
+									<div class="row">
+										<div class="col-md-12 col-sm-6" *ngIf="show_Divison">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Division">
+													<select class="form-control custom-select" name="pr"
+														formControlName="DivisionID">
+														<option *ngFor="let pr of Division" [ngValue]="pr.DivisionID">{{pr.DivisionName}}</option>
+													</select>
+												</kendo-textbox-container>
+											</div>
+										</div>
+										<div class="col-md-12 col-sm-6" *ngIf="show_Section">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Section">
+													<select class="form-control custom-select" name="pr"
+														formControlName="SectionID">
+														<option *ngFor="let pr of Section" [ngValue]="pr.SectionID">
+															{{pr.SectionName}}</option>
+													</select>
+												</kendo-textbox-container>
+											</div>
+										</div>
+										<div class="col-md-12 col-sm-6" *ngIf="show_CostCenter">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Cost Center">
+													<select class="form-control custom-select" name="pr"
+														formControlName="CostCenterID">
+														<option *ngFor="let pr of CostCenter"
+															[ngValue]="pr.CostCenterID">
+															{{pr.CostCenterName}}</option>
+													</select>
+												</kendo-textbox-container>
+											</div>
+										</div>
+										<div class="col-md-12 col-sm-6" *ngIf="show_Location">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Location">
+													<select class="form-control custom-select" name="pr"
+														formControlName="LocationID">
+														<option *ngFor="let pr of Location" [ngValue]="pr.LocationID">
+															{{pr.LocationName}}</option>
+													</select>
+												</kendo-textbox-container>
+											</div>
+										</div>
+										<div class="col-md-12 col-sm-6" *ngIf="show_Group">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Group">
+													<select class="form-control custom-select" name="pr"
+														formControlName="GroupID">
+														<option value="" selected default></option>
+														<option *ngFor="let pr of Group" [ngValue]="pr.GroupID">
+															{{pr.GroupName}}</option>
+													</select>
+												</kendo-textbox-container>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</ng-template>
+				</kendo-tabstrip-tab>-->
+
+				<!--<kendo-tabstrip-tab [title]="'Attendance'" *ngIf="!this.IsddmsCustomer">
+					<ng-template kendoTabContent>
+						<div class="px-4">
+							<div class="row">
+								<div class="col-xl-9">
+									<div class="row">
+										<div class="col-md-4 col-sm-6">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Shift" class="required">
+													<select class="custom-select form-control" name="pr"
+														formControlName="ShiftID" (change)="selectChangeEvent($event)"
+														required>
+														<option *ngFor="let pr of ShiftPolicy" [ngValue]="pr.ShiftID">
+															{{pr.Name}}</option>
+													</select>
+												</kendo-textbox-container>
+											</div>
+										</div>
+										<div class="col-md-4 col-sm-6">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Monday" class="required">
+													<select class="custom-select form-control" name="pr"
+														formControlName="Monday" required>
+														<option *ngFor="let pr of ShiftPolicy" [ngValue]="pr.ShiftID">
+															{{pr.Name}}</option>
+														<option value=-1>Off Day</option>
+														<option value=-3>Default</option>
+													</select>
+												</kendo-textbox-container>
+											</div>
+										</div>
+										<div class="col-md-4 col-sm-6">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Tuesday" class="required">
+													<select class="custom-select form-control" name="pr"
+														formControlName="Tuesday" required>
+														<option *ngFor="let pr of ShiftPolicy" [ngValue]="pr.ShiftID">
+															{{pr.Name}}</option>
+														<option value=-1>Off Day</option>
+														<option value=-3>Default</option>
+													</select>
+												</kendo-textbox-container>
+											</div>
+										</div>
+										<div class="col-md-4 col-sm-6">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Wednesday" class="required">
+													<select class="custom-select form-control" name="pr"
+														formControlName="Wednesday" required>
+														<option *ngFor="let pr of ShiftPolicy" [ngValue]="pr.ShiftID">
+															{{pr.Name}}</option>
+														<option value=-1>Off Day</option>
+														<option value=-3>Default</option>
+													</select>
+												</kendo-textbox-container>
+											</div>
+										</div>
+										<div class="col-md-4 col-sm-6">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Thursday" class="required">
+													<select class="custom-select form-control" name="pr"
+														formControlName="Thursday" required>
+														<option *ngFor="let pr of ShiftPolicy" [ngValue]="pr.ShiftID">
+															{{pr.Name}}</option>
+														<option value=-1>Off Day</option>
+														<option value=-3>Default</option>
+													</select>
+												</kendo-textbox-container>
+											</div>
+										</div>
+										<div class="col-md-4 col-sm-6">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Friday" class="required">
+													<select class="custom-select form-control" name="pr"
+														formControlName="Friday" required>
+														<option *ngFor="let pr of ShiftPolicy" [ngValue]="pr.ShiftID">
+															{{pr.Name}}</option>
+														<option value=-1>Off Day</option>
+														<option value=-3>Default</option>
+													</select>
+												</kendo-textbox-container>
+											</div>
+										</div>
+										<div class="col-md-4 col-sm-6">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Saturday" class="required">
+													<select class="custom-select form-control" name="pr"
+														formControlName="Saturday" required>
+														<option *ngFor="let pr of ShiftPolicy" [ngValue]="pr.ShiftID">
+															{{pr.Name}}</option>
+														<option value=-1>Off Day</option>
+														<option value=-3>Default</option>
+													</select>
+												</kendo-textbox-container>
+											</div>
+										</div>
+										<div class="col-md-4 col-sm-6">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Sunday" class="required">
+													<select class="custom-select form-control" name="pr"
+														formControlName="Sunday" required>
+														<option *ngFor="let pr of ShiftPolicy" [ngValue]="pr.ShiftID">
+															{{pr.Name}}</option>
+														<option value=-1>Off Day</option>
+														<option value=-3>Default</option>
+													</select>
+												</kendo-textbox-container>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xl-6 col-md-8 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Group Policy">
+											<select class="custom-select form-control" name="pr"
+												formControlName="GroupPolicyID">
+												<option *ngFor="let pr of GroupPolicy" [ngValue]="pr.GroupPolicyID">
+													{{pr.GroupPolicyName}}</option>
+											</select>
+										</kendo-textbox-container>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="DOE">
+											<kendo-datepicker [navigation]="false" [format]="'yyyy MMM dd'"
+												formatPlaceholder="formatPattern" class="form-control"
+												[(value)]="DOEvalue" (valueChange)="putDateInDOP()">
+											</kendo-datepicker>
+										</kendo-textbox-container>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xl-3 col-md-4">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Probation" class="d-block pt-4">
+											<span class="d-inline-block mt-1">
+												<input type="radio" name="Probation" id="byMonth"
+													formControlName="Probation" [value]="false"
+													(change)="radioChange(false)" kendoRadioButton checked />
+												<label class="k-radio-label me-4" for="byMonth">By Month</label>
+											</span>
+											<span class="d-inline-block mt-1">
+												<input type="radio" name="Probation" id="byDays"
+													formControlName="Probation" [value]="true"
+													(change)="radioChange(true)" kendoRadioButton />
+												<label class="k-radio-label" for="byDays">By Days</label>
+											</span>
+										</kendo-textbox-container>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="">
+											<input type="text" class="form-control" name="Probitiontext"
+												formControlName="Probitiontext" (input)="PermanentDateCalculate()"
+												kendoTextBox />
+										</kendo-textbox-container>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Permanent">
+											<kendo-datepicker [navigation]="false" [format]="'yyyy MMM dd'"
+												formatPlaceholder="formatPattern" class="form-control"
+												[(value)]="DOPvalue" disabled>
+											</kendo-datepicker>
+										</kendo-textbox-container>
+									</div>
+								</div>
+							</div>
+						</div>
+					</ng-template>
+				</kendo-tabstrip-tab>-->
+
+				<!--<kendo-tabstrip-tab [title]="'Product'" *ngIf="IsdailyTaskmenu">
+					<ng-template kendoTabContent>
+						<div class="px-4">
+							<form [formGroup]="productFrom" class="mb-3">
+								<button class="btn btn-sm btn-primary text-capitalize ms-0" (click)="openProductPopup()">
+									<svg class="icon i-sm align-text-top">
+										<use xlink:href="assets/icons/symbol-defs.svg#icon-plus"></use>
+									</svg> Add Product
+								</button>
+								<div class="row">
+									<div class="col-xl-5 col-md-6">
+										<div formArrayName="productarray"
+											*ngFor="let item of productLists.controls; let productIndex=index"
+											class="d-flex border border-dashed mb-1 align-items-center">
+											<ng-container [formGroupName]="productIndex">
+												<div class="flex-grow-1">
+													<input formControlName="point" kendoTextBox
+														[value]="item.value.point"
+														class="form-control form-control-sm form-control-static border-0"
+														required disabled />
+													<input formControlName="ProductID"
+														[value]="item.value.ProductID" hidden />
+												</div>
+												<button type="button" class="btn btn-link btn-sm text-danger"
+													(click)="removeproductTextBox(productIndex)" title="Remove">
+													<svg class="icon i-def">
+														<use xlink:href="assets/icons/symbol-defs.svg#icon-minus-circle">
+														</use>
+													</svg>
+												</button>
+											</ng-container>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</ng-template>
+				</kendo-tabstrip-tab>-->
+
+				<!--<kendo-tabstrip-tab [title]="'Approver Assign'" *ngIf="!this.IsddmsCustomer">
+					<ng-template kendoTabContent>
+						<div class="px-4">
+							<div class="row mb-2">
+								<div class="col-xl-4 col-md-6 col-sm-8">
+									<div class="form-group" *ngIf="ismultilevel">
+										<kendo-textbox-container floatingLabel="Approver Group" class="d-flex flex-row">
+											<input type="text" class="form-control" name="ApproverGroupName"
+												formControlName="ApproverGroupName"
+												placeholder="Select approver group" readonly kendoTextBox />
+											<button type="button" class="btn btn-sm btn-light m-0 rounded-0"
+												(click)="openApproverGroup()" ngbtooltip="Searching Group"
+												placement="bottom-right">
+												<svg class="icon i-def">
+													<use xlink:href="assets/icons/symbol-defs.svg#icon-user-search">
+													</use>
+												</svg>
+											</button>
+										</kendo-textbox-container>
+									</div>
+									
+									<div class="form-group">
+										<input type="checkbox" id="apvLeave" name="ApprovingLeave"
+											formControlName="ApprovingLeave"
+											(click)="approvingLeave($event.target.checked)" kendoCheckBox />
+										<label class="k-checkbox-label" for="apvLeave">Allow Approving Leave</label>
+									</div>
+									<div class="form-group">
+										<input type="checkbox" id="apvAtt" name="ApprovingAttendance"
+											formControlName="ApprovingAttendance"
+											(click)="approvingAttendance($event.target.checked)" kendoCheckBox />
+										<label class="k-checkbox-label" for="apvAtt">Allow Approving
+											Attendance</label>
+									</div>
+									<div class="form-group">
+										<input type="checkbox" id="apvOvertime" name="ApprovingOverTime"
+											formControlName="ApprovingOverTime"
+											(click)="approvingOverTime($event.target.checked)" kendoCheckBox />
+										<label class="k-checkbox-label" for="apvOvertime">Allow Approving
+											OverTime</label>
+									</div>
+									<div class="form-group">
+										<input type="checkbox" id="apvDutySwap" name="ApprovingDutySwap"
+											formControlName="ApprovingDutySwap"
+											(click)="approvingDutySwap($event.target.checked)" kendoCheckBox />
+										<label class="k-checkbox-label" for="apvDutySwap">Allow Approving
+											DutySwap</label>
+									</div>
+									<div class="form-group">
+										<input type="checkbox" id="apvClaim" name="ApprovingClaim"
+											formControlName="ApprovingClaim"
+											(click)="approvingClaim($event.target.checked)" kendoCheckBox />
+										<label class="k-checkbox-label" for="apvClaim">Allow Approving Claim</label>
+									</div>
+								</div>
+								<div class="col-xl-5 col-md-6 offset-xl-1">
+									<form [formGroup]="approverFrom" class="mb-3" *ngIf="isdefault">
+										<button class="btn btn-sm btn-primary ms-0"
+											(click)="openApproverPopup(pointIndex)">
+											<svg class="icon i-sm">
+												<use xlink:href="assets/icons/symbol-defs.svg#icon-plus"></use>
+											</svg> Add Approver
+										</button>
+										<div formArrayName="Level_points"
+											*ngFor="let item of levelPoints.controls; let pointIndex=index"
+											class="d-flex border border-dashed mb-1 align-items-center">
+											<ng-container [formGroupName]="pointIndex">
+												<div class="flex-grow-1">
+													<input formControlName="point" kendoTextBox
+														[value]="item.value.point"
+														class="form-control form-control-sm form-control-static border-0"
+														required disabled />
+													<input formControlName="ApproverID"
+														[value]="item.value.ApproverID" hidden />
+												</div>
+												<button type="button" class="btn btn-link btn-sm text-danger"
+													(click)="removeTextBox(pointIndex)" title="Remove">
+													<svg class="icon i-def">
+														<use xlink:href="assets/icons/symbol-defs.svg#icon-minus-circle">
+														</use>
+													</svg>
+												</button>
+											</ng-container>
+										</div>
+									</form>
+									<form [formGroup]="userlevelFrom" class="mb-3">
+										<button class="btn btn-sm btn-primary ms-0"
+											(click)="openUserlevelPopup(pointIndex)">
+											<svg class="icon i-sm">
+												<use xlink:href="assets/icons/symbol-defs.svg#icon-plus"></use>
+											</svg> Add User Level Control
+										</button>
+										<div formArrayName="userlevelarray"
+											*ngFor="let item of userlevelLists.controls; let pointIndex=index"
+											class="d-flex border border-dashed mb-1 align-items-center">
+											<ng-container [formGroupName]="pointIndex">
+												<div class="flex-grow-1">
+													<input formControlName="point" kendoTextBox
+														[value]="item.value.point"
+														class="form-control form-control-sm form-control-static border-0"
+														required disabled />
+													<input formControlName="SysID" [value]="item.value.SysID"
+														hidden />
+												</div>
+												<button type="button" class="btn btn-link btn-sm text-danger"
+													(click)="removeuserlevelTextBox(pointIndex)" title="Remove">
+													<svg class="icon i-def">
+														<use xlink:href="assets/icons/symbol-defs.svg#icon-minus-circle">
+														</use>
+													</svg>
+												</button>
+											</ng-container>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</ng-template>
+				</kendo-tabstrip-tab>-->
+
+
+				<!--<kendo-tabstrip-tab [title]="'Additional'" *ngIf="!this.IsddmsCustomer">
+					<ng-template kendoTabContent>
+						<div class="px-4">
+							<div class="row mb-2">
+								<div class="col-xl-8">
+									<div class="row">
+										<div class="col-md-4 col-sm-6">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="SSB_Registration_No">
+													<input type="text" min="0" kendoTextBox name="SSB_Registration_No"
+														class="form-control" formControlName="SSB_Registration_No"
+														autocomplete="off">
+												</kendo-textbox-container>
+												<label class="k-tooltip k-tooltip-validation errormessage"
+													[hidden]="employeesetupForm.controls.SSB_Registration_No.valid || employeesetupForm.controls.SSB_Registration_No.pristine">
+													SSB_Registration_No allow only numeric value !
+												</label>
+											</div>
+										</div>
+										<div class="col-md-4 col-sm-6">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="TaxNo">
+													<input type="text" min="0" kendoTextBox name="TaxNo"
+														class="form-control" formControlName="TaxNo">
+												</kendo-textbox-container>
+											</div>
+										</div>
+										<div class="col-md-4 col-sm-6">
+											<div class="form-group">
+												<kendo-textbox-container floatingLabel="Marital Status">
+													<select class="form-control custom-select" name="MaritalStatus"
+														formControlName="MaritalStatus">
+														<option value="single">single</option>
+														<option value="married">married</option>
+													</select>-->
+													<!-- <input type="text" kendoTextBox name="MaritalStatus" class="form-control"
+														formControlName="MaritalStatus"> -->
+											<!--	</kendo-textbox-container>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Highest Education">
+											<input type="text" kendoTextBox name="Highest_Education"
+												class="form-control" formControlName="Highest_Education">
+										</kendo-textbox-container>
+									</div>
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Specialization">
+											<input type="text" kendoTextBox name="Specialization" class="form-control"
+												formControlName="Specialization">
+										</kendo-textbox-container>
+									</div>
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Other Specialization">
+											<input type="text" kendoTextBox name="Other_Specialization"
+												class="form-control" formControlName="Other_Specialization">
+										</kendo-textbox-container>
+									</div>
+								</div>
+								<div class="col-md-4 col-sm-6 col-xl-3 offset-xl-1">
+									<div class="border rounded px-3 py-4 d-flex flex-column h-100">
+										<h3 class="h5 font-weight-bold mb-3 text-center">Scan QR Code</h3>
+										<img *ngFor="let qrimage of qrimagePreviews" [src]="qrimage.src"
+											alt="image preview" data-max-size="10kb" class="avatar-lg mx-auto"
+											width="110px" />
+										<br>
+										<kendo-upload name="qrimage" required [batch]="true" [multiple]="false"
+											[autoUpload]="false" (select)="selectQREventHandler($event)"
+											(upload)="uploadQREventHandler($event,employeesetupForm.value.EmployeeID)"
+											(clear)="clearQREventHandler($event)"
+											(remove)="removeQREventHandler($event)"
+											(complete)="completeQREventHandler()"
+											class="border-0 bg-transparent mt-2 mx-auto no-autoupload" primary="true"
+											[restrictions]="FileTypeRestrictions">
+										</kendo-upload>
+										<label class="k-tooltip k-tooltip-validation errormessage" *ngIf="restrictedfiletype">
+											Invalid File Type!
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div *ngIf="Ispayrollmenu">
+							<div class="d-flex flex-wrap px-4">
+								<h3 class="h5 font-weight-bold mb-3">Bank Information</h3>
+								<button class="btn btn-sm btn-primary ms-auto" *ngIf="!showbankForm"
+									(click)="addNewBank()" placement="bottom-right" ngbTooltip="Add New">
+									<svg _ngcontent-bib-c7="" class="icon i-sm align-text-top">
+										<use xlink:href="assets/icons/symbol-defs.svg#icon-plus"></use>
+									</svg> Add Bank
+								</button>
+							</div>
+							<form [formGroup]="MultiBankInfoForm" *ngIf="!showbankForm">
+								<kendo-grid [kendoGridBinding]="gridBankData" [style.height.%]="100" [style.minHeight.px]="300" [filterable]="false" [sortable]="true"
+									[scrollable]="true" [selectable]="true" [resizable]="true">
+									<kendo-grid-column field="BankName" title="Bank Name" [width]="150">
+									</kendo-grid-column>
+									<kendo-grid-column field="AccountName" title="Account Name" [width]="150">
+									</kendo-grid-column>
+									<kendo-grid-column field="AccountNumber" title="Account Number" [width]="200">
+									</kendo-grid-column>
+									<kendo-grid-column field="Action" title="Action" width="80" [sortable]="false" [resizable]="false" class="text-nowrap">
+										<ng-template kendoGridCellTemplate let-dataItem>
+											<a class="btn btn-link btn-sm text-primary"
+												(click)="onItemClickBank('Edit',dataItem)" title="Edit">
+												<svg class="icon i-sm">
+													<use xlink:href="assets/icons/symbol-defs.svg#icon-edit">
+													</use>
+												</svg>
+											</a>
+											<a class="btn btn-link btn-sm text-danger"
+												(click)="onItemClickBank('Delete',dataItem)" title="Delete">
+												<svg class="icon i-sm">
+													<use xlink:href="assets/icons/symbol-defs.svg#icon-trash">
+													</use>
+												</svg>
+											</a>
+										</ng-template>
+									</kendo-grid-column>
+								</kendo-grid>
+							</form>
+						</div>
+						<kendo-grid [data]="viewcust" [sort]="gridState.sort" [filter]="gridState.filter"
+							[style.height.%]="100" [style.minHeight.px]="300" [filterable]="false" [sortable]="true"
+							[resizable]="true" [scrollable]="true" [selectable]="true"
+							(cellClick)="cellClickHandler($event)" (cellClose)="cellCloseHandler($event)"
+							[navigable]="true">
+							<kendo-grid-column field="EmployeeCustomFieldId" title="ID" [width]="50" hidden="true">
+							</kendo-grid-column>
+							<kendo-grid-column field="EmployeeCustomFieldName" title="Custom Field Name" [width]="250">
+							</kendo-grid-column>
+							<kendo-grid-column field="FieldValue" editor="text" title="Field Value" [minWidth]="120">
+								<ng-template kendoGridEditTemplate let-formGroup="formGroup" let-column="column"
+									let-dataItem="dataItem" let-rowIndex="rowIndex">
+									<div class="form-group" *ngIf="dataItem.IsInitial">
+										<kendo-dropdownlist [data]="dataItem.InitialValueList" textField="InitialValue"
+											valueField="InitialID" [valuePrimitive]="true"
+											(valueChange)="InitialChange(dataItem,$event,rowIndex)">
+										</kendo-dropdownlist>
+									</div>
+									<div *ngIf="!dataItem.IsInitial">
+										<input type="text" [formControl]="formGroup.get(column.field)"
+											(input)="clickonFieldValue($event,rowIndex,'FieldValue')"
+											class="form-control form-control-sm border-0" kendoTextBox />
+									</div>
+								</ng-template>
+							</kendo-grid-column>
+						</kendo-grid>
+					</ng-template>
+				</kendo-tabstrip-tab> -->
+
+				<!--<kendo-tabstrip-tab [title]="'FingerPrints Info'">
+					<ng-template kendoTabContent>
+						<div class="px-4">
+							<div class="row">
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									
+								<div class="form-group">
+										<kendo-textbox-container floatingLabel="FingerPrint Password">
+											<input type="password" class="form-control" name="FingerPrintPassword"
+												formControlName="FingerPrintPassword" kendoTextBox />
+										</kendo-textbox-container>
+										<label class="k-tooltip k-tooltip-validation errormessage"
+											[hidden]="employeesetupForm.controls.FingerPrintPassword.valid || employeesetupForm.controls.FingerPrintPassword.pristine">
+											Password allow only numeric value !
+										</label>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="Privilege">
+											<select class="form-control custom-select" name="pr"
+												formControlName="Privilege">
+												<option value="0">Normal</option>
+												<option value="6">Registrar</option>
+												<option value="14">Supervisor</option>
+											</select>
+										</kendo-textbox-container>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-4 col-sm-6">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel="FingerPrint Count">
+											<kendo-numerictextbox [value]="value" [min]="0" [format]="'#'"
+												class="form-control" name="FingerPrintCount"
+												formControlName="FingerPrintCount" [readonly]="true">
+											</kendo-numerictextbox>
+										</kendo-textbox-container>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-4 col-sm-6" *ngIf="updateBtn">
+									<div class="form-group">
+										<kendo-textbox-container floatingLabel=""
+											class="d-block pt-xl-4 pt-md-2 pt-sm-4 pt-2">
+											<span class="d-inline-block mt-1">
+												<input type="checkbox" name="checkIncludeClear"
+													formControlName="checkIncludeClear" id="includeClear"
+													kendoCheckBox />
+												<label class="k-checkbox-label" for="includeClear">
+													Include Clear Command
+												</label>
+											</span>
+										</kendo-textbox-container>
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<kendo-grid [data]="view | async" [pageSize]="Fpgrid.take" [style.height.%]="100" [style.minHeight.px]="300" [pageable]="{
+						  buttonCount: 5,
+						  info: true,
+						  type: 'input',
+						  pageSizes: [5,40,60,80,100],
+						  previousNext: true
+						  }" (pageChange)="pageChangeFingerPrint($event)" [skip]="Fpgrid.skip" [sort]="Fpgrid.sort"
+							[filter]="Fpgrid.filter" [loading]="view.loading"
+							(dataStateChange)="onStateChangeFingerPrint($event)" [resizable]="false" [scrollable]="true"
+							[sortable]="true" [selectable]="selectableSettings" [kendoGridSelectBy]="'MachineID'"
+							[selectedKeys]="mySelectionFingure" (selectedKeysChange)="onSelectedFingurePrint($event)">
+
+							<kendo-grid-checkbox-column showSelectAll="true"
+								(selectAllChange)="onSelectAllChangeFingerPrint($event)" [width]="50"
+								class="text-center" headerClass="text-center">
+							</kendo-grid-checkbox-column>
+							<kendo-grid-column field="Description" title="FingerPrint Devices"></kendo-grid-column>
+						</kendo-grid>
+					</ng-template>
+				</kendo-tabstrip-tab> -->
+
+				<!--<kendo-tabstrip-tab [title]="'Zone Mapping'" *ngIf="!this.IsddmsCustomer">
+					<ng-template kendoTabContent>
+						<div class="px-4">
+							<div class="form-group text-right mt-2" *ngIf="updateBtn">
+								<input type="checkbox" name="shwonlyEnpZone"
+									(click)="ShowOnlyEmpZone($event.target.checked)" id="shwonlyEnpZone"
+									kendoCheckBox />
+								<label class="k-checkbox-label" for="shwonlyEnpZone">
+									Show Only Employee's Zone
+								</label>
+							</div>
+						</div>
+
+						<div class="" *ngIf="!ShowEmpZone">
+							<kendo-grid [data]="viewzone | async" [pageSize]="zonegrid.take" [style.minHeight.px]="200"
+								[style.maxHeight.px]="500" [pageable]="{
+							  buttonCount: 5,
+							  info: true,
+							  type: 'input',
+							  pageSizes: [5,40,60,80,100],
+							  previousNext: true
+							  }" (pageChange)="pageChangezone($event)" [skip]="zonegrid.skip" [sort]="zonegrid.sort"
+								[filter]="zonegrid.filter" [loading]="viewzone.loading"
+								(dataStateChange)="onStateChangeZone($event)" [resizable]="false" [scrollable]="true"
+								[sortable]="true" [selectable]="zoneselectableSettings"
+								[kendoGridSelectBy]="'GPSLocationID'" [selectedKeys]="zoneSelection"
+								(selectedKeysChange)="onSelectedZoneMapping($event)">
+
+								<kendo-grid-checkbox-column showSelectAll="true"
+									(selectAllChange)="onSelectAllChangeZone($event)" [width]="50" class="text-center"
+									headerClass="text-center">
+								</kendo-grid-checkbox-column>
+								<kendo-grid-column field="LocationName" title="Zone Mapping"></kendo-grid-column>
+							</kendo-grid>
+						</div>
+						<div class="" *ngIf="ShowEmpZone">
+							<kendo-grid [data]="viewEmpzone | async" [pageSize]="empzonegrid.take"
+								[style.height.%]="100" [style.minHeight.px]="300" [pageable]="{
+							  buttonCount: 5,
+							  info: true,
+							  type: 'input',
+							  pageSizes: [5,40,60,80,100],
+							  previousNext: true
+							  }" (pageChange)="pageChangeEmpzone($event)" [skip]="empzonegrid.skip" [sort]="empzonegrid.sort"
+								[filter]="empzonegrid.filter" [loading]="viewEmpzone.gridLoading"
+								(dataStateChange)="onStateChangeEmpZone($event)" [resizable]="false" [scrollable]="true"
+								[sortable]="true" [selectable]="empzoneselectableSettings"
+								[kendoGridSelectBy]="'GPSLocationID'" [selectedKeys]="empzoneSelection"
+								(selectedKeysChange)="onSelectedEmpZoneMapping($event)">
+
+								<kendo-grid-checkbox-column showSelectAll="true"
+									(selectAllChange)="onSelectAllEmpChangeZone($event)" [width]="50"
+									class="text-center" headerClass="text-center">
+								</kendo-grid-checkbox-column>
+								<kendo-grid-column field="LocationName" title="Zone Mapping"></kendo-grid-column>
+							</kendo-grid>
+						</div>
+					</ng-template>
+				</kendo-tabstrip-tab>-->
+
+				<!--<kendo-tabstrip-tab [title]="'Dependents'" *ngIf="!this.IsddmsCustomer">
+					<ng-template kendoTabContent>
+						<div class="px-4 text-right">
+							<button class="btn btn-sm btn-primary text-capitalize ms-auto" (click)="addNew()"
+								placement="bottom-right" ngbTooltip="Add New">
+								<svg _ngcontent-bib-c7="" class="icon i-sm align-text-top">
+									<use xlink:href="assets/icons/symbol-defs.svg#icon-plus"></use>
+								</svg> Add Dependent
+							</button>
+						</div>
+						<form [formGroup]="FamilyDataForm">
+							<kendo-grid [kendoGridBinding]="gridData" [style.height.%]="100" [style.minHeight.px]="300" [filterable]="false" [sortable]="true" [scrollable]="true"
+								[selectable]="true" [resizable]="true">
+
+								<kendo-grid-column field="DependentName" title="Name" [width]="150">
+								</kendo-grid-column>
+								<kendo-grid-column field="isGender" title="Gender" [width]="70">
+								</kendo-grid-column>
+								<kendo-grid-column field="DOB" title="DOB" [width]="100" class="text-nowrap">
+									<ng-template kendoGridCellTemplate let-dataItem>
+										{{dataItem.DOB | date:"dd-MM-yyyy"}}
+									</ng-template>
+								</kendo-grid-column>
+								<kendo-grid-column field="NRC" title="NRC" [width]="150">
+								</kendo-grid-column>
+								<kendo-grid-column field="Relation" title="Relation" [width]="80">
+								</kendo-grid-column>
+								<kendo-grid-column field="Status" title="Status" [width]="80">
+								</kendo-grid-column>
+								<kendo-grid-column field="Count" title="Count" [width]="60">
+								</kendo-grid-column>
+								<kendo-grid-column field="Remark" title="Remark" [width]="200">
+								</kendo-grid-column>
+								<kendo-grid-column field="Action" title="Action" width="80" [sortable]="false"
+									[resizable]="false" class="text-nowrap">
+									<ng-template kendoGridCellTemplate let-dataItem>
+										<a class="btn btn-link btn-sm text-primary"
+											(click)="onItemClickDependent('Edit',dataItem)" title="Edit">
+											<svg class="icon i-sm">
+												<use xlink:href="assets/icons/symbol-defs.svg#icon-edit"></use>
+											</svg>
+										</a>
+										<a class="btn btn-link btn-sm text-danger"
+											(click)="onItemClickDependent('Delete',dataItem)" title="Delete">
+											<svg class="icon i-sm">
+												<use xlink:href="assets/icons/symbol-defs.svg#icon-trash"></use>
+											</svg>
+										</a>
+									</ng-template>
+								</kendo-grid-column>
+							</kendo-grid>
+						</form>
+					</ng-template>
+				</kendo-tabstrip-tab>-->
+			</kendo-tabstrip>
+
+			<!--<kendo-dialog *ngIf="showbankForm" (close)="Cancel()" [minWidth]="250" [maxWidth]="750" class="k-dialog-lg">
+				<kendo-dialog-titlebar>
+					<h3 class="text-md my-2"><strong>{{ isNewbank ? 'Add' : 'Edit' }}</strong>
+						{{ isNewbank ? 'New Bank Information' : 'Bank Information' }}</h3>
+				</kendo-dialog-titlebar>
+				<form [formGroup]="MultiBankInfoForm">
+					<div class="form-group">
+						<kendo-textbox-container floatingLabel="Bank Name :" class="required">
+							<kendo-dropdownlist class="form-control" [data]="bankname"
+								[textField]="'BankName'" [valueField]="'BankId'" formControlName="BankID"
+								[defaultItem]="{ BankName: '...Select Bank Name...',BankId:null }"
+								[valuePrimitive]="true" (selectionChange)="changeBank($event)">
+							</kendo-dropdownlist>
+						</kendo-textbox-container>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<kendo-textbox-container floatingLabel="Account Name">
+									<input type="text" min="0" kendoTextBox name="AccountName" class="form-control"
+										formControlName="AccountName">
+								</kendo-textbox-container>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<kendo-textbox-container floatingLabel="Account Number">
+									<input type="text" min="0" kendoTextBox name="AccountNumber" class="form-control"
+										formControlName="AccountNumber">
+								</kendo-textbox-container>
+							</div>
+						</div>
+					</div>
+				</form>
+				<kendo-dialog-actions class="px-4 pb-3" [layout]="actionsLayout">
+					<button type="submit" class="btn btn-light rounded-pill px-4" (click)="CancelBankData()">Cancel </button>
+					<button type="submit" class="btn btn-success rounded-pill px-4" *ngIf="savebankBtn"
+						(click)="SaveBankData(this.MultiBankInfoForm.value)" [disabled]="!MultiBankInfoForm.valid">
+						Save </button>
+					<button type="submit" class="btn btn-success rounded-pill px-4" *ngIf="updatebankBtn"
+						(click)="UpdateBankData(this.MultiBankInfoForm.value)" [disabled]="!MultiBankInfoForm.valid">
+						Update </button>
+				</kendo-dialog-actions>
+			</kendo-dialog>-->
+
+			<!--<kendo-dialog *ngIf="showdepForm" (close)="Cancel()" [minWidth]="250" [maxWidth]="850" class="k-dialog-xl">
+				<kendo-dialog-titlebar>
+					<h3 class="text-md my-2"><strong>{{ isNew ? 'Add' : 'Edit' }}</strong>
+						{{ isNew ? 'New Dependent' : 'Dependent' }}</h3>
+				</kendo-dialog-titlebar>
+
+				<form [formGroup]="FamilyDataForm">
+					<div class="row">
+						<div class="col-xl-4 col-md-4 col-sm-6">
+							<div class="form-group">
+								<kendo-textbox-container floatingLabel="Name" class="required">
+									<input type="text" kendoTextBox name="Name" class="form-control"
+										formControlName="DependentName" required />
+								</kendo-textbox-container>
+								<label class="k-tooltip k-tooltip-validation errormessage"
+									[hidden]="FamilyDataForm.controls.DependentName.valid || FamilyDataForm.controls.DependentName.pristine">
+									Dependent Name is required !
+								</label>
+							</div>
+						</div>
+						<div class="col-xl-4 col-md-4 col-sm-6">
+							<div class="form-group">
+								<kendo-textbox-container floatingLabel="Date of Birth" class="required">
+									<kendo-datepicker class="form-control" formControlName="DOB"
+										formatPlaceholder="formatPattern" [format]="this.CustomDate"
+										[navigation]="false" placeholder="" required>
+									</kendo-datepicker>
+								</kendo-textbox-container>
+							</div>
+						</div>
+						<div class="col-xl-4 col-md-4 col-sm-6">
+							<div class="form-group">
+								<kendo-textbox-container floatingLabel="Gender" class="d-block pt-4">
+									<span class="d-inline-block mt-1">
+										<input type="radio" formControlName="Gender" name="Gender" id="dependMale"
+											[value]="false" kendoRadioButton checked="checked">
+										<label class="k-radio-label me-4" for="dependMale">Male</label>
+									</span>
+									<span class="d-inline-block mt-1">
+										<input type="radio" formControlName="Gender" name="Gender" id="dependFemale"
+											[value]="true" kendoRadioButton>
+										<label class="k-radio-label" for="dependFemale">Female</label>
+									</span>
+								</kendo-textbox-container>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-4 col-md-4 col-sm-6">
+							<div class="form-group">
+								<kendo-textbox-container floatingLabel="N.R.C">
+									<input type="text" kendoTextBox name="NRC" class="form-control"
+										formControlName="NRC" placeholder="- - / - - - (N) - - - - - -" />
+								</kendo-textbox-container>
+								<label class="k-tooltip k-tooltip-validation errormessage" [hidden]="FamilyDataForm.controls.NRC.valid ||
+								FamilyDataForm.controls.NRC.pristine">
+									NRC is required !
+								</label> 
+						</div>
+						</div>
+						<div class="col-xl-4 col-md-4 col-sm-6">
+							<div class="form-group">
+								<kendo-textbox-container floatingLabel="Relation" class="required">
+									<kendo-dropdownlist class="form-control" [data]="relationCombo"
+										[textField]="'ComboValue'" [valueField]="'ComboID'" formControlName="Relation"
+										[valuePrimitive]="true"
+										[defaultItem]="{ ComboValue: 'Select Relation',ComboID:null }"
+										(selectionChange)="changeRelation($event)">
+									</kendo-dropdownlist>
+								</kendo-textbox-container>
+								<label class="k-tooltip k-tooltip-validation errormessage"
+									[hidden]="FamilyDataForm.controls.Relation.valid || FamilyDataForm.controls.Relation.pristine">
+									Relation is required !
+								</label>
+							</div>
+						</div>
+						<div class="col-md-3 col-sm-4 col-8">
+							<div class="form-group">
+								<kendo-textbox-container floatingLabel="Status">
+									<kendo-dropdownlist class="form-control" [data]="statusCombo"
+										[textField]="'ComboValue'" [valueField]="'ComboID'" formControlName="Status"
+										[valuePrimitive]="true"
+										[defaultItem]="{ ComboValue: 'Select Status',ComboID:null}"
+										(selectionChange)="changeStatus($event)">
+									</kendo-dropdownlist>
+								</kendo-textbox-container>
+							</div>
+						</div>
+						<div class="col-xl-1 col-md-1 col-sm-2 col-4">
+							<div class="form-group">
+								<kendo-textbox-container floatingLabel="Count" class="required">
+									<kendo-numerictextbox [value]="value" [min]="1" [format]="'#'" class="form-control"
+										name="Count" formControlName="Count" required>
+									</kendo-numerictextbox>
+								</kendo-textbox-container>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-12">
+							<div class="form-group">
+								<kendo-textbox-container floatingLabel="Remark">
+									<textarea kendoTextArea class="form-control" rows="2"
+										formControlName="Remark"></textarea>
+								</kendo-textbox-container>
+							</div>
+						</div>
+					</div>
+				</form>
+				<kendo-dialog-actions class="px-4 pb-3" [layout]="actionsLayout">
+					<button type="button" class="btn btn-light rounded-pill px-4" (click)="Cancel()">
+						Cancel </button>
+					<button type="submit" class="btn btn-success rounded-pill px-4" *ngIf="savedependentBtn"
+						(click)="SaveFamilyData(this.FamilyDataForm.value)" [disabled]="!FamilyDataForm.valid">
+						Save </button>
+					<button type="submit" class="btn btn-success rounded-pill px-4" *ngIf="updatedependentBtn"
+						(click)="UpdateFamilyData(this.FamilyDataForm.value)" [disabled]="!FamilyDataForm.valid">
+						Update </button>
+				</kendo-dialog-actions>
+			</kendo-dialog>-->
+		</div>
+
+		<div class="card-footer bg-transparent border-0">
+			<div class="mb-2">
+				<span *ngxPermissionsOnly="'edit'">
+					<button type="button" class="btn btn-success rounded-pill px-4"
+						[disabled]="!employeesetupForm.valid || restrictedfiletype == true" *ngIf="saveBtn" (click)="saveEmpData()">Save</button>
+					<button type="button" class="btn btn-success rounded-pill px-4"
+						[disabled]="!employeesetupForm.valid || restrictedfiletype == true" *ngIf="updateBtn" (click)="update()">Update</button>
+				</span>
+				<span *ngxPermissionsOnly="'delete'">
+					<button type="button" class="btn btn-danger rounded-pill px-4"
+						*ngIf="employeesetupForm.value.EmployeeID!=0"
+						(click)="showConfirmation(employeesetupForm.value)">Delete</button>
+				</span>
+				<button type="button" class="btn btn-primary rounded-pill px-4" (click)="GotoEmpReport()"
+					*ngIf="EmpReport">People Directory
+					<svg class="icon i-sm align-text-bottom">
+						<use xlink:href="assets/icons/symbol-defs.svg#icon-chevron-right"></use>
+					</svg>
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<kendo-dialog title="" *ngIf="isShowDivision" (close)="closeDivision()" [minWidth]="250" [width]="850"
+	class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md my-2"><strong>Division</strong></h3>
+	</kendo-dialog-titlebar>
+	<app-division></app-division>
+</kendo-dialog>
+
+<!-- <kendo-dialog title="" *ngIf="isShowSection" (close)="closeSectionPopUp()" [minWidth]="250" [width]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md my-2"><strong>Section</strong></h3>
+	</kendo-dialog-titlebar>
+	<app-section></app-section>
+</kendo-dialog> -->
+
+<!-- <kendo-dialog title="" *ngIf="isShowUploadCostCenter" (close)="closeCostCenterPopUp()" [minWidth]="250" [width]="850"
+	class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md my-2"><strong>Cost</strong> Center</h3>
+	</kendo-dialog-titlebar>
+	<app-cost-center></app-cost-center>
+</kendo-dialog> -->
+
+<!-- <kendo-dialog title="" *ngIf="isShowUploadLocation" (close)="closeLocationPopUp()" [minWidth]="250" [width]="850"
+	class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md my-2"><strong>Location</strong></h3>
+	</kendo-dialog-titlebar>
+	<app-location></app-location>
+</kendo-dialog> -->
+
+<!-- <kendo-dialog title="" *ngIf="isShowUploadGp" (close)="closeGroupPopUp()" [minWidth]="250" [width]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md my-2"><strong>Group</strong></h3>
+	</kendo-dialog-titlebar>
+	<app-group></app-group>
+</kendo-dialog> -->
+
+<kendo-dialog title="" *ngIf="isShowUploadCmp" (close)="closeCompanyPopUp()" [minWidth]="250" [width]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md my-2"><strong>Company</strong></h3>
+	</kendo-dialog-titlebar>
+	<app-company></app-company>
+</kendo-dialog>
+
+<!-- <kendo-dialog title="" *ngIf="isShowUploadDep" (close)="closeDepartmentPopUp()" [minWidth]="250" [width]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md my-2"><strong>Department</strong></h3>
+	</kendo-dialog-titlebar>
+	<app-department></app-department>
+</kendo-dialog> -->
+
+<!-- <kendo-dialog title="" *ngIf="isShowUploadDesg" (close)="closeDesignationPopUp()" [minWidth]="250" [width]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md my-2"><strong>Designation</strong></h3>
+	</kendo-dialog-titlebar>
+	<app-designation></app-designation>
+</kendo-dialog> -->
+
+<!-- <kendo-dialog title="" *ngIf="isShowUploadGrade" (close)="closeGradePopUp()" [minWidth]="250" [width]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md my-2"><strong>Grade</strong></h3>
+	</kendo-dialog-titlebar>
+	<app-grade></app-grade>
+</kendo-dialog> -->
+
+<!-- <kendo-dialog title="" *ngIf="isShowUploadGpPolicy" (close)="closeGroupPolicyPopUp()" [minWidth]="250" [width]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md my-2"><strong>Group</strong> Policy</h3>
+	</kendo-dialog-titlebar>
+	<app-grouppolicy></app-grouppolicy>
+</kendo-dialog> -->
+
+<!--for FilterByEmployeePopUp  -->
+<kendo-dialog title="" *ngIf="isShowUploadFilter" (close)="closeFilterByEmployeePopUp()" [minWidth]="250" [width]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md m-2"><strong>Searching</strong> Employee</h3>
+	</kendo-dialog-titlebar>
+	<app-filterbyemployee [viewMenu]="this.viewMenuForm.value"></app-filterbyemployee>
+	<kendo-dialog-actions class="px-4 pb-3" [layout]="actionsLayout">
+		<button type="submit" class="btn btn-light rounded-pill px-4"
+			(click)="closeFilterByEmployeePopUp()">Cancel</button>
+		<button type="submit" class="btn btn-success rounded-pill px-4" (click)="select()">Select</button>
+		<!-- <button type="submit" class="btn btn-info rounded-pill px-4" (click)="selectall()">Select All</button> -->
+	</kendo-dialog-actions>
+</kendo-dialog>
+
+<!--for Searching Approver  -->
+<kendo-dialog title="" *ngIf="isApproverFilter" (close)="closeApproverPopup()" [minWidth]="250" [width]="700" class="k-dialog-lg">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md m-2"><strong>Searching</strong> Approver</h3>
+	</kendo-dialog-titlebar>
+	<app-filterbyemployeemulti [viewMenu]="this.viewMenuForm.value"></app-filterbyemployeemulti>
+	<kendo-dialog-actions class="px-4 pb-3" [layout]="actionsLayout">
+		<button type="submit" class="btn btn-light rounded-pill px-4" (click)="closeApproverPopup()">Cancel</button>
+		<button type="submit" class="btn btn-success rounded-pill px-4" (click)="selectApprover()">Select</button>
+	</kendo-dialog-actions>
+</kendo-dialog>
+
+<!--for Import Excel  -->
+<kendo-dialog title="" *ngIf="isImportExcel" (close)="closeImportExcel()" [minWidth]="250" [width]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md m-2"><strong>Import</strong> From Excel</h3>
+	</kendo-dialog-titlebar>
+	<app-employee-import [viewImport]="this.viewImport"></app-employee-import>
+</kendo-dialog>
+
+<app-organizationstructure [viewMenu]="this.viewMenuForm.value" (viewMenuOutput)="getViewMenu($event)"
+	(nodeKeyValue)="getNodeData($event)" [checkable]="this.checkableSettings">
+</app-organizationstructure>
+
+<kendo-dialog title="" *ngIf="isGroup" (close)="closeGroup()" [minWidth]="250" [width]="700" class="k-dialog-lg">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md m-2"><strong>Approver</strong> Group</h3>
+	</kendo-dialog-titlebar>
+	<app-approver-group (newCheckGroup)="addNewItem($event)" [checkedKeys]="this.checkedGroup"  [selectedValue]="this.multi"></app-approver-group>
+	<kendo-dialog-actions class="px-4 pb-3" [layout]="actionsLayout">
+		<button type="submit" class="btn btn-light rounded-pill px-4" (click)="closeGroup()">Cancel</button>
+		<button type="submit" class="btn btn-success rounded-pill px-4" (click)="selectGroup()">Select</button>
+	</kendo-dialog-actions>
+</kendo-dialog>
+
+<!--for Searching user level assign  -->
+<kendo-dialog title="" *ngIf="isUserLevelFilter" (close)="closeUserlevelPopup()" [minWidth]="250" [width]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md m-2"><strong>Add</strong> User Level Control</h3>
+	</kendo-dialog-titlebar>
+	<app-filterbyuserlevelassign  [SelectedEmployeeID]="this.selectempid" (checkedKeysOutput)="getcheckedKeysOutput($event)">
+	</app-filterbyuserlevelassign>
+	<kendo-dialog-actions class="px-4 pb-3" [layout]="actionsLayout">
+		<button type="submit" class="btn btn-light rounded-pill px-4" (click)="closeUserlevelPopup()">Cancel</button>
+		<button type="submit" class="btn btn-success rounded-pill px-4" (click)="selectUserlevel()">Select</button>
+	</kendo-dialog-actions>
+</kendo-dialog>
+
+<!--for Searching product -->
+<kendo-dialog title="" *ngIf="isProductFilter" (close)="closeProductPopup()" [minWidth]="250" [width]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md m-2"><strong>Add</strong> Product</h3>
+	</kendo-dialog-titlebar>
+	<div class="mx-n3">
+		<kendo-grid [data]="viewProductData|async" [pageSize]="productgridState.take" [skip]="productgridState.skip"
+			[loading]="viewProductData.loading" [sort]="productgridState.sort" [scrollable]="true"
+			[filter]="productgridState.filter" [filter]="filter"
+			[columnMenu]="{ filter: true, columnChooser: false, sort:false }" [filterable]="{multi:true,search:true}"
+			[sortable]="true" [pageable]="true" (dataStateChange)="dataStateChangeProduct($event)"
+			[selectable]="selectableproductSettings" [style.height.vh]="70" [style.minHeight.px]="300"
+			[kendoGridSelectBy]="'ProductID'" [selectedKeys]="checkValue" [rowSelected]="rowSelected"
+			(selectionChange)="SelectDeselect($event)" (selectedKeysChange)="onSelectedProduct($event)">
+			<kendo-grid-checkbox-column [width]="50"></kendo-grid-checkbox-column>
+			<kendo-grid-column field="ProductName" title="Product Name">
+			</kendo-grid-column>
+			<ng-template kendoPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+				<kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+				<kendo-pager-page-sizes [pageSizes]="[5,40,60,80,100]"></kendo-pager-page-sizes>
+				<kendo-pager-info></kendo-pager-info>
+				<kendo-pager-next-buttons></kendo-pager-next-buttons>
+			</ng-template>
+		</kendo-grid>
+	</div>
+	<kendo-dialog-actions class="px-4 pb-3" [layout]="actionsLayout">
+		<button type="submit" class="btn btn-light rounded-pill px-4" (click)="closeProductPopup()">Cancel</button>
+		<button type="submit" class="btn btn-success rounded-pill px-4" (click)="selectProduct()">Select</button>
+	</kendo-dialog-actions>
+</kendo-dialog>
+
+<!-- EmpFilter for DDMS -->
+<kendo-dialog title="" *ngIf="isEmpFilter_ForDDMS" (close)="closeFilterByEmployeeMultiPopUp_DDMS()" [minWidth]="250"
+	[width]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h3 class="text-md m-2"><strong>Searching</strong> Employee</h3>
+	</kendo-dialog-titlebar>
+	<div class="mx-n3">
+		<kendo-grid [data]="view_DDMS|async" [pageSize]="gridState_DDMS.take" [pageable]="{
+			buttonCount: 40,
+			info: true,
+			type: 'input',
+			pageSizes: [40,60,80,100],
+			previousNext: true
+			}" [skip]="gridState_DDMS.skip" [loading]="view_DDMS.loading" [sort]="gridState_DDMS.sort" [scrollable]="true"
+			[style.height.vh]="65" [style.minHeight.px]="300" [filter]="gridState_DDMS.filter" [sortable]="true"
+			[filterable]="true" [pageable]="true" (dataStateChange)="dataStateChange_DDMS($event)"
+			[selectable]="this.selectableSettings_DDMS" [selectedKeys]="mySelection" [kendoGridSelectBy]="'val'"
+			(selectedKeysChange)="onSelectedEmployee($event)">
+			<ng-template kendoGridToolbarTemplate>
+				<div class="row no-gutters">
+					<div class="col-auto me-auto">
+						<input type="checkbox" id="checkinactive" name="checkinactive"
+							(change)="checkEmpInactive($event.target.checked)" [(ngModel)]="check_emp_inactive"
+							kendoCheckBox />
+						<label class="k-checkbox-label text-dark" for="checkinactive">Inactive Employee</label>
+					</div>
+
+					<div class="col-auto ms-auto">
+						<kendo-textbox-container class="search-box position-relative">
+							<input placeholder="Search in all columns..." kendoTextBox
+								class="form-control form-control-sm pl-4 text-sm"
+								(input)="onFilter_DDMS($event.target.value)" />
+							<svg class="icon i-xs position-absolute text-gray">
+								<use xlink:href="assets/icons/symbol-defs.svg#icon-search"></use>
+							</svg>
+						</kendo-textbox-container>
+					</div>
+				</div>
+			</ng-template>
+
+			<kendo-grid-column field="EnrollNumber" title="Enroll Number" [filterable]="true" [sortable]="false"
+				width="120">
+			</kendo-grid-column>
+			<kendo-grid-column field="EmployeeCode" title="Employee Code" [filterable]="true" [sortable]="false"
+				width="120">
+			</kendo-grid-column>
+			<kendo-grid-column field="EmployeeName" title="Employee Name" [filterable]="true" [sortable]="false"
+				width="160">
+			</kendo-grid-column>
+			<kendo-grid-column field="Location" title="Location" [filterable]="true" [sortable]="false" width="150">
+			</kendo-grid-column>
+			<kendo-grid-column field="fingerCount" title="Finger Count" [filterable]="true" [sortable]="false"
+				width="120">
+			</kendo-grid-column>
+		</kendo-grid>
+	</div>
+	<div class="bg-light py-2 px-3 text-sm mt-3 text-muted">
+		Total Employee Count <b class="text-md text-dark">{{view_DDMS.total}}</b>
+	</div>
+
+	<kendo-dialog-actions class="px-4 pb-3" [layout]="actionsLayout">
+		<button type="submit" class="btn btn-light rounded-pill px-4"
+			(click)="closeFilterByEmployeeMultiPopUp_DDMS()">Cancel</button>
+		<button type="submit" class="btn btn-success rounded-pill px-4" (click)="select_DDMS()">Select</button>
+	</kendo-dialog-actions>
+</kendo-dialog>
+
+<div kendoDialogContainer></div>

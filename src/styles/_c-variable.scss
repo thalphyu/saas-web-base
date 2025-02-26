@@ -1,0 +1,322 @@
+$base-theme:Bootstrap;
+
+$black:							#000;
+$white:							#FFF;
+$dodger-blue:				#2196F3;
+$slate-blue:				#7C4DFF;
+$blue:							#1e88e5;//#1F6DDB;//#3699FF;//#3F6BE6;
+$cyan:							#00BCD4;
+$bluegray:					#353C4E;//#404E67;
+$light-bluegray:		#677788;
+$teal:							#1BC5BD;//#0ACF97; 
+$pink:							#FF7588;
+$red:								#E54A5A;//#ED4C78;
+$orange:						#FE9365;
+$yellow:						#FFBC34;
+$light:							#EEF2F7;//#F3F5F7;#F8F9FB
+$smokewhite:				#F8FAFD;
+$default:						#E0E0E0;
+$light-gray:				#CECECE;
+$smoke:							#727c85;
+$dark-gray:					#474B4E;
+$dark:							#303548;//#272727;
+$purplenavy:				#4F5384;
+$purple:						#7952B3;
+$veryperi:					#6968B4;//#6667AB;
+
+$data-theme:				light !default;
+$sidebar-light-bg:	$white;
+$sidebar-dark-bg:		$dark;
+$primary:						$veryperi !default;
+$secondary:					$smoke !default;
+$success:						$teal !default;
+$danger:						$red !default;
+$info:							$cyan !default;
+$warning:						$orange !default;
+
+$doc-theme-color:		"white" $white,
+										"light" darken($smokewhite,1%),
+										"blue" $blue,
+										"green" $teal,
+										"cyan" $cyan,
+										"red" $red,
+										"orange" $orange,
+										"indigo" $veryperi,
+										"dark" lighten($dark, .25%);
+
+$spacer:						1rem;
+$header-height:			55px;
+$sidebar-width:			260px;
+$side-panel-width:	280px;
+
+$ratingSize:						80px;
+$font-title:						'Noto Sans SC', Roboto, 'Pyidaungsu', -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", sans-serif;
+$font-weight-medium:		500 !default;
+$font-weight-semibold:	600 !default;
+$input-autofill:				background-color 5000s ease-in-out 0s;
+$font-size-base:				0.875rem !default;
+$font-size-sm:					0.8125rem !default;
+$font-size-xs:					0.75rem !default;
+$font-size-xxs:					0.65rem !default;
+
+$light-primary-text:		$smokewhite !default;
+$light-secondary-text:	$light-gray !default;
+$dark-primary-text:			$dark !default;
+$dark-secondary-text:		rgba($dark-gray, .65) !default;
+$bg-light-scale:				-70% !default;
+
+
+/******* Bootstrap 5 *********/
+
+$text-muted:									#98A6AD !default;
+$body-bg:											$smokewhite !default;
+$body-color:									$dark !default;
+$line-height-base:						1.6 !default;
+$font-family-sans-serif:			"Open Sans", Roboto, 'Pyidaungsu', sans-serif !important;
+$headings-font-weight:				600 !default;
+$headings-line-height:				1.4 !default;
+$btn-padding-x:								0.875rem !default;
+$btn-padding-y:								0.45rem !default;
+//$btn-padding-x-sm:					0.65625rem !default;
+//$btn-padding-y-sm:					0.4375rem !default;
+$btn-padding-x-lg:						1.09375rem !default;
+$btn-padding-y-lg:						0.875rem !default;
+$form-select-padding-x:				0 !default;
+$btn-focus-box-shadow:				none;
+$enable-negative-margins:			true !default;
+$btn-box-shadow:							none !default;
+$btn-focus-width:							0 !default;
+$link-hover-decoration:				underline !default;
+$dropdown-item-padding-x:			1.5rem !default;
+$dropdown-border-color:				rgba($black, .085) !default;
+$tooltip-bg:									rgba($black, .75) !default;
+$tooltip-arrow-color:					rgba($black, .75) !default;
+$border-radius-lg:						.5rem !default;
+$border-radius-xl:						.75rem !default;
+$input-border-radius:					0 !default;
+$input-btn-font-size-sm:			$font-size-base * 0.8125 !default;
+$input-border:								$light-gray !default;
+$alert-border-scale:					-75% !default;
+$list-group-color:						$dark !default;
+$list-group-border-color:			$default !default;
+$modal-dialog-margin:					1.5rem !default;
+$modal-inner-padding:					1.5rem !default;
+$btn-close-focus-shadow:			0 !default;
+$btn-close-width:							.75rem !default;
+$btn-font-weight:							500 !default;
+$min-contrast-ratio:					1.75 !default;
+$input-btn-focus-width:				$btn-focus-width !default;
+$breadcrumb-bg:								transparent !important;
+$card-border-color:						rgba($dark-gray, .075) !default;
+$modal-content-border-width:	$btn-focus-width !default;
+$btn-icon-border-radius-sm:		.35rem !default;
+$card-spacer-x:								$spacer * 1.375 !default;
+$card-spacer-y:								$card-spacer-x !default;
+$card-cap-padding-x:					$spacer * 1.25 !default;
+$card-cap-padding-y:					$card-cap-padding-x !default;
+$card-cap-bg:									transparent !default;
+$card-border-width:						1px !default;
+$navbar-nav-link-padding-x:		575rem !default;
+$dropdown-min-width:					15rem !default;
+$dropdown-dark-color:					$light !default;
+$dropdown-dark-bg:						lighten($dark, 1.25%) !default;
+
+//$enable-shadows:						true !default;
+$input-btn-focus-box-shadow:	none !default;
+$form-check-margin-bottom:		.25rem !default;
+$form-check-input-border:			2px solid rgba($black, .5) !default;
+$form-check-input-border-radius:		2px !default;
+$form-check-input-checked-bg-image:	url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3cpath fill='none' stroke='%23ffffff' stroke-width='3' d='M4.1,12.7 9,17.6 20.3,6.3'/%3e%3c/svg%3e") !default;
+
+/******* Bootstrap 5 *********/
+
+/******* Kendo Material Theme *********/
+
+$font-family: $font-family-sans-serif !default;
+//$font-size: $font-size-base !default;
+$font-size-lg: $font-size-base !default;
+$input-bg: transparent !default;
+$kendo-input-padding-x: 0px !default;
+$kendo-input-padding-x-md: $kendo-input-padding-x !default;
+$kendo-input-line-height: 1.3935 !default;
+//$kendo-flat-button-hover-opacity: 0 !default;
+$kendo-flat-button-focus-opacity: 0 !default;
+
+$kendo-input-bg: $input-bg !default;
+$kendo-input-hover-border: $smoke !default;
+//$textarea-bg: $input-bg !default;
+//$textarea-hover-bg: $textarea-bg !default;
+//$datetime-bg: $input-bg !default;
+$textarea-padding-x: $kendo-input-padding-x !default;
+//$input-inner-calc-height: 35px !default;
+$popup-border-radius: .25rem !default;
+$popup-border: $light !default;
+$calendar-today-nav-text: $primary !default;
+$input-default-width: 100% !default;
+$input-hovered-border: if($data-theme == dark, $light-secondary-text, $smoke) !default;
+
+/* --- Kendo Grid -----*/
+$grid-font-size: inherit !default;
+$grid-line-height: $line-height-base !default;
+$grid-border-width: 0 !default;
+$grid-text: $dark !default;
+$grid-header-bg: $smokewhite !default;
+$grid-header-text: if($data-theme == dark, $light-secondary-text, $dark-primary-text) !default;
+$grid-header-font-size: $font-size-base * 0.75 !default;
+$grid-header-border: darken($light, 5%) !default;
+$grid-sticky-header-bg: transparent !default;
+$grid-sticky-alt-bg: $grid-sticky-header-bg !default;
+$grid-sticky-bg: $grid-sticky-header-bg !default;
+$grid-cell-padding-x: 0.75rem !default;
+$grid-cell-padding-y: 0.5rem !default;
+$grid-header-padding-x: $grid-cell-padding-x !default;
+$grid-header-padding-y: $grid-cell-padding-x !default;
+$grid-cell-vertical-border-width: 0 !default;
+$grid-header-menu-icon-spacing: 2px !default;
+$grid-hovered-bg: lighten($light, 1.5%) !default;
+$grid-sticky-hovered-bg: $grid-sticky-header-bg !default;
+$grid-selected-bg: rgba( $primary, .1 ) !default;
+$grid-grouping-header-padding-x: 0 !default;
+$grid-grouping-header-padding-y: $grid-grouping-header-padding-x !default;
+$grid-filter-cell-padding-x: $grid-cell-padding-x !default;
+$grid-filter-cell-padding-y: $grid-cell-padding-y !default;
+$pager-font-size: $font-size-base * 0.8125 !important;
+$pager-focus-bg: transparent !default;
+
+/* ----- Kendo Dialog ------ */
+$window-titlebar-padding-x: $modal-inner-padding !default;
+$window-titlebar-padding-y: $modal-inner-padding !default;
+$window-title-line-height: 1.5 !default;
+$window-inner-padding-y: 0px !default;
+$dialog-buttongroup-padding-x: 1.25rem !default;
+$dialog-buttongroup-padding-y: $dialog-buttongroup-padding-x !default;
+$dialog-buttongroup-border-width: $modal-content-border-width !default;
+
+/* ----- Kendo Upload ------ */
+$upload-border-width: 0px !default;
+$kendo-button-border-width: 0px !default;
+
+/* ----- Kendo Tabscrip ------ */
+$tabstrip-indicator-size: 3px !default;
+$tabstrip-content-padding-x: 0 !default;
+
+/* ----- Kendo popup filter ----- */
+$popup-filter-padding-x: 0 !default;
+
+/******* Kendo Material Theme *********/
+
+$semantic-card-padding-y: 1.25rem !default;
+
+$avatars: "xxs" 24,
+			 "xs" 32,
+			 "sm" 48,
+			 "md" 52,
+			 "def" 90,
+			 "lg" 110,
+			 "xl" 160;
+
+$i-sizes: "xs" 12,
+			 "sm" 16,
+			 "def" 20,
+			 "md" 32,
+			 "lg" 42,
+			 "xl" 64;
+
+@mixin hover {
+	&:hover { @content; }
+}
+
+@mixin hover-focus {
+	&:hover,
+	&:focus {
+		@content;
+	}
+}
+
+@mixin hover-focus-active {
+	&:hover,
+	&:focus,
+	&:active {
+		@content;
+	}
+}
+
+@mixin vertical-align {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0;
+}
+
+@mixin opacity($opacity) {
+	opacity: $opacity;
+	// IE8 filter
+	$opacity-ie: ($opacity * 100);
+	filter: alpha(opacity=$opacity-ie);
+}
+
+@mixin placeholder {
+	&::-webkit-input-placeholder {@content}
+	&:-moz-placeholder           {@content}
+	&::-moz-placeholder          {@content}
+	&:-ms-input-placeholder      {@content}
+}
+
+@mixin scrollbar-style($bar-width, $bar-height, $thumb-color, $thumb-hover-color) {
+
+	&::-webkit-scrollbar {
+		width: $bar-width;
+		height: $bar-height;
+		background-color: transparent;
+	}
+	&::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
+	&::-webkit-scrollbar-thumb {
+		border-radius: 50rem;
+		border: 2px solid transparent;
+		background: transparent;
+		box-shadow: inset 0 0 0 12px rgba( $thumb-color, .37 );
+		transition: .3s all;
+		&:hover {
+			box-shadow: inset 0 0 0 12px rgba( $thumb-hover-color , .5 );
+		}
+	}
+	&::-webkit-scrollbar-button { display: none; }
+	
+}
+
+// required imports
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+
+//$checkbox-label-margin-x: map-get( $spacers, 2 ) !default;
+$spacers: map-merge(
+	$spacers, (
+		6: $spacer * 5,
+		7: $spacer * 6,
+	)
+);
+
+$font-sizes: map-merge(
+	$font-sizes, (
+		2: $font-size-base * 2.215,
+		3: $font-size-base * 1.715,
+		4: $font-size-base * 1.25,
+		6: $font-size-base * 0.8125,
+		7: $font-size-base * 0.75,
+		8: $font-size-base * 0.65
+	)
+);
+
+$theme-colors: map-merge($theme-colors, (
+	"default": $default,
+	"lightgray": $light-gray,
+	"darkgray": $dark-gray,
+	"light": $smokewhite,
+	"orange": $orange,
+	"blue": $blue,
+	"indigo": $veryperi,
+	"white": $white
+));

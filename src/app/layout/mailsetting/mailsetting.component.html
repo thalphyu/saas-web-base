@@ -1,0 +1,118 @@
+<div class="d-flex header-panel">
+	<app-page-header [mainHeading]="'Mail Setting'" [heading]="'Mail Setting'" [subheading]="'System'" [icon]="''">
+		</app-page-header>
+</div>
+
+<div class="card rounded-3">
+	<div class="card-body">
+		<form name="MailSettingForm" [formGroup]="MailSettingForm">
+			<div class="row">
+				<div class="col-md-5 col-sm-6">
+					<div class="mb-3">
+						<kendo-floatinglabel text="SMTP Server" class="required">
+							<input type="text" kendoTextBox name="SMTPServer" class="form-control" formControlName="SMTPServer" required />
+						</kendo-floatinglabel>
+						<kendo-formerror
+							[hidden]=" MailSettingForm.controls.SMTPServer.valid || MailSettingForm.controls.SMTPServer.pristine">
+							SMTP Server is required.
+						</kendo-formerror>
+					</div>
+				</div>
+
+				<div class="col-md-3 col-sm-4">
+					<div class="mb-3">
+						<kendo-floatinglabel text="SMTP Port" class="required">
+							<input type="number" kendoTextBox name="SMTPPort" class="form-control" formControlName="SMTPPort" min="0" required />
+						</kendo-floatinglabel>
+						<kendo-formerror
+							[hidden]=" MailSettingForm.controls.SMTPPort.valid || MailSettingForm.controls.SMTPPort.pristine">
+							SMTP Port is required.
+						</kendo-formerror>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-8 col-sm-10">
+					<div class="mb-3">
+						<kendo-floatinglabel text="From Name" class="required">
+							<input type="text" kendoTextBox name="FromName" class="form-control" formControlName="FromName" required />
+						</kendo-floatinglabel>
+						<kendo-formerror
+							[hidden]=" MailSettingForm.controls.FromName.valid || MailSettingForm.controls.FromName.pristine">
+							From Name is required.
+						</kendo-formerror>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-8 col-sm-10">
+					<div class="mb-3">
+						<kendo-floatinglabel text="From Mail" class="required">
+							<input type="email" kendoTextBox name="FromMail" class="form-control" formControlName="FromMail" required />
+						</kendo-floatinglabel>
+						<kendo-formerror
+							[hidden]=" MailSettingForm.controls.FromMail.valid || MailSettingForm.controls.FromMail.pristine">
+							From Mail is required.
+						</kendo-formerror>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-8 col-sm-10">
+					<div class="mb-3">
+						<kendo-floatinglabel text="Admin Mail" class="required">
+							<input type="email" kendoTextBox name="AdminMail" class="form-control" formControlName="AdminMail" required>
+						</kendo-floatinglabel>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-8 col-sm-10">
+					<div class="mb-3">
+						<kendo-floatinglabel text="Password" class="required">
+							<input type="password" kendoTextBox name="Password" class="form-control" formControlName="Password" required />
+						</kendo-floatinglabel>
+						<kendo-formerror
+							[hidden]=" MailSettingForm.controls.Password.valid || MailSettingForm.controls.Password.pristine">
+							Password is required.
+						</kendo-formerror>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="card-footer bg-transparent border-0">
+		<button type="submit" [disabled]="!MailSettingForm.valid" class="btn btn-success" (click)="openTestMailSettingPopUp()">Test Mail</button>
+		<button type="submit" [disabled]="!MailSettingForm.valid" class="btn btn-primary" (click)="SaveMailSetting()">Save</button>
+	</div>
+</div>
+
+<kendo-dialog title="" *ngIf="isShowUpload"
+	(close)="closeTestMailSettingPopUp()" [minWidth]="250" [width]="500">
+	<kendo-dialog-titlebar>
+		<h5 class="modal-title">Test Mail Setting</h5>
+	</kendo-dialog-titlebar>
+	<form name="MailForm" [formGroup]="MailForm">
+		<span *ngIf="loading" class="k-icon k-i-loading k-icon-md text-lightgray position-absolute bottom-50 end-50"></span>
+
+		<div class="mb-3">
+			<kendo-floatinglabel text="Email" class="required">
+				<input type="email" kendoTextBox name="Mail" placeholder="Please enter Email" class="form-control" formControlName="Mail" required />
+			</kendo-floatinglabel>
+			<kendo-formerror
+				[hidden]="MailForm.controls.Mail.valid || MailForm.controls.Mail.pristine">
+				Mail is required !
+			</kendo-formerror>
+		</div>
+	</form>
+	<kendo-dialog-actions [layout]="actionsLayout">
+		<!-- <ng-container *ngxPermissionsOnly="'edit'"> -->
+		<button type="submit" [disabled]="!MailForm.valid || this.sendmail === true" class="btn btn-primary" (click)="testMailSetting()">Send Mail</button>
+		<!-- </ng-container> -->
+	</kendo-dialog-actions>
+</kendo-dialog>
+<div kendoDialogContainer></div>

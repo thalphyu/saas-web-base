@@ -1,0 +1,126 @@
+<div class="d-flex header-panel">
+	<app-page-header [heading]="'Event Viewer'" [subheading]="'Report'" [icon]="''"></app-page-header>
+</div>
+
+<div class="card rounded-3">
+	<div class="card-header">
+		<form name="EventViewerForm" [formGroup]="EventViewerForm">
+			<div class="row g-3">
+				<div class="col-xxl-2 col-sm-4">
+					<kendo-floatinglabel text="Period">
+						<select class="form-select" name="Period" formControlName="Period"
+							(change)="changeperiod($event.target.value)">
+							<option value="0">Today</option>
+							<option value="1">This Week</option>
+							<option value="2">This Month</option>
+							<option value="3">This Year</option>
+							<option value="4">Last Week</option>
+							<option value="5">Last Month</option>
+							<option value="6">Last Year</option>
+							<option value="7">Custom</option>
+						</select>
+					</kendo-floatinglabel>
+				</div>
+				<div class="col-xxl-2 col-sm-4 col-6" *ngIf="this.EventViewerForm.value.Period===7"> <!--<div class="col-xxl-2 col-sm-4 col-6" *ngIf="this.EventViewerForm.value.Period!==8 && this.EventViewerForm.value.Period===0|| this.EventViewerForm.value.Period===1 || this.EventViewerForm.value.Period===2 || this.EventViewerForm.value.Period===3 || this.EventViewerForm.value.Period===4|| this.EventViewerForm.value.Period===5 || this.EventViewerForm.value.Period===6 || this.EventViewerForm.value.Period===7">-->
+					<kendo-floatinglabel text="From Date">
+						<kendo-datepicker formControlName="Fromdate" placeholder="" [format]="this.CustomDate" [navigation]="false" formatPlaceholder="formatPattern" class="form-control" calendarType="classic">
+						</kendo-datepicker>
+					</kendo-floatinglabel>
+				</div>
+				<div class="col-xxl-2 col-sm-4 col-6" *ngIf="this.EventViewerForm.value.Period===7 "> <!--this.EventViewerForm.value.Period!==8 &&||this.EventViewerForm.value.Period===7 -->
+					<kendo-floatinglabel text="To Date">
+						<kendo-datepicker formControlName="Todate" placeholder="" [format]="this.CustomDate" [navigation]="false" formatPlaceholder="formatPattern" class="form-control" calendarType="classic">
+						</kendo-datepicker>
+					</kendo-floatinglabel>
+				</div>
+				<div class="col-xxl-3 col-sm-6">
+					<kendo-floatinglabel text="Employee" class="d-flex flex-row">
+						<input type="text" kendoTextBox name="EnrollNumber" class="form-control" formControlName="Employee" autocomplete="off">
+						<button class="btn btn-sm border-0 border-bottom" [ngClass]="globals.storedSkin === 'dark' ? 'btn-dark btn-hover-dark' : 'btn-white btn-hover-light'" (click)="openFilterByEmployeePopUp()" title="Filter by Employee">
+							<svg-icon iClass="i-def" svgicon="icon-user-search"></svg-icon>
+						</button>
+					</kendo-floatinglabel>
+				</div>
+				<div class="col-xxl-3 col-sm-6">
+					<kendo-floatinglabel text="Source Form">
+						<kendo-dropdownlist [data]="SourceList" class="" formControlName="Source" textField="MenuName" [defaultItem]="{  MenuName: 'All Source Form ...'  , MenuId: null }" valueField="MenuName" 	[filterable]="true" [popupSettings]="{ width: 'auto' }"
+							[valuePrimitive]="true" (filterChange)="handleFilter($event)">
+						</kendo-dropdownlist>
+					</kendo-floatinglabel>
+				</div>
+				<div class="col-12 text-end">
+					<button type="submit" (click)="preview()" class="btn btn-primary">Search</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="px-1 pb-2">
+		<kendo-grid gridHeight #height="heightDirective" [data]="view|async" [loading]="view.loading" [style.height.px]="[height.kGridHeight]" [style.minHeight.px]="400" [pageable]="{
+			buttonCount:5,
+			info: true,
+			type: 'input',
+			pageSizes: [40, 60, 80, 100],
+			previousNext: true,
+			responsive: true
+			}" [pageSize]="gridState.take" [skip]="gridState.skip"
+			[sort]="gridState.sort"
+			[sortable]="true" [resizable]="true" [scrollable]="true" class="k-grid-bordered"
+			[selectable]="true" [filter]="gridState.filter" [filterable]="{multi:true,search:true}"  (dataStateChange)="dataStateChange($event)"
+			[columnMenu]="{
+				filter: {
+					expanded: true
+				},
+				sort: false,
+				columnChooser: false
+			}">
+			<kendo-grid-column field="FormattedLogDateTime" title="Log Date Time" width="100" [minResizableWidth]="30" filter="date" [format]="this.CustomDate" [sortable]="false" [filterable]="false">
+				<ng-template kendoGridCellTemplate let-dataItem>
+					{{ dataItem.FormattedLogDateTime | date: 'yyyy-MM-dd'}}<br>
+					{{ dataItem.FormattedLogDateTime | date: 'h:mm a'}}
+				</ng-template>
+			</kendo-grid-column>
+			<kendo-grid-column field="EmployeeName" title="Log in Employee" width="150" [minResizableWidth]="30"><!--field="LoginEmployee"-->
+			</kendo-grid-column>
+			<kendo-grid-column field="Source" title="Page" width="80" [minResizableWidth]="30">
+			</kendo-grid-column>
+			<kendo-grid-column field="IpAddress" title="IP Address" width="120" [minResizableWidth]="30">
+			</kendo-grid-column>
+			<kendo-grid-column field="LogMessage" title="Log Message" width="280" [minResizableWidth]="30" [sortable]="false" [filterable]="false">
+			</kendo-grid-column>
+			<!-- <kendo-grid-column field="logTypestr" title="Log Type" width="150">
+				<ng-template kendoGridFilterCellTemplate>
+					<kendo-dropdownlist [data]="LogType" [textField]="'LogTypeName'" [valueField]="'TypeValue'"
+						[valuePrimitive]="true" (valueChange)="OnTypeChange($event)">
+					</kendo-dropdownlist>
+				</ng-template>
+			</kendo-grid-column> -->
+			<kendo-grid-column field="LogType" title="Log Type" width="80" [minResizableWidth]="30">
+				<ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
+					<app-multicheck-filter [isPrimitive]="false" [field]="column.field"
+						[filterService]="filterService" [currentFilter]="filter"
+						[data]="LogTypelist" valueField="id" textField="value">
+					</app-multicheck-filter>
+				</ng-template>
+				<ng-template kendoGridCellTemplate let-dataItem>
+					<ng-container *ngIf="dataItem.LogType===0">Information</ng-container>
+					<ng-container *ngIf="dataItem.LogType===1">Warning</ng-container>
+					<ng-container *ngIf="dataItem.LogType===2">Error</ng-container>
+					<ng-container *ngIf="dataItem.LogType===3">Insert</ng-container>
+					<ng-container *ngIf="dataItem.LogType===4">Update</ng-container>
+					<ng-container *ngIf="dataItem.LogType===5">Delete</ng-container>
+				</ng-template>
+			</kendo-grid-column>
+		</kendo-grid>
+	</div>
+</div>
+
+<kendo-dialog *ngIf="isShowUploadFilter" (close)="closeFilterByEmployeePopUp()" [minWidth]="250" [width]="850" class="k-dialog-xl">
+	<kendo-dialog-titlebar>
+		<h5 class="modal-title">Searching Employee</h5>
+	</kendo-dialog-titlebar>
+	<app-filterbyemployee></app-filterbyemployee>
+	<kendo-dialog-actions [layout]="actionsLayout">
+		<button class="btn btn-light" (click)="closeFilterByEmployeePopUp()">Cancel</button>
+		<button class="btn btn-primary" (click)="select()">Select</button>
+	</kendo-dialog-actions>
+</kendo-dialog>

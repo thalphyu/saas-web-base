@@ -1,0 +1,48 @@
+@import "c-variable";
+
+.page-title {
+   font-family: $font-family-sans-serif;
+   letter-spacing: -.0114923em
+}
+
+.title-action-panel {
+	margin-top: .1rem
+}
+
+.ui {
+	&.grid {
+		margin: 0 -0.65rem;
+		>.row {
+			padding: 0;
+			>.column:not(.row),
+			>.column {
+				padding: 0 .65rem !important;
+			}
+		}
+	}
+	&.message-card {
+		margin: $semantic-card-padding-y 0;
+		&:first-child {
+			margin-top: 0
+		}
+	}
+	.column:last-child {
+		.message-card {
+			margin-bottom: 0
+		}
+	}
+}
+
+/* It's just hardcode coz of semantic.min.css */
+.ui.ui.ui.ui.stackable.grid {
+	margin: 0 -0.65rem !important;
+}
+
+.short-row {
+	min-height: 150px;
+}
+
+.tall-row {
+	min-height: 370px;
+}
+
